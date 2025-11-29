@@ -792,7 +792,7 @@
       </aside>
 
       <!-- 우측 내용 -->
-      <main class="content">
+      <div class="content">
         <div class="content-inner">
           <!-- <h1>▒ S.PKG MI기술그룹 - 개선효과계산기</h1> -->
           <p class="hint">
@@ -1564,8 +1564,9 @@
 
       </div>
     </div>
-  </main>
+  </div>
 </div>
+	</main>
 
 <script>
   // 체크박스 → 패널 show/hide + 수량 동기화
@@ -2392,37 +2393,37 @@
 
 </script>
 <script>
-async function loadUsdKrwRate() {
-  try {
-    const res = await fetch('https://open.er-api.com/v6/latest/USD');
-    if (!res.ok) {
-      console.error('HTTP error', res.status);
-      return;
-    }
-    const data = await res.json();
-    const usdKrw = data.rates && data.rates.KRW;
-    if (!usdKrw) {
-      console.error('KRW rate not found');
-      return;
-    }
+	async function loadUsdKrwRate() {
+	  try {
+		const res = await fetch('https://open.er-api.com/v6/latest/USD');
+		if (!res.ok) {
+		  console.error('HTTP error', res.status);
+		  return;
+		}
+		const data = await res.json();
+		const usdKrw = data.rates && data.rates.KRW;
+		if (!usdKrw) {
+		  console.error('KRW rate not found');
+		  return;
+		}
 
-    console.log('USD→KRW 환율:', usdKrw);
+		console.log('USD→KRW 환율:', usdKrw);
 
-    // 환율 입력칸들 자동 채우기 (원하는 input에 data-autofx="usd-krw" 달기)
-    document.querySelectorAll('input[data-autofx="usd-krw"]').forEach(function (inp) {
-      inp.value = usdKrw;
-    });
+		// 환율 입력칸들 자동 채우기 (원하는 input에 data-autofx="usd-krw" 달기)
+		document.querySelectorAll('input[data-autofx="usd-krw"]').forEach(function (inp) {
+		  inp.value = usdKrw;
+		});
 
-  } catch (e) {
-    console.error('환율 fetch 오류:', e);
-  }
-}
+	  } catch (e) {
+		console.error('환율 fetch 오류:', e);
+	  }
+	}
 
-// 페이지 로드 시 환율 자동 조회
-window.addEventListener('DOMContentLoaded', loadUsdKrwRate);
+	// 페이지 로드 시 환율 자동 조회
+	window.addEventListener('DOMContentLoaded', loadUsdKrwRate);
 </script>
 
-	<script>
+<script>
 	  function updateClock() {
 		const now = new Date();
 		const yyyy = now.getFullYear();
