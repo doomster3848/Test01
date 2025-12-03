@@ -1,458 +1,521 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>S.PKG MI-Nexus Portal - 개선효과계산기</title>
-  <style>
-    :root {
-      --mi-deep-blue: #003B70;
-      --mi-teal: #00A6C2;
-      --mi-navy: #0A1E3F;
-      --mi-bg: #070b12;
-      --mi-surface: #0f172a;
-      --mi-text-main: #f9fafb;
-      --mi-text-sub: #9ca3af;
-      --mi-accent: #22c55e;
-    }
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>S.PKG MI-Nexus Portal - v0.15</title>
+        <style>
+            :root {
+                --mi-deep-blue: #003B70;
+                --mi-teal: #00A6C2;
+                --mi-navy: #0A1E3F;
+                --mi-bg: #070b12;
+				--mi-surface: #0f172a;
+				--mi-text-main: #f9fafb;
+				--mi-text-sub: #9ca3af;
+				--mi-accent: #22c55e;
+			}
+			
+			* {
+				box-sizing: border-box;
+				margin: 0;
+				padding: 0;
+            }
+			
+			body {                
+                font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+                background: radial-gradient(circle at top left, #0f172a 0, #020617 45%, #000000 100%);
+                color: var(--mi-text-main);
+                background-image: linear-gradient(to bottom, rgba(15,23,42,0.7), rgba(15,23,42,0.9)),
+                    url("https://images.pexels.com/photos/34088/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=1600");
+                background-size: cover;
+                background-position: center;
+                filter: saturate(1.1);
+                z-index: -1;
+                height: 100vh;
+                overflow-y: hidden;
+                }
+			
+			body::-webkit-scrollbar {
+				display: none;
+			}
+			
+			a {
+				color: inherit;
+				text-decoration: none;
+			}
+			
+			/* ===== 상단 네비게이션 ===== */
+			.navbar-wrapper {
+				position: sticky;
+				top: 0;
+				z-index: 20;
+                backdrop-filter: blur(16px);
+                background: linear-gradient(to bottom, rgba(15,23,42,0.92), rgba(15,23,42,0.0));
+                border-bottom: 1px solid rgba(15,23,42,0.9);
+            }
+			
+			.navbar {
+				max-width: 1420px;
+				margin: 0 auto;
+				padding: 10px 20px;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				gap: 16px;
+			}
+			
+			.navbar-left {
+				display: flex;
+				align-items: center;
+				gap: 10px;
+				font-size: 13px;
+			}
+			
+			.mi-logo {
+				width: 26px;
+				height: 26px;
+				border-radius: 999px;
+				background: radial-gradient(circle at 20% 0%, #38bdf8, #0f172a 60%, #000 80%);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				overflow: hidden;
+			}
+			
+			.navbar-title-main {
+				font-weight: 600;
+				font-size: 13px;
+			}
+			
+			.navbar-title-sub {
+				font-size: 12px;
+				color: var(--mi-text-sub);
+			}
+			
+			.navbar-menu {
+				display: flex;
+				align-items: center;
+				gap: 18px;
+				font-size: 12px;
+				color: var(--mi-text-sub);
+			}
+			
+			.navbar-right {
+				display: flex;
+				gap: 10px;
+				align-items: center;
+			}
+			
+			.navbar-cta {
+				font-size: 11px;
+				padding: 2px;
+				border-radius: 999px;
+				border: none;
+				background: transparent;
+			}
+			
+			.top-status-bar {
+				font-size: 11px;
+				border-radius: 999px;
+				border: none;
+				background: linear-gradient(135deg, var(--mi-teal), #22c55e);
+				color: #020617;
+				font-weight: 500;
+				box-shadow: 0 0 18px rgba(34,197,94,0.4);
+				padding: 4px 10px;
+				white-space: nowrap;
+			}
+			
+			#clock {
+				font-variant-numeric: tabular-nums;
+			}
+			
+			#fx-rate {
+				font-variant-numeric: tabular-nums;
+			}
+			
+			.notice-bar {
+				max-width: 1380px;
+				margin: 0 auto 8px auto;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				border-radius: 999px;
+				background: rgba(56,189,248,0.12);
+				color: #e0f2fe;
+				font-weight: 500;
+				border: 1px solid rgba(56,189,248,0.4);
+				font-size: 12px;
+				padding: 4px 16px;
+			}
+			
 
-    * {
-    box-sizing: border-box;
-    padding: 0;
-    margin-top: 0px;
-    }
+			
+			/* ===== 상위 메뉴 기본 스타일 (hover 밑줄 유지) ===== */
+			.navbar-menu > a,
+			.navbar-menu > .nav-item > .nav-link {
+				position: relative;
+				padding: 4px 0;
+				background: none;
+				border: none;
+				font: inherit;
+				color: inherit;
+				cursor: pointer;
+			}
+			
+			.navbar-menu > a::after,
+			.navbar-menu > .nav-item > .nav-link::after {
+				content: "";
+				position: absolute;
+				left: 0;
+				bottom: -2px;
+				width: 0;
+				height: 2px;
+				border-radius: 999px;
+				background: linear-gradient(90deg, #38bdf8, #22c55e);
+				transition: width 0.2s ease;
+			}
+			
+			.navbar-menu > a:hover::after,
+			.navbar-menu > .nav-item > .nav-link:hover::after {
+				width: 100%;
+			}
+			
+			.nav-highlight {
+				color: #ffffff;
+				font-weight: 700;
+			}
+			
+			/* ===== 드롭다운 컨테이너 / 서브메뉴 ===== */
+			.nav-item {
+				position: relative;
+				display: flex;
+				align-items: center;
+			}
+			
+			.nav-submenu {
+				position: absolute;
+				top: 120%;
+				left: 0;
+				min-width: 180px;
+				padding: 8px;
+				border-radius: 12px;
+				background: rgba(15, 23, 42, 0.98);
+				border: 1px solid rgba(148, 163, 184, 0.5);
+				box-shadow: 0 18px 40px rgba(15, 23, 42, 0.9);
+				opacity: 0;
+				transform: translateY(-4px);
+				pointer-events: none;
+				transition: opacity 0.18s ease, transform 0.18s ease;
+				z-index: 30;
+			}
+			
+			.nav-submenu a {
+				display: block;
+				padding: 8px 10px;
+				border-radius: 8px;
+				font-size: 12px;
+				color: var(--mi-text-main);
+				white-space: nowrap;
+			}
+			
+			.nav-submenu a:hover {
+				background: rgba(30, 64, 175, 0.65);
+			}
+			
+			.nav-submenu a::after {
+				content: none !important;
+			}
+			
+			.nav-item.open .nav-submenu {
+				opacity: 1;
+				transform: translateY(0);
+				pointer-events: auto;
+			}
+			
 
-    body {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    background: radial-gradient(circle at top left, #0f172a 0, #020617 45%, #000000 100%);
-    color: var(--mi-text-main);
-    }
+            
+            @media (max-width: 900px) {
+                .navbar {
+                    padding: 8px 16px;
+                }
+                .navbar-menu {
+                    display: none;
+                }
+            }
+            
+            
+            /* =============================
+            개선효과계산기 레이아웃 (finance)
+            ============================= */
+            .container {
+                display: flex;
+                height: 100vh;
+                max-width: 1350px;      /* 계산기 전체 1120px 안으로 */
+                margin: 0px auto 40px; /* 위/아래 여백 + 가운데 정렬 */
+                box-sizing: border-box;
+                /* background: rgba(3,7,18,0.9);     살짝 어두운 박스 느낌 (원하면 조정) */
+                border-radius: 12px;
+                box-shadow: 0 0 20px rgba(0,0,0,0.4);
+                font-size: 0.9rem;      /* 글자 전체 90% 정도로 */
+                background: linear-gradient(to right, #1f2937 0 320px, rgba(3,7,18,0) 320px 100%);
+            }
+            
+            .sidebar {
+                width: 320px;
+                /* background: #1f2937;  <-- 이건 지워도 됨 */
+                background: transparent;
+                color: #f9fafb;
+                padding: 16px 12px;
+                box-sizing: border-box;
+                backdrop-filter: blur(6px);
+                overflow-y: auto;  /* 항목이 너무 많을 때 안에서만 스크롤 */
+                border-radius: 12px;        
+            }
+            .sidebar h2 {
+                font-size: 16px;
+                margin: 0 0 8px 0;
+            }
+            .sidebar .menu-group-title {
+                margin-top: 12px;
+                margin-bottom: 4px;
+                font-size: 13px;
+                color: #9ca3af;
+                border-top: 1px solid #374151;
+                padding-top: 8px;
+            }
+            .sidebar label {
+                display: flex;
+                align-items: center;
+                font-size: 13px;
+                margin: 4px 0;
+                cursor: pointer;
+            }
+            .sidebar label.menu-item {
+                justify-content: space-between;
+            }
+            .sidebar input[type="checkbox"] {
+                margin-right: 6px;
+            }
+            .item-left {
+                display: flex;
+                align-items: center;
+            }
+            .menu-qty {
+                width: 48px;
+                padding: 2px 4px;
+                font-size: 12px;
+            }
+            
+            /* 오른쪽 영역 전체 */
+            .content {
+                flex: 1;
+                background: transparent;
+                overflow-y: auto;
+                display: flex;
+                justify-content: center;
+            }
+            
+            /* 내부 콘텐츠(제목 + 설명 + 카드들) */
+            .content-inner {
+                width: 100%;
+                box-sizing: border-box;
+                overflow-y: auto;
+            }
+            
+            .content-inner::-webkit-scrollbar {
+                display: none;
+            }
 
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    /* 상단 네비게이션 */
-    .navbar-wrapper {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      backdrop-filter: blur(16px);
-      background: linear-gradient(to bottom, rgba(15,23,42,0.9), rgba(15,23,42,0.0));
-      border-bottom: 1px solid rgba(15,23,42,0.9);
-    }
-
-    .navbar {
-      max-width: 1420px;
-      margin: 0 auto;
-      padding: 10px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-    }
-
-    .navbar-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 13px;
-    }
-
-    .navbar-logo {
-      width: 26px;
-      height: 26px;
-      border-radius: 8px;
-      background: radial-gradient(circle at 20% 0%, #38bdf8, #0f172a 60%, #000 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 0;
-      max-width: none;
-      -webkit-box-shadow: 0 0;
-    }
-
-    .navbar-title-main {
-      font-weight: 600;
-      font-size: 13px;
-    }
-
-    .navbar-title-sub {
-      font-size: 11px;
-      color: var(--mi-text-sub);
-    }
-
-    .navbar-menu {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      font-size: 12px;
-      color: var(--mi-text-sub);
-    }
-
-    .navbar-menu a {
-      position: relative;
-      padding: 4px 0;
-    }
-
-    .navbar-menu a::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: -2px;
-      width: 0;
-      height: 2px;
-      border-radius: 999px;
-      background: linear-gradient(90deg, #38bdf8, #22c55e);
-      transition: width 0.2s ease;
-    }
-
-    .navbar-menu a:hover::after {
-      width: 100%;
-    }
-
-    .nav-highlight{
-      color: #FFFFFF;
-      font-weight: 700;
-    }
-
-    .navbar-right {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .navbar-pill {
-      font-size: 11px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.5);
-      background: rgba(15,23,42,0.7);
-      color: var(--mi-text-sub);
-    }
-
-    .navbar-cta {
-      font-size: 11px;
-      padding: 6px 12px;
-      border-radius: 999px;
-      border: none;
-      background: linear-gradient(135deg, var(--mi-teal), #22c55e);
-      color: #020617;
-      font-weight: 500;
-      box-shadow: 0 0 18px rgba(34,197,94,0.4);
-      cursor: default;
-    }
-
-    /* 공지바 */
-    .notice-bar{
-      max-width: 1380px;
-      margin: 0 auto 8px auto;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 999px;
-      background: rgba(45,212,191,0.16);
-      color: #6ee7b7;
-      font-weight: 500;
-      border: 1px solid rgba(45,212,191,0.35);
-      font-size: 12px;
-    }
-
-    .top-status-bar {
-      font-size: 11px;
-      border-radius: 999px;
-      border: none;
-      background: linear-gradient(135deg, var(--mi-teal), #22c55e);
-      color: #020617;
-      font-weight: 500;
-      box-shadow: 0 0 18px rgba(34,197,94,0.4);
-    }
-
-    #clock {
-      font-variant-numeric: tabular-nums;
-    }
-
-    #fx-rate {
-      font-variant-numeric: tabular-nums;
-    }
-
-    @media (max-width: 900px) {
-      .navbar {
-        padding: 8px 16px;
-      }
-      .navbar-menu {
-        display: none;
-      }
-    }
-
-    /* =============================
-       개선효과계산기 레이아웃 (finance)
-       ============================= */
-    .container {
-	  display: flex;
-	  height: 100vh;
-	  max-width: 1380px;      /* 계산기 전체 1120px 안으로 */
-	  margin: 0px auto 0px; /* 위/아래 여백 + 가운데 정렬 */
-	  box-sizing: border-box;
-	  /* background: rgba(3,7,18,0.9);     살짝 어두운 박스 느낌 (원하면 조정) */
-	  border-radius: 12px;
-	  box-shadow: 0 0 20px rgba(0,0,0,0.4);
-	  font-size: 0.9rem;      /* 글자 전체 90% 정도로 */
-	  background:
-		linear-gradient(to right,
-		  #1f2937 0 320px,
-		  rgba(3,7,18,0) 320px 100%
-		);
-	  }
-    .sidebar {
-	  width: 320px;
-	  /* background: #1f2937;  <-- 이건 지워도 됨 */
-	  background: transparent;
-	  color: #f9fafb;
-	  padding: 16px 12px;
-	  box-sizing: border-box;
-	  backdrop-filter: blur(6px);
-	  overflow-y: auto;  /* 항목이 너무 많을 때 안에서만 스크롤 */
-    }
-    .sidebar h2 {
-      font-size: 16px;
-      margin: 0 0 8px 0;
-    }
-    .sidebar .menu-group-title {
-      margin-top: 12px;
-      margin-bottom: 4px;
-      font-size: 13px;
-      color: #9ca3af;
-      border-top: 1px solid #374151;
-      padding-top: 8px;
-    }
-    .sidebar label {
-      display: flex;
-      align-items: center;
-      font-size: 13px;
-      margin: 4px 0;
-      cursor: pointer;
-    }
-    .sidebar label.menu-item {
-      justify-content: space-between;
-    }
-    .sidebar input[type="checkbox"] {
-      margin-right: 6px;
-    }
-    .item-left {
-      display: flex;
-      align-items: center;
-    }
-    .menu-qty {
-      width: 48px;
-      padding: 2px 4px;
-      font-size: 12px;
-    }
-
-    /* 오른쪽 영역 전체 */
-    .content {
-      flex: 1;
-      background: transparent;
-      overflow-y: auto;
-      display: flex;
-      justify-content: center;
-    }
-
-    /* 내부 콘텐츠(제목 + 설명 + 카드들) */
-    .content-inner {
-      width: 100%;
-		
-      box-sizing: border-box;
-    }
-
-    /* 제목/설명 */
-    .content-inner h1 {
-      margin: 0 0 4px;
-      font-size: 20px;
-      font-weight: 600;
-      text-align: left;
-      color: #ffffff;
-    }
-
-    .hint {
-    margin-bottom: 16px;
-    font-size: 13px;
-    color: #9ca3af;
-    text-align: left;
-    margin-left: 20px;
-    margin-top: 16px;
-    }
-
-    /* 카드 정렬 */
-    .panel-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
-      gap: 24px;
-      justify-content: center;
-      align-items: start;
-      width: 100%;
-      max-width: 1380px;
-      margin: 0 auto 0px auto;
-    }
-
-    .formula-panel {
-    display: none;
-    padding-top: 14px;
-    padding-right: 16px;
-    padding-left: 16px;
-    padding-bottom: 14px;
-    border-radius: 8px;
-    background: #ffffff;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-    box-sizing: border-box;
-    width: 100%;
-	margin-left: 16px;
-    max-width: 450px;
-    }
-
-    .formula-panel h2 {
-      margin-top: 0;
-      font-size: 15px;
-      margin-bottom: 6px;
-      font-weight: 700;
-      color: #111827;
-    }
-    .formula-panel .formula-desc {
-      font-size: 12px;
-      color: #6b7280;
-      margin-bottom: 8px;
-    }
-
-    .cases .case {
-      padding-top: 6px;
-      margin-top: 6px;
-      border-top: 1px dashed #e5e7eb;
-    }
-    .cases .case:first-child {
-      border-top: none;
-      margin-top: 0;
-      padding-top: 0;
-    }
-
-    .input-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 8px;
-      font-size: 12px;
-    }
-    .input-table th,
-    .input-table td {
-      border: 1px solid #e5e7eb;
-      padding: 4px 6px;
-      color: #111827;
-    }
-    .input-table th {
-      background: #f9fafb;
-      width: 45%;
-    }
-    .input-table input {
-      width: 100%;
-      box-sizing: border-box;
-      padding: 3px 4px;
-      font-size: 12px;
-    }
-    .calc-btn {
-      margin-top: 4px;
-      padding: 6px 10px;
-      font-size: 12px;
-      border-radius: 4px;
-      border: none;
-      background: #2563eb;
-      color: #ffffff;
-      cursor: pointer;
-    }
-    .calc-btn:hover {
-      background: #1d4ed8;
-    }
-    .result {
-      margin-top: 6px;
-      font-size: 12px;
-      background: #f9fafb;
-      border-radius: 6px;
-      padding: 6px 8px;
-      border: 1px solid #e5e7eb;
-    }
-    .result div {
-      margin: 1px 0;
-    }
-    .result-label {
-      font-weight: 600;
-      color: #374151;
-    }
-    .result span.value {
-      font-weight: 600;
-      color: #111827;
-    }
-	.formula-panel .result .base,
-	.formula-panel .result .substitute,
-	.formula-panel .result .improve {
-	  color: #111827;
-	}
-    code {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      font-size: 12px;
-      background: linear-gradient(135deg, var(--mi-teal), #22c55e);
-      color: #111827;
-      padding: 2px 4px;
-      border-radius: 3px;
-    }
-
-	  
-	  
-    /* 그래프 스타일 */
-    .result-graph {
-      margin: 4px 0;
-      padding: 4px 6px;
-      border-radius: 4px;
-      background: #f3f4f6;
-    }
-    .result-graph-title {
-      font-size: 11px;
-      font-weight: 600;
-      color: #4b5563;
-      margin-bottom: 3px;
-    }
-    .result-graph-bars {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-    .result-graph-bar {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 11px;
-    }
-    .result-graph-bar .bar-caption {
-      width: 20px;
-      text-align: center;
-      color: #6b7280;
-    }
-    .result-graph-bar .bar-track {
-      flex: 1;
-      height: 8px;
-      background: #e5e7eb;
-      border-radius: 999px;
-      overflow: hidden;
-    }
-    .result-graph-bar .bar-fill {
-      height: 100%;
-      width: 0%;
-      transition: width 0.25s ease-out;
-    }
-    .result-graph-bar.before .bar-fill {
-      background: #f97373;
-    }
-    .result-graph-bar.after .bar-fill {
-      background: #60a5fa;
-    }
-    .result-graph-bar .bar-value {
+            
+            /* 제목/설명 */
+            .content-inner h1 {
+                margin: 0 0 4px;
+                font-size: 20px;
+                font-weight: 600;
+                text-align: left;
+                color: #ffffff;
+            }
+            
+            .hint {
+                margin-bottom: 16px;
+                font-size: 13px;
+                color: #9ca3af;
+                text-align: left;
+                margin-left: 20px;
+                margin-top: 16px;
+            }
+            
+            /* 카드 정렬 */
+            .panel-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+                gap: 20px;
+                justify-content: center;
+                align-items: start;
+                width: 100%;
+                max-width: 1350px;
+                margin: 0 auto 40px auto;
+            }
+            
+            .formula-panel {
+                display: none;
+                padding-top: 14px;
+                padding-right: 16px;
+                padding-left: 16px;
+                padding-bottom: 14px;
+                border-radius: 8px;
+                background: #ffffff;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+                box-sizing: border-box;
+                width: 100%;
+                margin-left: 16px;
+                max-width: 480px;
+            }
+            
+            .formula-panel h2 {
+                margin-top: 0;
+                font-size: 15px;
+                margin-bottom: 6px;
+                font-weight: 700;
+                color: #111827;
+            }
+            .formula-panel .formula-desc {
+                font-size: 12px;
+                color: #6b7280;
+                margin-bottom: 8px;
+            }
+            
+            .cases .case {
+                padding-top: 6px;
+                margin-top: 6px;
+                border-top: 1px dashed #e5e7eb;
+            }
+            .cases .case:first-child {
+                border-top: none;
+                margin-top: 0;
+                padding-top: 0;
+            }
+            
+            .input-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 8px;
+                font-size: 12px;
+            }
+            .input-table th,
+            .input-table td {
+                border: 1px solid #e5e7eb;
+                padding: 4px 6px;
+                color: #111827;
+            }
+            .input-table th {
+                background: #f9fafb;
+                width: 45%;
+            }
+            .input-table input {
+                width: 100%;
+                box-sizing: border-box;
+                padding: 3px 4px;
+                font-size: 12px;
+            }
+            .calc-btn {
+                margin-top: 4px;
+                padding: 6px 10px;
+                font-size: 12px;
+                border-radius: 4px;
+                border: none;
+                background: #2563eb;
+                color: #ffffff;
+                cursor: pointer;
+            }
+            .calc-btn:hover {
+                background: #1d4ed8;
+            }
+            .result {
+                margin-top: 6px;
+                font-size: 12px;
+                background: #f9fafb;
+                border-radius: 6px;
+                padding: 6px 8px;
+                border: 1px solid #e5e7eb;
+            }
+            .result div {
+                margin: 1px 0;
+            }
+            .result-label {
+                font-weight: 600;
+                color: #374151;
+            }
+            .result span.value {
+                font-weight: 600;
+                color: #111827;
+            }
+            .formula-panel .result .base,
+            .formula-panel .result .substitute,
+            .formula-panel .result .improve {
+                color: #111827;
+            }
+            code {
+                font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+                font-size: 12px;
+                background: linear-gradient(135deg, var(--mi-teal), #22c55e);
+                color: #111827;
+                padding: 2px 4px;
+                border-radius: 3px;
+            }
+            
+            
+            
+            /* 그래프 스타일 */
+            .result-graph {
+                margin: 4px 0;
+                padding: 4px 6px;
+                border-radius: 4px;
+                background: #f3f4f6;
+            }
+            .result-graph-title {
+                font-size: 11px;
+                font-weight: 600;
+                color: #4b5563;
+                margin-bottom: 3px;
+            }
+            .result-graph-bars {
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+            }
+            .result-graph-bar {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 11px;
+            }
+            .result-graph-bar .bar-caption {
+                width: 20px;
+                text-align: center;
+                color: #6b7280;
+            }
+            .result-graph-bar .bar-track {
+                flex: 1;
+                height: 8px;
+                background: #e5e7eb;
+                border-radius: 999px;
+                overflow: hidden;
+            }
+            .result-graph-bar .bar-fill {
+                height: 100%;
+                width: 0%;
+                transition: width 0.25s ease-out;
+            }
+            .result-graph-bar.before .bar-fill {
+                background: #f97373;
+            }
+            .result-graph-bar.after .bar-fill {
+                background: #60a5fa;
+            }
+            .result-graph-bar .bar-value {
       width: 70px;
       text-align: right;
       color: #111827;
@@ -524,48 +587,85 @@
 	.global-summary .badge-labor {
 	  border-color: rgba(244,114,182,0.7);
 	}
+	  
+	  
+	.global-summary .badge-inv {
+	  border-color: rgba(34,197,94,0.7);
+	}
+
+	.global-summary .badge-sra {
+	  border-color: rgba(59,130,246,0.7);
+	}
+
+	.global-summary .badge-matelial {
+	  border-color: rgba(59,130,246,0.7);
+	}
+
+	.global-summary .badge-dev {
+	  border-color: rgba(59,130,246,0.7);
+	}
+
+	.global-summary .badge-pr {
+	  border-color: rgba(59,130,246,0.7);
+	}
+
+
 	.hide-inner {
 	  display: none !important;
 	}
 
-  </style>
+        </style>
 </head>
-<body>
-  <!-- 상단 네비 -->
-  <header class="navbar-wrapper">
-    <div class="navbar">
-      <div class="navbar-left">
-        <img src="img/mi-logo_32.png" alt="" width="26" height="" class="mi-logo">
-        <div>
-          <div class="navbar-title-main">S.PKG MI-Nexus Portal</div>
-          <div class="navbar-title-sub">Metrology &amp; Inspection</div>
-        </div>
-      </div>
-      <nav class="navbar-menu">
-        <a href="index.html" class="nav-highlight">재무성과</a>
-        <a href="plan/plan.html">개발현황</a>
-        <a href="about/about.html">About</a>
-      </nav>
-      <div class="navbar-right">
-        <button class="navbar-cta">
-          <div class="top-status-bar">
-            <div id="clock"></div>
-          </div>
-        </button>
-        <button class="navbar-cta">
-          <div class="top-status-bar">
-            <div id="fx-rate"></div>
-          </div>
-        </button>
-      </div>
-    </div>
-    <!-- 공지사항 -->
-    <div class="navbar-wrapper">
-      <div class="notice-bar">
-        ◈◈◈ 개선효과계산기 ◈◈◈
-      </div>
-    </div>
-  </header>
+	<body>
+		<!-- 상단 네비 -->
+		<header class="navbar-wrapper">
+			<div class="navbar">
+				<div class="navbar-left">
+					<div class="mi-logo">
+						<img src="../img/logo_32.png" alt="" width="26" height="26">						
+					</div>
+					<div>
+						<div class="navbar-title-main">S.PKG MI-Nexus Portal</div>
+						<div class="navbar-title-sub">Metrology &amp; Inspection</div>
+					</div>
+				</div>
+				<!-- 메뉴바 -->
+				<nav class="navbar-menu">
+					<a href="../page/home.html" class="nav-highlight">Home</a>
+					
+					<div class="nav-item nav-item-finance">
+						<button type="button" class="nav-link"> 
+							재무성과
+						</button>
+						<div class="nav-submenu">
+							<a href="../page/finance-basic.html">일반 재무성과</a>
+							<a href="../page/finance-detail.html">상세 재무성과</a>
+						</div>
+					</div>
+					
+					<a href="../page/plan.html">개발현황</a>
+					<a href="../page/about.html">About</a>
+				</nav>
+				
+				<div class="navbar-right">
+					<button class="navbar-cta">
+						<div class="top-status-bar">
+							<div id="clock"></div>
+						</div>
+					</button>
+					<button class="navbar-cta">
+						<div class="top-status-bar">
+							<div id="fx-rate"></div>
+						</div>
+					</button>
+				</div>
+			</div>
+			<!-- 공지 -->
+			<div class="notice-bar">
+				구성, 화면, KPI, 조직도는 계속 업데이트될 예정이며, 이 About 페이지는 그 방향성을 공유하기 위한 초안 버전입니다.
+			</div>
+		</header>
+		
 
   <main>
     <!-- 여기부터 finance 계산기 전체 -->
@@ -833,10 +933,10 @@
               </div>
               <table class="input-table">
                 <tr><th>항목</th><th>입력값</th></tr>
-                <tr><td>개선 전 재고일수</td><td><input type="number" id="invDays-before" data-field="invDays-before" step="0.01" /></td></tr>
-                <tr><td>개선 후 재고일수</td><td><input type="number" id="invDays-after" data-field="invDays-after" step="0.01" /></td></tr>
-                <tr><td>월 재고비용</td><td><input type="number" id="invDays-monthly" data-field="invDays-monthly" step="0.01" /></td></tr>
-                <tr><td>이자율(%)</td><td><input type="number" id="invDays-rate" data-field="invDays-rate" step="0.01" /></td></tr>
+                <tr><td>개선 전 재고일수</td><td><input type="number" id="invDays-before" data-field="invDays-before" step="0.01" placeholder="(예시) 50일 → 50" /></td></tr>
+                <tr><td>개선 후 재고일수</td><td><input type="number" id="invDays-after" data-field="invDays-after" step="0.01" placeholder="(예시) 20일 → 200" /></td></tr>
+                <tr><td>월 재고비용</td><td><input type="number" id="invDays-monthly" data-field="invDays-monthly" step="0.01" placeholder="(예시) 5천만원 → 50000000" /></td></tr>
+                <tr><td>이자율(%)</td><td><input type="number" id="invDays-rate" data-field="invDays-rate" step="0.01" placeholder="(예시) 5% → 5" /></td></tr>
               </table>
               <button class="calc-btn" onclick="calcInvDays(this)">계산하기</button>
               <div class="result" id="result-invDays">
@@ -858,9 +958,9 @@
               </div>
               <table class="input-table">
                 <tr><th>항목</th><th>입력값</th></tr>
-                <tr><td>개선 전 월 재고비용</td><td><input type="number" id="invAmt-before" data-field="invAmt-before" step="0.01" /></td></tr>
-                <tr><td>개선 후 월 재고비용</td><td><input type="number" id="invAmt-after" data-field="invAmt-after" step="0.01" /></td></tr>
-                <tr><td>이자율(%)</td><td><input type="number" id="invAmt-rate" data-field="invAmt-rate" step="0.01" /></td></tr>
+                <tr><td>개선 전 월 재고비용</td><td><input type="number" id="invAmt-before" data-field="invAmt-before" step="0.01" placeholder="(예시) 5천만원 → 500000000" /></td></tr>
+                <tr><td>개선 후 월 재고비용</td><td><input type="number" id="invAmt-after" data-field="invAmt-after" step="0.01" placeholder="(예시) 3천만원 → 300000000" /></td></tr>
+                <tr><td>이자율(%)</td><td><input type="number" id="invAmt-rate" data-field="invAmt-rate" step="0.01" placeholder="(예시) 5% → 5"/></td></tr>
               </table>
               <button class="calc-btn" onclick="calcInvAmt(this)">계산하기</button>
               <div class="result" id="result-invAmt">
@@ -882,10 +982,10 @@
               </div>
               <table class="input-table">
                 <tr><th>항목</th><th>입력값</th></tr>
-                <tr><td>개선 전 TAT</td><td><input type="number" id="tat-before" data-field="tat-before" step="0.01" /></td></tr>
-                <tr><td>개선 후 TAT</td><td><input type="number" id="tat-after" data-field="tat-after" step="0.01" /></td></tr>
-                <tr><td>월 재공비용</td><td><input type="number" id="tat-monthly" data-field="tat-monthly" step="0.01" /></td></tr>
-                <tr><td>이자율(%)</td><td><input type="number" id="tat-rate" data-field="tat-rate" step="0.01" /></td></tr>
+                <tr><td>개선 전 TAT</td><td><input type="number" id="tat-before" data-field="tat-before" step="0.01" placeholder="(예시) 5시간 → 5" /></td></tr>
+                <tr><td>개선 후 TAT</td><td><input type="number" id="tat-after" data-field="tat-after" step="0.01" placeholder="(예시) 3시간 → 3" /></td></tr>
+                <tr><td>월 재공비용</td><td><input type="number" id="tat-monthly" data-field="tat-monthly" step="0.01" placeholder="(예시) 3천만원 → 300000000" /></td></tr>
+                <tr><td>이자율(%)</td><td><input type="number" id="tat-rate" data-field="tat-rate" step="0.01" placeholder="(예시) 5% → 5" /></td></tr>
               </table>
               <button class="calc-btn" onclick="calcTat(this)">계산하기</button>
               <div class="result" id="result-tat">
@@ -907,10 +1007,10 @@
               </div>
               <table class="input-table">
                 <tr><th>항목</th><th>입력값</th></tr>
-                <tr><td>개선 전 발생률(%)</td><td><input type="number" id="occRate-beforeRate" data-field="occRate-beforeRate" step="0.0001" /></td></tr>
-                <tr><td>개선 후 발생률(%)</td><td><input type="number" id="occRate-afterRate" data-field="occRate-afterRate" step="0.0001" /></td></tr>
-                <tr><td>발생량</td><td><input type="number" id="occRate-qty" data-field="occRate-qty" step="0.01" /></td></tr>
-                <tr><td>처리단가</td><td><input type="number" id="occRate-unit" data-field="occRate-unit" step="0.01" /></td></tr>
+                <tr><td>개선 전 발생률(0~1)</td><td><input type="number" id="occRate-beforeRate" data-field="occRate-beforeRate" step="0.0001" placeholder="(예시) 32.82% → 0.3282" /></td></tr>
+                <tr><td>개선 후 발생률(0~1)</td><td><input type="number" id="occRate-afterRate" data-field="occRate-afterRate" step="0.0001" placeholder="(예시) 20% → 0.2" /></td></tr>
+                <tr><td>발생량</td><td><input type="number" id="occRate-qty" data-field="occRate-qty" step="0.01" placeholder="(예시) 5.2k → 5200" /></td></tr>
+                <tr><td>처리단가</td><td><input type="number" id="occRate-unit" data-field="occRate-unit" step="0.01" placeholder="(예시) 3200원 → 3200" /></td></tr>
               </table>
               <button class="calc-btn" onclick="calcOccRate(this)">계산하기</button>
               <div class="result" id="result-occRate">
@@ -932,9 +1032,9 @@
               </div>
               <table class="input-table">
                 <tr><th>항목</th><th>입력값</th></tr>
-                <tr><td>개선 전 발생량</td><td><input type="number" id="occQty-before" data-field="occQty-before" step="0.01" /></td></tr>
-                <tr><td>개선 후 발생량</td><td><input type="number" id="occQty-after" data-field="occQty-after" step="0.01" /></td></tr>
-                <tr><td>처리단가</td><td><input type="number" id="occQty-unit" data-field="occQty-unit" step="0.01" /></td></tr>
+                <tr><td>개선 전 발생량</td><td><input type="number" id="occQty-before" data-field="occQty-before" step="0.01" placeholder="(예시) 15k → 15000" /></td></tr>
+                <tr><td>개선 후 발생량</td><td><input type="number" id="occQty-after" data-field="occQty-after" step="0.01" placeholder="(예시) 523개 혹은 cc → 523" /></td></tr>
+                <tr><td>처리단가</td><td><input type="number" id="occQty-unit" data-field="occQty-unit" step="0.01" placeholder="(예시) 8300원 → 8300" /></td></tr>
               </table>
               <button class="calc-btn" onclick="calcOccQty(this)">계산하기</button>
               <div class="result" id="result-occQty">
@@ -952,16 +1052,16 @@
           <div class="cases" data-panel="scrapRate">
             <div class="case">
               <div class="formula-desc">
-                스크랩발생률감소 = ((개선 전스크랩률 (0~1) / 개선 후스크랩률 (0~1)) - 1) × 개선 후 스크랩양 × 웨이퍼원가 × 환율 × 기여도 × 12
+                스크랩발생률감소 = ((개선 전스크랩률 (0~1) / 개선 후스크랩률 (0~1)) - 1) × 개선 후 스크랩양 × Chip원가 × 환율 × 기여도 × 12
               </div>
               <table class="input-table">
                 <tr><th>항목</th><th>입력값</th></tr>
-                <tr><td>개선 전 스크랩률(%)</td><td><input type="number" id="scrapRate-beforeRate" data-field="scrapRate-beforeRate" step="0.0001" /></td></tr>
-                <tr><td>개선 후 스크랩률(%)</td><td><input type="number" id="scrapRate-afterRate" data-field="scrapRate-afterRate" step="0.0001" /></td></tr>
-                <tr><td>개선 후 스크랩양</td><td><input type="number" id="scrapRate-qtyAfter" data-field="scrapRate-qtyAfter" step="0.01" /></td></tr>
-                <tr><td>웨이퍼 원가</td><td><input type="number" id="scrapRate-cost" data-field="scrapRate-cost" step="0.01" /></td></tr>
-                <tr><td>환율($)</td><td><input type="number" id="scrapRate-fx" data-field="scrapRate-fx" data-autofx="usd-krw" step="0.01"/></td></tr>
-                <tr><td>기여도(0~1)</td><td><input type="number" id="scrapRate-contrib" data-field="scrapRate-contrib" step="0.01" value="1" /></td></tr>
+                <tr><td>개선 전 스크랩률(0~1)</td><td><input type="number" id="scrapRate-beforeRate" data-field="scrapRate-beforeRate" step="0.0001" placeholder="(예시) 3시간 → 3" /></td></tr>
+                <tr><td>개선 후 스크랩률(0~1)</td><td><input type="number" id="scrapRate-afterRate" data-field="scrapRate-afterRate" step="0.0001" placeholder="(예시) 3시간 → 3" /></td></tr>
+                <tr><td>개선 후 스크랩양</td><td><input type="number" id="scrapRate-qtyAfter" data-field="scrapRate-qtyAfter" step="0.01" placeholder="(예시) 1,423 ea → 1423" /></td></tr>
+                <tr><td>Chip 원가</td><td><input type="number" id="scrapRate-cost" data-field="scrapRate-cost" step="0.01" placeholder="(예시) $10.23 → 10.23" /></td></tr>
+                <tr><td>환율($)</td><td><input type="number" id="scrapRate-fx" data-field="scrapRate-fx" data-autofx="usd-krw" step="0.01" placeholder="(안내) 1달러 환율 검색 후 입력" /></td></tr>
+                <tr><td>기여도(0~1)</td><td><input type="number" id="scrapRate-contrib" data-field="scrapRate-contrib" step="0.01" value="1" placeholder="(예시) 50% → 0.5" /></td></tr>
               </table>
               <button class="calc-btn" onclick="calcScrapRate(this)">계산하기</button>
               <div class="result" id="result-scrapRate">
@@ -979,15 +1079,15 @@
           <div class="cases" data-panel="scrapQty">
             <div class="case">
               <div class="formula-desc">
-                스크랩발생량감소 = (개선 전스크랩량 - 개선 후스크랩량) × 웨이퍼원가 × 환율 × 기여도 × 12
+                스크랩발생량감소 = (개선 전스크랩량 - 개선 후스크랩량) × Chip원가 × 환율 × 기여도 × 12
               </div>
               <table class="input-table">
                 <tr><th>항목</th><th>입력값</th></tr>
-                <tr><td>개선 전 스크랩량</td><td><input type="number" id="scrapQty-before" data-field="scrapQty-before" step="0.01" /></td></tr>
-                <tr><td>개선 후 스크랩량</td><td><input type="number" id="scrapQty-after" data-field="scrapQty-after" step="0.01" /></td></tr>
-                <tr><td>웨이퍼 원가</td><td><input type="number" id="scrapQty-cost" data-field="scrapQty-cost" step="0.01" /></td></tr>
-                <tr><td>환율($)</td><td><input type="number" id="scrapQty-fx" data-field="scrapQty-fx" data-autofx="usd-krw" step="0.01"/></td></tr>
-                <tr><td>기여도(0~1)</td><td><input type="number" id="scrapQty-contrib" data-field="scrapQty-contrib" step="0.01" value="1" /></td></tr>
+                <tr><td>개선 전 스크랩량</td><td><input type="number" id="scrapQty-before" data-field="scrapQty-before" step="0.01" placeholder="(예시) 3.2k → 3200" /></td></tr>
+                <tr><td>개선 후 스크랩량</td><td><input type="number" id="scrapQty-after" data-field="scrapQty-after" step="0.01" placeholder="(예시) 1,423 ea → 1423" /></td></tr>
+                <tr><td>Chip 원가</td><td><input type="number" id="scrapQty-cost" data-field="scrapQty-cost" step="0.01" placeholder="(예시) $10.23 → 10.23" /></td></tr>
+                <tr><td>환율($)</td><td><input type="number" id="scrapQty-fx" data-field="scrapQty-fx" data-autofx="usd-krw" step="0.01" placeholder="(안내) 1달러 환율 검색 후 입력" /></td></tr>
+                <tr><td>기여도(0~1)</td><td><input type="number" id="scrapQty-contrib" data-field="scrapQty-contrib" step="0.01" value="1" placeholder="(예시) 50% → 0.5" /></td></tr>
               </table>
               <button class="calc-btn" onclick="calcScrapQty(this)">계산하기</button>
               <div class="result" id="result-scrapQty">
@@ -1005,7 +1105,7 @@
           <div class="cases" data-panel="waferLossRate">
             <div class="case">
               <div class="formula-desc">
-                웨이퍼 로스률 금액 = (1 - 개선 전 로스률 - 개선 후 스크랩률 (0~1))/100 × 발생량 × (판가/2) × 환율 × 기여도 × 12
+                웨이퍼 로스률 금액 = (1 - (개선 전수율 / 개선 후수율)) × 전체Chip수량 × 생산량(월) × (판가/2) × 환율 × 기여도 × 12
               </div>
               <table class="input-table">
                 <tr><th>항목</th><th>입력값</th></tr>
@@ -1032,7 +1132,7 @@
           <div class="cases" data-panel="waferLossQty">
             <div class="case">
               <div class="formula-desc">
-                웨이퍼 로스량 = (1 - 개선 전 스크랩률 - 개선 후 스크랩률) × (웨이퍼판가/2) × 환율 × 기여도 × 12
+                웨이퍼 로스량 = (개선 전 웨이퍼 로스량 - 개선 후 웨이퍼 로스량) × (웨이퍼판가/2) × 환율 × 기여도 × 12
               </div>
               <table class="input-table">
                 <tr><th>항목</th><th>입력값</th></tr>
@@ -1095,7 +1195,7 @@
                 <tr><td>Chip수량</td><td><input type="number" id="yieldRamp-chips" data-field="yieldRamp-chips" step="1" /></td></tr>
                 <tr><td>생산량(월)</td><td><input type="number" id="yieldRamp-monthly" data-field="yieldRamp-monthly" step="1" /></td></tr>
                 <tr><td>칩 판가($)</td><td><input type="number" id="yieldRamp-price" data-field="yieldRamp-price" step="0.01" /></td></tr>
-                <tr><td>환율($)</td><td><input type="number" id="yieldRamp-fx" data-field="yieldRamp-fx" step="0.01" class="fx-input" /></td></tr>
+                <tr><td>환율($)</td><td><input type="number" id="yieldRamp-fx" data-field="yieldRamp-fx" data-autofx="usd-krw" step="0.01" class="fx-input" /></td></tr>
                 <tr><td>개월</td><td><input type="number" id="yieldRamp-months" data-field="yieldRamp-months" step="1" value="12" /></td></tr>
               </table>
               <button class="calc-btn" onclick="calcYieldRamp(this)">계산하기</button>
@@ -2463,7 +2563,55 @@
 	  updateFx();                      // 처음 1번
 	  setInterval(updateFx, 10 * 60 * 1000); // 10분마다 갱신
 	</script>
+		
+		
+		<script>
+			document.addEventListener("DOMContentLoaded", () => {
+				/* ===== 재무성과 서브메뉴 열기/닫기 ===== */
+				const financeItem = document.querySelector(".nav-item-finance");
+				if (financeItem) {
+					const trigger = financeItem.querySelector(".nav-link");
+					trigger.addEventListener("click", (e) => {
+						e.preventDefault();
+						e.stopPropagation();
+						financeItem.classList.toggle("open");
+					});
+					
+					document.addEventListener("click", (e) => {
+						if (!financeItem.contains(e.target)) {
+							financeItem.classList.remove("open");
+						}
+					});
+				}
+				
 
+			});
+
+
+		</script>
+        
+        <script>
+            // 천단위 콤마 포맷 함수
+function formatWithComma(value) {
+  const numeric = value.replace(/[^0-9]/g, "");             // 숫자만 남기기
+  return numeric.replace(/\B(?=(\d{3})+(?!\d))/g, ",");    // 천단위 ,
+}
+
+// 표시용 → 숫자값 추출용
+function getNumericValue(str) {
+  return str.replace(/,/g, ""); // 콤마 제거
+}
+
+// 모든 금액 필드에 적용
+document.querySelectorAll('.money-input').forEach(input => {
+  input.addEventListener('input', e => {
+    const value = e.target.value;
+    const formatted = formatWithComma(value);
+    e.target.value = formatted;       // ex) 5000000 → 5,000,000
+  });
+});
+
+        </script>
 
 </body>
 </html>
