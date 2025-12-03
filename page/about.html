@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="ko">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>S.PKG MI-Nexus Portal - v0.15</title>
+		<style>
+			:root {
+				--mi-deep-blue: #003B70;
+				--mi-teal: #00A6C2;
+				--mi-navy: #0A1E3F;
+				--mi-bg: #070b12;
+				--mi-surface: #0f172a;
+				--mi-text-main: #f9fafb;
+				--mi-text-sub: #9ca3af;
+				--mi-accent: #22c55e;
+			}
+			
+			* {
+				box-sizing: border-box;
+				margin: 0;
+				padding: 0;
+				
+			}
+			
+			body {
+				font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+				background: radial-gradient(circle at top left, #0f172a 0, #020617 45%, #000000 100%);
+				color: var(--mi-text-main);
+				
+				
+			}
+			
+			body::-webkit-scrollbar {
+				display: none;
+			}
+			
+			a {
+				color: inherit;
+				text-decoration: none;
+			}
+			
+			/* ===== 상단 네비게이션 ===== */
+			.navbar-wrapper {
+				position: sticky;
+				top: 0;
+				z-index: 20;
+			backdrop-filter: blur(16px);
+			background: linear-gradient(to bottom, rgba(15,23,42,0.92), rgba(15,23,42,0.0));
+			border-bottom: 1px solid rgba(15,23,42,0.9);
+			}
+			
+			.navbar {
+				max-width: 1420px;
+				margin: 0 auto;
+				padding: 10px 20px;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				gap: 16px;
+			}
+			
+			.navbar-left {
+				display: flex;
+				align-items: center;
+				gap: 10px;
+				font-size: 13px;
+			}
+			
+			.mi-logo {
+				width: 26px;
+				height: 26px;
+				border-radius: 999px;
+				background: radial-gradient(circle at 20% 0%, #38bdf8, #0f172a 60%, #000 80%);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				overflow: hidden;
+			}
+			
+			.navbar-title-main {
+				font-weight: 600;
+				font-size: 13px;
+			}
+			
+			.navbar-title-sub {
+				font-size: 12px;
+				color: var(--mi-text-sub);
+			}
+			
+			.navbar-menu {
+				display: flex;
+				align-items: center;
+				gap: 18px;
+				font-size: 12px;
+				color: var(--mi-text-sub);
+			}
+			
+			.navbar-right {
+				display: flex;
+				gap: 10px;
+				align-items: center;
+			}
+			
+			.navbar-cta {
+				font-size: 11px;
+				padding: 2px;
+				border-radius: 999px;
+				border: none;
+				background: transparent;
+			}
+			
+			.top-status-bar {
+				font-size: 11px;
+				border-radius: 999px;
+				border: none;
+				background: linear-gradient(135deg, var(--mi-teal), #22c55e);
+				color: #020617;
+				font-weight: 500;
+				box-shadow: 0 0 18px rgba(34,197,94,0.4);
+				padding: 4px 10px;
+				white-space: nowrap;
+			}
+			
+			#clock {
+				font-variant-numeric: tabular-nums;
+			}
+			
+			#fx-rate {
+				font-variant-numeric: tabular-nums;
+			}
+			
+			.notice-bar {
+				max-width: 1380px;
+				margin: 0 auto 8px auto;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				border-radius: 999px;
+				background: rgba(56,189,248,0.12);
+				color: #e0f2fe;
+				font-weight: 500;
+				border: 1px solid rgba(56,189,248,0.4);
+				font-size: 12px;
+				padding: 4px 16px;
+			}
+			
+
+			
+			/* ===== 상위 메뉴 기본 스타일 (hover 밑줄 유지) ===== */
+			.navbar-menu > a,
+			.navbar-menu > .nav-item > .nav-link {
+				position: relative;
+				padding: 4px 0;
+				background: none;
+				border: none;
+				font: inherit;
+				color: inherit;
+				cursor: pointer;
+			}
+			
+			.navbar-menu > a::after,
+			.navbar-menu > .nav-item > .nav-link::after {
+				content: "";
+				position: absolute;
+				left: 0;
+				bottom: -2px;
+				width: 0;
+				height: 2px;
+				border-radius: 999px;
+				background: linear-gradient(90deg, #38bdf8, #22c55e);
+				transition: width 0.2s ease;
+			}
+			
+			.navbar-menu > a:hover::after,
+			.navbar-menu > .nav-item > .nav-link:hover::after {
+				width: 100%;
+			}
+			
+			.nav-highlight {
+				color: #ffffff;
+				font-weight: 700;
+			}
+			
+			/* ===== 드롭다운 컨테이너 / 서브메뉴 ===== */
+			.nav-item {
+				position: relative;
+				display: flex;
+				align-items: center;
+			}
+			
+			.nav-submenu {
+				position: absolute;
+				top: 120%;
+				left: 0;
+				min-width: 180px;
+				padding: 8px;
+				border-radius: 12px;
+				background: rgba(15, 23, 42, 0.98);
+				border: 1px solid rgba(148, 163, 184, 0.5);
+				box-shadow: 0 18px 40px rgba(15, 23, 42, 0.9);
+				opacity: 0;
+				transform: translateY(-4px);
+				pointer-events: none;
+				transition: opacity 0.18s ease, transform 0.18s ease;
+				z-index: 30;
+			}
+			
+			.nav-submenu a {
+				display: block;
+				padding: 8px 10px;
+				border-radius: 8px;
+				font-size: 12px;
+				color: var(--mi-text-main);
+				white-space: nowrap;
+			}
+			
+			.nav-submenu a:hover {
+				background: rgba(30, 64, 175, 0.65);
+			}
+			
+			.nav-submenu a::after {
+				content: none !important;
+			}
+			
+			.nav-item.open .nav-submenu {
+				opacity: 1;
+				transform: translateY(0);
+				pointer-events: auto;
+			}
+			
+			/* 메인 전체 스크롤 스냅 */
+			main {
+				scroll-snap-type: y mandatory;
+			}
+			
+			.snap-section {
+				scroll-snap-align: start;
+				min-height: 100vh;
+				display: flex;
+				align-items: center;
+				padding: 80px 24px 96px;
+			}
+			
+			.section-inner {
+				max-width: 1320px;
+				margin: 0 auto;
+				width: 100%;
+			}
+			
+			.section-inner2 {
+				max-width: 850px;
+				margin: 0 auto;
+				width: 100%;
+			}
+			
+			
+			
+			/* 1. 풍경 배경 + 카드 3개 */
+			.hero-section {
+				position: relative;
+				color: #f9fafb;
+				verflow: hidden;
+			}
+			
+			.hero-bg {
+				position: absolute;
+				inset: 0;
+				background-image:
+					linear-gradient(to bottom, rgba(15,23,42,0.7), rgba(15,23,42,0.9)),
+					url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=80");
+				background-size: cover;
+				background-position: center;
+				filter: saturate(1.1);
+				z-index: -1;
+			}
+			
+			.hero-grid {
+				display: grid;
+				grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+				gap: 32px;
+				align-items: center;
+			}
+			
+			.hero-title {
+				font-size: 40px;
+				line-height: 1.1;
+				font-weight: 700;
+				margin-bottom: 16px;
+			}
+			
+			.hero-title span.highlight {
+				background: linear-gradient(90deg, #38bdf8, #22d3ee);
+				-webkit-background-clip: text;
+				color: transparent;
+			}
+			
+			.hero-title span.highlight2 {
+				background: linear-gradient(90deg, #22d3ee, #2dd4bf);
+				-webkit-background-clip: text;
+				color: transparent;
+			}
+			
+			.hero-title span.highlight3 {
+				background: linear-gradient(90deg, #2dd4bf, #22c55e);
+				-webkit-background-clip: text;
+				color: transparent;
+			}
+						
+			.hero-subtitle {
+				font-size: 15px;
+				color: var(--mi-text-sub);
+				max-width: 520px;
+				margin-bottom: 24px;
+			}
+			
+			.hero-tag {
+				display: inline-flex;
+				align-items: center;
+				gap: 6px;
+				font-size: 11px;
+				padding: 4px 10px;
+				border-radius: 999px;
+				border: 1px solid rgba(148,163,184,0.6);
+				background: rgba(15,23,42,0.6);
+				margin-bottom: 12px;
+			}
+			
+			.hero-card-grid {
+				display: grid;
+				grid-template-columns: repeat(3, minmax(0, 1fr));
+				gap: 16px;
+			}
+			
+			.hero-card {
+				background: linear-gradient(145deg, rgba(15,23,42,0.95), rgba(15,23,42,0.85));
+				border-radius: 16px;
+				border: 1px solid rgba(148,163,184,0.25);
+				padding: 16px 16px 18px;
+				backdrop-filter: blur(12px);
+				display: flex;
+				flex-direction: column;
+				gap: 10px;
+			}
+			
+			.hero-card-title {
+				font-size: 14px;
+				font-weight: 600;
+			}
+			
+			.hero-card-desc {
+				font-size: 12px;
+				color: var(--mi-text-sub);
+			}
+			
+			.hero-card-link {
+				margin-top: 4px;
+				align-self: flex-start;
+				font-size: 11px;
+				padding: 6px 10px;
+				border-radius: 999px;
+				border: 1px solid rgba(56,189,248,0.6);
+				background: radial-gradient(circle at 0 0, rgba(56,189,248,0.18), transparent);
+				display: inline-flex;
+				align-items: center;
+				gap: 6px;
+			}
+			
+			.hero-card-link span {
+				font-size: 11px;
+			}
+			
+			/* 2. 조직도 섹션 */
+			.org-section {
+								background-image:
+					linear-gradient(to bottom, rgba(15,23,42,0.7), rgba(15,23,42,0.9)),
+					url("https://images.pexels.com/photos/34088/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=1600");
+				background-size: cover;
+				background-position: center;
+			}
+			
+			.section-label {
+				font-size: 11px;
+				text-transform: uppercase;
+				letter-spacing: 0.08em;
+				color: var(--mi-text-sub);
+				margin-bottom: 6px;
+			}
+			
+			.section-title {
+				font-size: 24px;
+				font-weight: 600;
+				margin-bottom: 8px;
+			}
+			
+			.section-subtitle {
+				font-size: 13px;
+				color: var(--mi-text-sub);
+				margin-bottom: 24px;
+			}
+			
+			.org-chart {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				gap: 24px;
+				margin-top: 8px;
+			}
+			
+			.org-level-top {
+				display: flex;
+				justify-content: center;
+			}
+			
+			.org-node {
+				min-width: 190px;
+				padding: 12px 16px;
+				border-radius: 14px;
+				background: linear-gradient(145deg, #020617, #020617);
+				border: 1px solid rgba(148,163,184,0.3);
+				box-shadow: 0 14px 40px rgba(15,23,42,0.7);
+				text-align: center;
+			}
+			
+			.org-node-label {
+				font-size: 11px;
+				text-transform: uppercase;
+				letter-spacing: 0.1em;
+				color: var(--mi-text-sub);
+				margin-bottom: 4px;
+			}
+			
+			.org-node-title {
+				font-size: 14px;
+				font-weight: 600;
+				margin-bottom: 4px;
+			}
+			
+			.org-node-desc {
+				font-size: 11px;
+				color: var(--mi-text-sub);
+			}
+			
+			.org-level-connector {
+				width: 2px;
+				height: 24px;
+				background: linear-gradient(to bottom, #38bdf8, #22c55e);
+				border-radius: 999px;
+			}
+			
+			.org-level-mid {
+				display: flex;
+				gap: 16px;
+				justify-content: center;
+			}
+			
+			.org-level-bottom {
+				display: flex;
+				gap: 12px;
+				justify-content: center;
+				flex-wrap: wrap;
+			}
+			
+			/* ===== FAQ (B스타일 적용) ===== */
+			
+			.faq-section {
+				background: radial-gradient(circle at bottom, rgba(34,197,94,0.06), transparent 55%);
+			}
+			
+			.faq-container {
+				display: flex;
+				justify-content: center;
+			}
+			
+			.faq-list {
+				width: 760px;
+				max-width: 100%;
+				display: flex;
+				flex-direction: column;
+				gap: 12px;
+			}
+			
+			.faq-item {
+				border-radius: 14px;
+				background: rgba(15,23,42,0.95);
+				border: 1px solid rgba(30,64,175,0.8);
+				padding: 10px 12px;
+				transition: border-color 0.18s ease, background-color 0.18s ease;
+			}
+			
+			.faq-header {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				gap: 8px;
+				cursor: pointer;
+			}
+			
+			.faq-question {
+				font-size: 13px;
+				font-weight: 500;
+			}
+			
+			.faq-toggle {
+				font-size: 11px;
+				padding: 4px 10px;
+				border-radius: 999px;
+				border: 1px solid rgba(148,163,184,0.7);
+				background: rgba(15,23,42,0.98);
+				color: #e5e7eb;
+				cursor: pointer;
+			}
+			
+			.faq-toggle:hover {
+				background: rgba(30,64,175,0.9);
+			}
+			
+			.faq-answer {
+				font-size: 13px;
+				color: #d1d5db;
+				line-height: 1.55;
+				max-height: 0;
+				overflow: hidden;
+				transition: max-height 0.25s ease;
+				margin-top: 0;
+				border-top: 0px solid rgba(30,41,59,1);
+				padding-top: 0;
+			}
+			
+			.faq-item.open {
+				border-color: rgba(56,189,248,0.9);
+				background: radial-gradient(circle at 0% 0%, rgba(56,189,248,0.18), transparent 55%), rgba(15,23,42,0.98);
+			}
+			
+			.faq-item.open .faq-answer {
+				margin-top: 6px;
+				padding-top: 8px;
+				padding-bottom: 8px;          /* 아래 여백 추가 */
+				border-top: 1px solid rgba(30,41,59,1);  /* 줄은 열렸을 때만 */
+			}
+			
+			
+			/* 4. 마지막 풀스크린 이미지 */
+			.closing-section {
+				position: relative;
+				overflow: hidden;
+			}
+			
+			.closing-bg {
+				position: absolute;
+				inset: 0;
+				background-image:
+					linear-gradient(to top, rgba(15,23,42,0.85), rgba(15,23,42,0.92)),
+					url("https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=1600&q=80");
+				background-size: cover;
+				background-position: center;
+				z-index: -1;
+			}
+			
+			.closing-content {
+				text-align: center;
+				max-width: 620px;
+				margin: 0 auto;
+			}
+			
+			.closing-title {
+				font-size: 30px;
+				font-weight: 600;
+				margin-bottom: 10px;
+			}
+			
+			.closing-desc {
+				font-size: 13px;
+				color: var(--mi-text-sub);
+				margin-bottom: 20px;
+			}
+			
+			.closing-chip-row {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 8px;
+				justify-content: center;
+				font-size: 11px;
+			}
+			
+			.closing-chip {
+				padding: 4px 9px;
+				border-radius: 999px;
+				border: 1px solid rgba(148,163,184,0.6);
+				background: rgba(15,23,42,0.9);
+			}
+			
+			@media (max-width: 900px) {
+				.navbar {
+					padding: 8px 16px;
+				}
+				
+				.navbar-menu {
+					display: none;
+				}
+				
+				.snap-section {
+					padding: 72px 16px 80px;
+				}
+				
+				.hero-grid,
+				.faq-grid {
+					grid-template-columns: minmax(0, 1fr);
+				}
+				
+				.hero-card-grid {
+					grid-template-columns: minmax(0, 1fr);
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 상단 네비 -->
+		<header class="navbar-wrapper">
+			<div class="navbar">
+				<div class="navbar-left">
+					<div class="mi-logo">
+						<img src="../img/logo_32.png" alt="" width="26" height="26">						
+					</div>
+					<div>
+						<div class="navbar-title-main">S.PKG MI-Nexus Portal</div>
+						<div class="navbar-title-sub">Metrology &amp; Inspection</div>
+					</div>
+				</div>
+				<!-- 메뉴바 -->
+				<nav class="navbar-menu">
+					<a href="../page/home.html" class="nav-highlight">Home</a>
+					
+					<div class="nav-item nav-item-finance">
+						<button type="button" class="nav-link"> 
+							재무성과
+						</button>
+						<div class="nav-submenu">
+							<a href="../page/finance-basic.html">일반 재무성과</a>
+							<a href="../page/finance-detail.html">상세 재무성과</a>
+						</div>
+					</div>
+					
+					<a href="../page/plan.html">개발현황</a>
+					<a href="../page/about.html">About</a>
+				</nav>
+				
+				<div class="navbar-right">
+					<button class="navbar-cta">
+						<div class="top-status-bar">
+							<div id="clock"></div>
+						</div>
+					</button>
+					<button class="navbar-cta">
+						<div class="top-status-bar">
+							<div id="fx-rate"></div>
+						</div>
+					</button>
+				</div>
+			</div>
+			<!-- 공지 -->
+			<div class="notice-bar">
+				구성, 화면, KPI, 조직도는 계속 업데이트될 예정이며, 이 About 페이지는 그 방향성을 공유하기 위한 초안 버전입니다.
+			</div>
+		</header>
+		
+		<main>
+			<!-- 1. 풍경 사진 + 카드 3개 -->
+			<section class="snap-section hero-section" id="section-hero">
+				<div class="hero-bg"></div>
+				<div class="section-inner">
+					<div class="hero-grid">
+						<div>
+							<div class="hero-tag">
+								<span>ABOUT MI-NEXUS</span>
+							</div>
+							<h1 class="hero-title">하나의 <span class="highlight">&nbsp;포털</span>,<br>
+								하나의 <span class="highlight2">&nbsp;기준</span>,<br>
+								한 번의 <span class="highlight3">  조회</span>.</h1>
+							<p class="hero-subtitle">
+								S.PKG MI-Nexus는 계측·검사 데이터를 한곳에 모아, 공정·품질·생산성을 한 번에 조망할 수 있는
+								Metrology &amp; Inspection 전용 포털입니다.
+							</p>
+						</div>
+						<div class="hero-card-grid">
+							<article class="hero-card">
+								<div class="hero-card-title">OpsHub · 생산성 인사이트</div>
+								<p class="hero-card-desc">
+									ST/UPEH, 인밴드 Sigma, 설비별 효율을 한눈에. 병목과 여유 용량을 빠르게 파악할 수 있습니다.
+								</p>
+								<a href="#" class="hero-card-link">
+									<span>OpsHub -개발중-</span>
+									<span>↗</span>
+								</a>
+							</article>
+							<article class="hero-card">
+								<div class="hero-card-title">OrbitPro · 설비 루트코즈</div>
+								<p class="hero-card-desc">
+									알람·다운타임·조치 이력을 연결해 설비 이상 원인을 추적하고, 반복 패턴을 자동으로 포착합니다.
+								</p>
+								<a href="#" class="hero-card-link">
+									<span>OrbitPro -미구현-</span>
+									<span>↗</span>
+								</a>
+							</article>
+							<article class="hero-card">
+								<div class="hero-card-title">Inspectra · 비전 &amp; 결함</div>
+								<p class="hero-card-desc">
+									Defect 이미지를 기준·룰과 함께 관리하여, 라인 간/로트 간 결함 트렌드를 일관되게 비교합니다.
+								</p>
+								<a href="#" class="hero-card-link">
+									<span>Inspectra -미구현-</span>
+									<span>↗</span>
+								</a>
+							</article>
+						</div>
+					</div>
+				</div>
+			</section>
+			
+			<!-- 2. 조직도 -->
+			<section class="snap-section org-section" id="section-org">
+				<div class="section-inner2">
+					<div class="section-label">Organization</div>
+					<h2 class="section-title">S.PKG MI-Nexus 운영 조직</h2>
+					<p class="section-subtitle">
+						계측·검사 데이터의 표준화와 활용을 위해, 도메인과 시스템을 나눠 전담 조직이 함께 운영합니다.
+					</p>
+					
+					<div class="org-chart">
+						<div class="org-level-top">
+							<div class="org-node">
+								<div class="org-node-label">Owner</div>
+								<div class="org-node-title">MI-Nexus SteerCo</div>
+								<div class="org-node-desc">Vision · 우선순위 · 투자 의사결정</div>
+							</div>
+						</div>
+						
+						<div class="org-level-connector"></div>
+						
+						<div class="org-level-mid">
+							<div class="org-node">
+								<div class="org-node-label">Domain</div>
+								<div class="org-node-title">Metrology Lead</div>
+								<div class="org-node-desc">Spec · Flow · KPI 정의 및 검증</div>
+							</div>
+							<div class="org-node">
+								<div class="org-node-label">Platform</div>
+								<div class="org-node-title">MI-Nexus Platform Team</div>
+								<div class="org-node-desc">ETL/DB · Portal · 인터페이스 운영</div>
+							</div>
+						</div>
+						
+						<div class="org-level-connector"></div>
+						
+						<div class="org-level-bottom">
+							<div class="org-node">
+								<div class="org-node-label">Module</div>
+								<div class="org-node-title">OpsHub PO</div>
+								<div class="org-node-desc">ST/UPEH · 생산성 · 효과계산기</div>
+							</div>
+							<div class="org-node">
+								<div class="org-node-label">Module</div>
+								<div class="org-node-title">OrbitPro PO</div>
+								<div class="org-node-desc">설비 · 알람 · Root Cause 분석</div>
+							</div>
+							<div class="org-node">
+								<div class="org-node-label">Module</div>
+								<div class="org-node-title">Inspectra PO</div>
+								<div class="org-node-desc">비전 · 결함 · 이미지 분석</div>
+							</div>
+							<div class="org-node">
+								<div class="org-node-label">Module</div>
+								<div class="org-node-title">IntelliFlow / 기타</div>
+								<div class="org-node-desc">신규제품 Flow · 룰 · 승인 체계</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+			
+			
+			<!-- 3. FAQ (질문 옆 버튼 / B스타일 슬라이드 적용) -->
+			<section class="snap-section faq-section" id="section-faq">
+				<div class="section-inner2">
+					<div class="section-label">FAQ</div>
+					<h2 class="section-title">자주 묻는 질문</h2>
+					<p class="section-subtitle">
+						MI-Nexus를 처음 접하는 분들이 가장 많이 묻는 질문을 정리했습니다.<br>
+						아래 항목의 <strong>‘답변보기’</strong> 버튼을 눌러보세요.
+					</p>
+					
+					<div class="faq-container">
+						<div class="faq-list">
+							<article class="faq-item">
+								<div class="faq-header">
+									<div class="faq-question">Q1. Spotfire 대시보드와 뭐가 다른가요?</div>
+									<button type="button" class="faq-toggle">답변보기</button>
+								</div>
+								<div class="faq-answer">
+									MI-Nexus는 단일 대시보드를 넘어, 공통 데이터 모델·권한·로그·효과 계산기까지 아우르는 통합 포털을 지향합니다.<br/>
+									여러 Spotfire 문서를 개별적으로 열어보지 않고도, 한 곳에서 표준화된 화면과 KPI를 확인할 수 있도록 설계하고 있습니다.<br/>
+									<br/>
+									그동안 Spotfire 기반의 다양한 분석 문서들이 각자 목적에 맞게 개별적으로 만들어지다 보니,<br/>
+									시간이 지나면서 누가·언제·어떤 화면을 봐야 하는지 명확하지 않은 ‘비활성화된 대시보드’가 늘어나는 한계가 있었습니다.<br/>
+									<br/>
+									MI-Nexus는 이러한 점을 개선하여,<br/>
+									필요한 사람들이 필요한 내용을 스스로 선택해 조회할 수 있는 분석 포털을 제공하고,<br/>
+									주요 지표와 화면을 체계적으로 관리·공유할 수 있는 공통 창구 역할을 하는 것을 목표로 하고 있습니다.<br/>
+								</div>
+							</article>
+							
+							<article class="faq-item">
+								<div class="faq-header">
+									<div class="faq-question">Q2. 어떤 데이터가 연동되나요?</div>
+									<button type="button" class="faq-toggle">답변보기</button>
+								</div>
+								<div class="faq-answer">
+									현재는 Database 설계 및 데이터 선별 과정을 진행 중에 있습니다.<br/>
+									실제 업무 환경에서 사용 중인 데이터를 기준으로, 실제 시스템과 최대한 동일한 구조를 유지하되,<br/>
+									접근성과 활용성이 높은 데이터부터 단계적으로 연동하고 있습니다.<br/>
+									이는 향후 해당 데이터를 실제 업무뿐 아니라 교육·교보재 용도로도 활용할 수 있도록 하기 위함입니다.<br/>
+									<br/>
+									중장기적으로는 특정 시스템에 한정하지 않고, 여러 데이터베이스에 분산되어 있는 업무 활용 가능 데이터를 최대한 포괄적으로 연계할 계획입니다.<br/>
+									구축이 완료된 이후에는 전체 데이터 스키마, 연동 로드맵, 동작 원리 등을 정리하여 투명하게 공유드릴 예정입니다.
+								</div>
+							</article>
+							
+							<article class="faq-item">
+								<div class="faq-header">
+									<div class="faq-question">Q3. 현재 개발 단계 및 완료 시 까지의 기간이 어떻게 되나요?</div>
+									<button type="button" class="faq-toggle">답변보기</button>
+								</div>
+								<div class="faq-answer">
+									현재 본 과제는 다음과 같은 4단계 로드맵으로 추진 중입니다.<br/>
+									<br/>
+									1단계: 핵심 데이터베이스 구축<br/>
+									2단계: Spotfire 기반 분석·리포트 서비스 고도화<br/>
+									3단계: Web Portal 형태의 통합 서비스 구현<br/>
+									4단계: ChatBot 기반 지능형 질의·응답 서비스 확대<br/>
+									<br/>
+									최종적으로는 2027년 4분기까지 4단계(챗봇 서비스)까지 순차적으로 완성하는 것을 목표로 하고 있습니다.<br/>
+									다만 본 과제는 주업무를 지원하는 보조 성격의 내부 개발 프로젝트이므로,<br/>
+									향후 조직 변경, 업무 우선순위 조정, 긴급 이슈 대응 등에 따라 세부 일정은 일부 조정될 수 있습니다.<br/>
+									<br/>
+									향후 방향성으로는 단순히 초기 Nexus Portal 모듈 몇 개를 만드는 수준을 넘어, 포털이라는 이름에 걸맞게 부서 내 주요 업무툴을 단계적으로 통합하여 동일한 데이터·권한·UI 기준 아래에서 자동화에 최적화된 업무 환경을 제공하는 것을 지향하고 있습니다. 현재 ‘재무성과’ 모듈이 포털 내 첫 번째 파일럿(Test) 서비스로서 개발·검증을 진행 중이며, 이를 시작점으로 적용 범위를 점차 다른 영역까지 확대해 나갈 계획입니다.
+								</div>
+							</article>
+							
+							<article class="faq-item">
+								<div class="faq-header">
+									<div class="faq-question">Q4. 수정 요청이나 개선 제안은 어떤 경로로 전달하면 될까요?</div>
+									<button type="button" class="faq-toggle">답변보기</button>
+								</div>
+								<div class="faq-answer">
+									현재 본 포털은 사내 독자 개발로 담당자는 OOO입니다.<br/>
+									별도의 제안 양식 없이 메일이나 사내 메신저를 통해 의견을 주시면, 기록 후 검토하여 향후 개선 로드맵에 최대한 반영하도록 하겠습니다.<br/>
+									<br/>
+									다만 본 포털은 전문 개발팀이 아닌 현업 사용자의 자체 개발 형태로 진행되고 있어,<br/>
+									즉각적인 수정이나 복잡한 기능 반영에는 다소 시간이 필요할 수 있습니다.<br/>
+									<br/>
+									가능하다면 구체적인 예시나 캡처 화면을 함께 주시면 이해가 훨씬 빨라지고,<br/>
+									기술적인 제약이 있더라도 최대한 현실적으로 반영할 수 있도록 하겠습니다.<br/>
+									부담 갖지 마시고 불편사항·아이디어·추가 희망 기능 등을 언제든 편하게 전달해 주세요.
+								</div>
+							</article>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			
+			<!-- 4. 마지막 풀스크린 이미지 -->
+			<section class="snap-section closing-section" id="section-end">
+				<div class="closing-bg"></div>
+				<div class="section-inner">
+					<div class="closing-content">
+						<h2 class="closing-title">데이터와 현장을 잇는 하나의 풍경</h2>
+						<p class="closing-desc">
+							MI-Nexus Portal은 단순한 대시보드 모음이 아니라,<br/>
+							S.PKG MI기술그룹이 보는 동일한 “한 장의 그림”을 만드는 것이 목표입니다.
+						</p>
+						<div class="closing-chip-row">
+							<div class="closing-chip">One Portal</div>
+							<div class="closing-chip">One Standard</div>
+							<div class="closing-chip">One View</div>
+							<div class="closing-chip">For Metrology &amp; Inspection</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</main>
+		
+		<script>
+			function updateClock() {
+				const now = new Date();
+				const yyyy = now.getFullYear();
+				const mm = String(now.getMonth() + 1).padStart(2, "0");
+				const dd = String(now.getDate()).padStart(2, "0");
+				const hh = String(now.getHours()).padStart(2, "0");
+				const mi = String(now.getMinutes()).padStart(2, "0");
+				const ss = String(now.getSeconds()).padStart(2, "0");
+				const text = `${yyyy}-${mm}-${dd} ${hh}:${mi}:${ss}`;
+				const clockEl = document.getElementById("clock");
+				if (clockEl) clockEl.textContent = text;
+			}
+			updateClock();
+			setInterval(updateClock, 1000);
+			
+			async function updateFx() {
+				const fxEl = document.getElementById("fx-rate");
+				if (!fxEl) return;
+				try {
+					const res = await fetch("https://open.er-api.com/v6/latest/USD");
+					const data = await res.json();
+					const krw = data.rates && data.rates.KRW;
+					if (!krw) {
+						fxEl.textContent = "환율: 데이터 없음";
+						return;
+					}
+					fxEl.textContent = `USD/KRW ${krw.toLocaleString(undefined, {
+						maximumFractionDigits: 2,
+					})}`;
+				} catch (e) {
+					fxEl.textContent = "환율: 불러오기 오류";
+				}
+			}
+			updateFx();
+			setInterval(updateFx, 10 * 60 * 1000);
+		</script>
+		
+		<script>
+			document.addEventListener("DOMContentLoaded", () => {
+				/* ===== 재무성과 서브메뉴 열기/닫기 ===== */
+				const financeItem = document.querySelector(".nav-item-finance");
+				if (financeItem) {
+					const trigger = financeItem.querySelector(".nav-link");
+					trigger.addEventListener("click", (e) => {
+						e.preventDefault();
+						e.stopPropagation();
+						financeItem.classList.toggle("open");
+					});
+					
+					document.addEventListener("click", (e) => {
+						if (!financeItem.contains(e.target)) {
+							financeItem.classList.remove("open");
+						}
+					});
+				}
+				
+				/* ===== FAQ 열기/닫기 ===== */
+				
+				const faqItems = document.querySelectorAll(".faq-item");
+				
+				faqItems.forEach((item) => {
+					const header = item.querySelector(".faq-header");
+					const toggleBtn = item.querySelector(".faq-toggle");
+					const answer = item.querySelector(".faq-answer");
+					if (!header || !toggleBtn || !answer) return;
+					
+					toggleBtn.textContent = "답변보기";
+					
+					header.addEventListener("click", () => {
+						const isOpen = item.classList.contains("open");
+						
+						// 다른 항목 닫기
+						faqItems.forEach((other) => {
+							if (other !== item) {
+								other.classList.remove("open");
+								const a = other.querySelector(".faq-answer");
+								const b = other.querySelector(".faq-toggle");
+								if (a) a.style.maxHeight = null;
+								if (b) b.textContent = "답변보기";
+							}
+						});
+						
+						if (isOpen) {
+							item.classList.remove("open");
+							answer.style.maxHeight = null;
+							toggleBtn.textContent = "답변보기";
+						} else {
+							item.classList.add("open");
+							answer.style.maxHeight = answer.scrollHeight + "px";
+							toggleBtn.textContent = "닫기";
+						}
+					});
+				});
+			});
+
+
+		</script>
+		
+	</body>
+</html>
