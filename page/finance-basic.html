@@ -539,10 +539,12 @@
                 color: #111827;
             }
             /* 전체 합계 요약 바 */
+            
             .global-summary {
                 display: none;           /* 계산 전엔 숨김 */
                 align-items: center;
-                justify-content: space-between;
+                
+                flex-direction: column;
                 gap: 16px;
                 margin: 5px 20px 16px;     /* 위쪽에 붙는 한 줄 느낌 */
                 padding: 10px 16px;
@@ -573,20 +575,25 @@
             
             .global-summary .summary-total {
                 font-weight: 700;
-                color: #a5ffce;
+                color: #FCE300;
+            }
+            
+            .global-summary .summary-count {
+                font-weight: 700;
+                color: #72FFAD;
             }
             
             .global-summary .summary-right {
                 display: flex;
                 flex-direction: column;   /* 세로로 쌓기 */
                 align-items: flex-end;    /* 오른쪽 정렬 유지하고 싶으면 */
-                gap: 5px;
+                gap: 10px;
             }
             
             
             .global-summary .badge-row {
                 display: flex;
-                gap: 5px;
+                gap: 20px;
                 flex-wrap: wrap;
             }
             
@@ -664,6 +671,34 @@
             .hide-inner {
                 display: none !important;
             }
+            
+            .global-summary-footer {
+  border-top: 1px solid rgba(148, 163, 184, 0.4);
+  padding-top: 0.5rem;
+  display: flex;
+  justify-content: space-between; /* 좌우 여백 자동 분배 */
+  align-items: center;
+  flex-wrap: wrap; /* 화면 좁으면 자동 줄바꿈 */
+  gap: 10px;
+}
+
+/* 각 항목(라벨 + 값) */
+.global-summary-footer .total-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+}
+
+.global-summary-footer .total-label {
+  color: #e5e7eb;
+}
+
+.global-summary-footer .total-value {
+  font-weight: 600;
+  min-width: 60px;
+  text-align: right;
+}
             
         </style>
     </head>
@@ -960,12 +995,37 @@
                         </p>
                         <div id="global-summary" class="global-summary" >
                             <div class="summary-left">
-                                <div class="summary-title">재무 효과 요약&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>계산이 끝난 후 클릭하여 초기화 해주세요.</code></div>
                                 <div class="summary-caption">
-                                    현재까지 <span class="summary-count">0</span>개 항목을 계산했고,<br />
+                                    현재까지 <span class="summary-count">0</span>개 항목을 계산했고,
                                     추정 연간 효과 합계는
-                                    <span class="summary-total">0</span> 원입니다. (참고용 기준, 우측 성과항목은 아직 개발중입니다.)<br />
+                                    <span class="summary-total">0</span> 원입니다.<br />
                                     
+                                </div>
+                            </div>
+                            <div class="global-summary-footer">
+                                <div class="total-row" data-total="invTotal">
+                                    <span class="total-label">재고 관련 합계 (invTotal)</span>
+                                    <span class="total-value" id="invTotal-value">-</span>
+                                </div>
+                                <div class="total-row" data-total="scrapTotal">
+                                    <span class="total-label">스크랩 관련 합계 (scrapTotal)</span>
+                                    <span class="total-value" id="scrapTotal-value">-</span>
+                                </div>
+                                <div class="total-row" data-total="materialTotal">
+                                    <span class="total-label">원자재 관련 합계 (materialTotal)</span>
+                                    <span class="total-value" id="materialTotal-value">-</span>
+                                </div>
+                                <div class="total-row" data-total="laborTotal">
+                                    <span class="total-label">인건비 관련 합계 (laborTotal)</span>
+                                    <span class="total-value" id="laborTotal-value">-</span>
+                                </div>
+                                <div class="total-row" data-total="devTotal">
+                                    <span class="total-label">개발 관련 합계 (devTotal)</span>
+                                    <span class="total-value" id="devTotal-value">-</span>
+                                </div>
+                                <div class="total-row" data-total="prodTotal">
+                                    <span class="total-label">생산성 관련 합계 (prodTotal)</span>
+                                    <span class="total-value" id="prodTotal-value">-</span>
                                 </div>
                             </div>
                             <div class="summary-right">
@@ -973,14 +1033,14 @@
                                     <span class="badge badge-Data">DATA-1</span>
                                     <span class="badge badge-Data">DATA-2</span>
                                     <span class="badge badge-Data">DATA-3</span>
-                                </div>
-                                <div class="badge-row">
                                     <span class="badge badge-Clear">저장리셋</span>
                                     <span class="badge badge-Reset" onclick="location.reload()">초기화</span>
                                     <span class="badge badge-Next">다음</span>
                                 </div>
                             </div>
+
                         </div>
+
                         <div class="panel-grid">
                             
                             <!-- 재고일수 단축 -->
@@ -1872,6 +1932,7 @@
 	box.setAttribute('data-result', isFinite(val) ? val : '');
 	updateGlobalSummary();
     // "결과:" 들어있는 div (맨 마지막 줄이 되도록)
+      recalcGlobalTotals();   // 구변 별 합계
     var resultRow = null;
     box.querySelectorAll('div').forEach(function (row) {
       if (row.querySelector('.value')) resultRow = row;
@@ -1987,6 +2048,44 @@
       }
     }
   }
+    
+    const panelGroupMap = {
+        invDays: 'invTotal',
+        invAmt: 'invTotal',
+        tat: 'invTotal',
+        
+        occRate: 'scrapTotal',
+        occQty: 'scrapTotal',
+        scrapRate: 'scrapTotal',
+  scrapQty: 'scrapTotal',
+  waferLossRate: 'scrapTotal',
+  waferLossQty: 'scrapTotal',
+  yieldStab: 'scrapTotal',
+  yieldRamp: 'scrapTotal',
+  reworkRate: 'scrapTotal',
+
+  stdUp: 'materialTotal',
+  stdDown: 'materialTotal',
+  usageEqp: 'materialTotal',
+  usageTotal: 'materialTotal',
+  unitEqp: 'materialTotal',
+  unitDown: 'materialTotal',
+  costSave: 'materialTotal',
+
+  timeSave: 'laborTotal',
+  headSave: 'laborTotal',
+
+  planSave: 'devTotal',
+  devCost: 'devTotal',
+  devTime: 'devTotal',
+
+  stdTime: 'prodTotal',
+  eqpProd: 'prodTotal',
+  downLoss: 'prodTotal',
+  rundown: 'prodTotal',
+  areaProd: 'prodTotal',
+};
+    
 	function updateGlobalSummary() {
 	  const bar = document.getElementById('global-summary');
 	  const inner = document.querySelector('.hint');
@@ -2025,7 +2124,42 @@
 		  maximumFractionDigits: 0
 		});
 	}
+    
+function recalcGlobalTotals() {
+  const totals = {
+    invTotal: 0,
+    scrapTotal: 0,
+    materialTotal: 0,
+    laborTotal: 0,
+    devTotal: 0,
+    prodTotal: 0
+  };
 
+  document.querySelectorAll('[data-panel]').forEach(panelEl => {
+    const panelName = panelEl.getAttribute('data-panel');
+    const group = panelGroupMap[panelName];
+    if (!group) return;
+
+    // result 값 찾기 (각 케이스 결과값)
+    panelEl.querySelectorAll('.result').forEach(resultBox => {
+      const val = parseFloat(resultBox.getAttribute('data-result'));
+      if (isFinite(val)) totals[group] += val;
+    });
+  });
+
+  // 결과 출력
+  Object.entries(totals).forEach(([key, val]) => {
+    const el = document.getElementById(`${key}-value`);
+    if (!el) return;
+    if (!val || isNaN(val)) {
+      el.textContent = '-';
+      el.style.opacity = 0.6;
+    } else {
+      el.textContent = val.toLocaleString('ko-KR');
+      el.style.opacity = 1;
+    }
+  });
+}
 
   function hasNaN(arr) {
     return arr.some(function (v) { return !isFinite(v); });
@@ -2510,8 +2644,8 @@
       setResultIn(root, base, '입력값을 모두 입력하세요.', NaN);
       return;
     }
-    var val = (1 - beforeRate - afterRate) / 100 * qty * (price / 2) * fx * contrib * 12;
-    var sub = '(1 - ' + beforeRate + ' - ' + afterRate + ') / 100 × ' + qty +
+    var val = (beforeRate / afterRate) / 100 * qty * (price / 2) * fx * contrib * 12;
+    var sub = '( ' + beforeRate + ' / ' + afterRate + ') / 100 × ' + qty +
       ' × (' + price + ' / 2) × ' + fx + ' × ' + contrib + ' × 12';
     setResultIn(root, base, sub, val);
   }
