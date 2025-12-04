@@ -243,6 +243,12 @@
                 .navbar-menu {
                     display: none;
                 }
+                .container{
+                    font-size: 0.5rem;
+                }
+                .sidebar{
+                    width:250;
+                }
             }
             
             
@@ -269,10 +275,15 @@
                 color: #f9fafb;
                 padding: 16px 12px;
                 box-sizing: border-box;
-                backdrop-filter: blur(6px);
+                backdrop-filter: blur(0px);
                 overflow-y: auto;  /* 항목이 너무 많을 때 안에서만 스크롤 */
-                border-radius: 12px;        
+                border-radius: 12px;     
             }
+            
+            .sidebar::-webkit-scrollbar {
+                display: none;
+            }
+
             .sidebar h2 {
                 font-size: 16px;
                 margin: 0 0 8px 0;
@@ -339,12 +350,18 @@
             }
             
             .hint {
-                margin-bottom: 16px;
                 font-size: 13px;
                 color: #9ca3af;
                 text-align: left;
-                margin-left: 20px;
-                margin-top: 16px;
+                margin: 5px 20px 16px;     /* 위쪽에 붙는 한 줄 느낌 */
+                padding: 10px 16px;
+                border-radius: 20px;
+                background: radial-gradient(circle at 0% 0%,
+                    rgba(56,189,248,0.18),
+                    rgba(15,23,42,0.96)
+                );
+                border: 1px solid rgba(148,163,184,0.6);
+                line-height: 1.4;
             }
             
             /* 카드 정렬 */
@@ -463,7 +480,8 @@
                 background: linear-gradient(135deg, var(--mi-teal), #22c55e);
                 color: #111827;
                 padding: 2px 4px;
-                border-radius: 3px;
+                border-radius: 4px;
+                
             }
             
             
@@ -516,110 +534,146 @@
                 background: #60a5fa;
             }
             .result-graph-bar .bar-value {
-      width: 70px;
-      text-align: right;
-      color: #111827;
-    }
-	/* 전체 합계 요약 바 */
-	.global-summary {
-	  cursor: pointer;
-	  display: none;           /* 계산 전엔 숨김 */
-	  align-items: center;
-	  justify-content: space-between;
-	  gap: 16px;
-	  margin: 5px 20px 16px;     /* 위쪽에 붙는 한 줄 느낌 */
-	  padding: 10px 16px;
-	  border-radius: 20px;
-	  background: radial-gradient(circle at 0% 0%,
-		rgba(56,189,248,0.18),
-	 	rgba(15,23,42,0.96)
-	    );
-	  border: 1px solid rgba(148,163,184,0.6);
-	  font-size: 12px;
-	  color: #e5e7eb;
-	}
-
-
-	.global-summary .summary-title {
-	  font-size: 12px;
-	  font-weight: 600;
-	  letter-spacing: 0.03em;
-	  color: #f9fafb;
-	  margin-bottom: 2px;
-	}
-
-	.global-summary .summary-caption {
-	  font-size: 11px;
-	  color: #9ca3af;
-	  line-height: 1.4;
-	}
-
-	.global-summary .summary-total {
-	  font-weight: 700;
-	  color: #a5ffce;
-	}
-
-	.global-summary .summary-right {
-	  display: flex;
-	  gap: 6px;
-	  flex-wrap: wrap;
-	}
-
-	.global-summary .badge {
-	  display: inline-flex;
-	  align-items: center;
-	  padding: 3px 8px;
-	  border-radius: 999px;
-	  font-size: 10px;
-	  border: 1px solid rgba(148,163,184,0.6);
-	  background: rgba(15,23,42,0.9);
-	  white-space: nowrap;
-	}
-
-	.global-summary .badge-saving {
-	  border-color: rgba(34,197,94,0.7);
-	}
-
-	.global-summary .badge-invest {
-	  border-color: rgba(59,130,246,0.7);
-	}
-
-	.global-summary .badge-labor {
-	  border-color: rgba(244,114,182,0.7);
-	}
-	  
-	  
-	.global-summary .badge-inv {
-	  border-color: rgba(34,197,94,0.7);
-	}
-
-	.global-summary .badge-sra {
-	  border-color: rgba(59,130,246,0.7);
-	}
-
-	.global-summary .badge-matelial {
-	  border-color: rgba(59,130,246,0.7);
-	}
-
-	.global-summary .badge-dev {
-	  border-color: rgba(59,130,246,0.7);
-	}
-
-	.global-summary .badge-pr {
-	  border-color: rgba(59,130,246,0.7);
-	}
-
-
-	.hide-inner {
-	  display: none !important;
-	}
-
+                width: 70px;
+                text-align: right;
+                color: #111827;
+            }
+            /* 전체 합계 요약 바 */
+            .global-summary {
+                display: none;           /* 계산 전엔 숨김 */
+                align-items: center;
+                justify-content: space-between;
+                gap: 16px;
+                margin: 5px 20px 16px;     /* 위쪽에 붙는 한 줄 느낌 */
+                padding: 10px 16px;
+                border-radius: 20px;
+                background: radial-gradient(circle at 0% 0%,
+                    rgba(56,189,248,0.18),
+                    rgba(15,23,42,0.96)
+                );
+                border: 1px solid rgba(148,163,184,0.6);
+                font-size: 12px;
+                color: #e5e7eb;
+                
+            }
+                        
+            .global-summary .summary-title {
+                font-size: 13px;
+                font-weight: 600;
+                letter-spacing: 0.03em;
+                color: #f9fafb;
+                margin-bottom: 2px;
+            }
+            
+            .global-summary .summary-caption {
+                font-size: 13px;
+                color: #9ca3af;
+                line-height: 1.4;
+            }
+            
+            .global-summary .summary-total {
+                font-weight: 700;
+                color: #a5ffce;
+            }
+            
+            .global-summary .summary-right {
+                display: flex;
+                flex-direction: column;   /* 세로로 쌓기 */
+                align-items: flex-end;    /* 오른쪽 정렬 유지하고 싶으면 */
+                gap: 5px;
+            }
+            
+            
+            .global-summary .badge-row {
+                display: flex;
+                gap: 5px;
+                flex-wrap: wrap;
+            }
+            
+            .global-summary .badge {
+                cursor: pointer;
+                display: inline-flex;
+                align-items: center;
+                padding: 3px 8px;
+                border-radius: 999px;
+                font-size: 10px;
+                border: 1px solid rgba(148,163,184,0.6);
+                background: rgba(15,23,42,0.9);
+                white-space: nowrap;
+            }
+            
+            .global-summary .badge-Data {
+                border-color: rgba(197,34,54,0.70);
+                background-color: rgba(197,34,54,0.3);
+                justify-content: center;
+                min-width: 80px;
+                border-radius: 0px;
+            }
+            
+            .global-summary .badge-Reset {
+                border-color: rgba(59,130,246,0.7);
+                background-color: rgba(59,130,246,0.3);
+                justify-content: center;
+                min-width: 80px;
+                border-radius: 0px;                
+            }
+            
+            .global-summary .badge-Clear {
+                border-color: rgba(244,114,182,0.7);
+                background-color: rgba(244,114,182,0.3);
+                justify-content: center;
+                min-width: 80px;
+                border-radius: 0px;
+            }
+            
+            .global-summary .badge-Next {
+                border-color: rgba(20,151,64,0.70);
+                background-color: rgba(0,171,46,0.3);
+                justify-content: center;
+                min-width: 80px;
+                border-radius: 0px;
+            }
+            
+            .global-summary .badge-Total {
+                border-color: rgba(18,78,94,0.70);
+            }
+            
+            .global-summary .badge-invTotal {
+                border-color: rgba(59,130,246,0.7);
+            }
+            
+            .global-summary .badge-scrapTotal {
+                border-color: rgba(59,130,246,0.7);
+            }
+            
+            .global-summary .badge-materialTotal {
+                border-color: rgba(59,130,246,0.7);
+            }
+            
+            .global-summary .badge-laborTotal {
+                border-color: rgba(59,130,246,0.7);
+            }
+            
+            .global-summary .badge-devTotal {
+                border-color: rgba(59,130,246,0.7);
+            }
+            
+            .global-summary .badge-prodTotal {
+                border-color: rgba(59,130,246,0.7);
+            }
+            .hide-inner {
+                display: none !important;
+            }
+            
         </style>
-</head>
-	<body>
-		<!-- 상단 네비 -->
-		<header class="navbar-wrapper">
-			<div class="navbar">
+    </head>
+    
+    
+    
+    <body>
+        <!-- 상단 네비 -->
+        <header class="navbar-wrapper">
+            <div class="navbar">
 				<div class="navbar-left">
 					<div class="mi-logo">
 						<img src="../img/logo_32.png" alt="" width="26" height="26">						
@@ -664,1010 +718,1016 @@
 			<div class="notice-bar">
 				구성, 화면, KPI, 조직도는 계속 업데이트될 예정이며, 이 About 페이지는 그 방향성을 공유하기 위한 초안 버전입니다.
 			</div>
-		</header>
-		
+        </header>
+        
+        
+        <main>
+            <!-- 여기부터 finance 계산기 전체 -->
+            <div class="container">
+                <!-- 좌측 메뉴 -->
+                <aside class="sidebar">
+                    <h2>계산 항목 선택</h2>
+                    <div class="menu-group-title">재고 / 재공 (TAT)</div>
+                    <label class="menu-item">
+                        <span class="item-left">
+                            <input type="checkbox" data-target="panel-invDays" />
+                            <span>재고일수 단축</span>
+                        </span>
+                        <input type="number" class="menu-qty" data-target="panel-invDays" min="0" value="0" />
+                    </label>
+                    <label class="menu-item">
+                        <span class="item-left">
+                            <input type="checkbox" data-target="panel-invAmt" />
+                            <span>재고금액 감소</span>
+                        </span>
+                        <input type="number" class="menu-qty" data-target="panel-invAmt" min="0" value="0" />
+                    </label>
+                    <label class="menu-item">
+                        <span class="item-left">
+                            <input type="checkbox" data-target="panel-tat" />
+                            <span>TAT 단축</span>
+                        </span>
+                        <input type="number" class="menu-qty" data-target="panel-tat" min="0" value="0" />
+                    </label>
+                    
+                    <div class="menu-group-title">발생 / 스크랩 / 수율 / 웨이퍼 / Rework</div>
+                    <label class="menu-item">
+                        <span class="item-left">
+                            <input type="checkbox" data-target="panel-occRate" />
+                            <span>발생률 감소(%)</span>
+                        </span>
+                        <input type="number" class="menu-qty" data-target="panel-occRate" min="0" value="0" />
+                    </label>
+                    <label class="menu-item">
+                        <span class="item-left">
+                            <input type="checkbox" data-target="panel-occQty" />
+                            <span>발생량 감소(수량, CC 등 정량기준)&nbsp; &nbsp;</span>
+                        </span>
+                        <input type="number" class="menu-qty" data-target="panel-occQty" min="0" value="0" />
+                    </label>
+                    <label class="menu-item">
+                        <span class="item-left">
+                            <input type="checkbox" data-target="panel-scrapRate" />
+                            <span>스크랩 발생률 감소(%)</span>
+                        </span>
+                        <input type="number" class="menu-qty" data-target="panel-scrapRate" min="0" value="0" />
+                    </label>
+                    <label class="menu-item">
+                        <span class="item-left">
+                            <input type="checkbox" data-target="panel-scrapQty" />
+                            <span>스크랩 발생량 감소</span>
+                        </span>
+                        <input type="number" class="menu-qty" data-target="panel-scrapQty" min="0" value="0" />
+                    </label>
+                    <label class="menu-item">
+                        <span class="item-left">
+                            <input type="checkbox" data-target="panel-waferLossRate" />
+                            <span>웨이퍼 로스률 감소(%)</span>
+                        </span>
+                        <input type="number" class="menu-qty" data-target="panel-waferLossRate" min="0" value="0" />
+                    </label>
+                    <label class="menu-item">
+                        <span class="item-left">
+                            <input type="checkbox" data-target="panel-waferLossQty" />
+                            <span>웨이퍼 로스량 감소</span>
+                        </span>
+                        <input type="number" class="menu-qty" data-target="panel-waferLossQty" min="0" value="0" />
+                    </label>
+                    <label class="menu-item">
+                        <span class="item-left">
+                            <input type="checkbox" data-target="panel-yieldStab" />
+                            <span>수율 향상(안정화)</span>
+                        </span>
+                        <input type="number" class="menu-qty" data-target="panel-yieldStab" min="0" value="0" />
+                    </label>
+                    <label class="menu-item">
+                        <span class="item-left">
+                            <input type="checkbox" data-target="panel-yieldRamp" />
+                            <span>수율 향상(Ramp-Up)</span>
+                        </span>
+                        <input type="number" class="menu-qty" data-target="panel-yieldRamp" min="0" value="0" />
+                    </label>
+                    <label class="menu-item">
+                        <span class="item-left">
+                            <input type="checkbox" data-target="panel-reworkRate" />
+                            <span>리웍 발생률 감소</span>
+                        </span>
+                        <input type="number" class="menu-qty" data-target="panel-reworkRate" min="0" value="0" />
+                    </label>
+                    
+                    <div class="menu-group-title">사용기준 / 사용량 / 단가 / 비용</div>
+                    <label class="menu-item">
+                        <span class="item-left">
+                            <input type="checkbox" data-target="panel-stdUp" />
+                            <span>사용기준 증가</span>
+                        </span>
+                        <input type="number" class="menu-qty" data-target="panel-stdUp" min="0" value="0" />
+                    </label>
+                    <label class="menu-item">
+                        <span class="item-left">
+                            <input type="checkbox" data-target="panel-stdDown" />
+                            <span>사용기준 감소</span>
+                        </span>
+                        <input type="number" class="menu-qty" data-target="panel-stdDown" min="0" value="0" />
+                    </label>
+                    <label class="menu-item">
+                        <span class="item-left">
+                            <input type="checkbox" data-target="panel-usageEqp" />
+                            <span>전체사용량 감소(설비대수)</span>
+                        </span>
+                        <input type="number" class="menu-qty" data-target="panel-usageEqp" min="0" value="0" />
+                    </label>
+                    <label class="menu-item">
+                        <span class="item-left">
+                            <input type="checkbox" data-target="panel-usageTotal" />
+                            <span>전체사용량 감소(cc)</span>
+                        </span>
+                        <input type="number" class="menu-qty" data-target="panel-usageTotal" min="0" value="0" />
+                    </label>
+                    <label class="menu-item">
+                        <span class="item-left">
+                            <input type="checkbox" data-target="panel-unitEqp" />
+                            <span>단가 감축(설비대수)</span>
+                        </span>
+                        <input type="number" class="menu-qty" data-target="panel-unitEqp" min="0" value="0" />
+                    </label>
+                    <label class="menu-item">
+                        <span class="item-left">
+                            <input type="checkbox" data-target="panel-unitDown" />
+                            <span>단가 감축(cc)</span>
+                        </span>
+                        <input type="number" class="menu-qty" data-target="panel-unitDown" min="0" value="0" />
+                    </label>
+                    <label class="menu-item">
+                        <span class="item-left">
+                            <input type="checkbox" data-target="panel-costSave" />
+                            <span>비용 절감(수선비/재료비 등)</span>
+                        </span>
+                        <input type="number" class="menu-qty" data-target="panel-costSave" min="0" value="0" />
+                    </label>
+                    
+                    <div class="menu-group-title">인건비</div>
+                    <label class="menu-item">
+                        <span class="item-left">
+                            <input type="checkbox" data-target="panel-timeSave" />
+                            <span>시간 단축</span>
+                        </span>
+                        <input type="number" class="menu-qty" data-target="panel-timeSave" min="0" value="0" />
+                    </label>
+                    <label class="menu-item">
+                        <span class="item-left">
+                            <input type="checkbox" data-target="panel-headSave" />
+                            <span>인원 단축</span>
+                        </span>
+                        <input type="number" class="menu-qty" data-target="panel-headSave" min="0" value="0" />
+                    </label>
+                    
+                    <div class="menu-group-title">계획 / 투자 / 개발</div>
+                    <label class="menu-item">
+                        <span class="item-left">
+                            <input type="checkbox" data-target="panel-planSave" />
+                            <span>경영계획/투자품의 비용</span>
+                        </span>
+                        <input type="number" class="menu-qty" data-target="panel-planSave" min="0" value="0" />
+                    </label>
+                    <label class="menu-item">
+                        <span class="item-left">
+                            <input type="checkbox" data-target="panel-devCost" />
+                            <span>개발비용 감소</span>
+                        </span>
+                        <input type="number" class="menu-qty" data-target="panel-devCost" min="0" value="0" />
+                    </label>
+                    <label class="menu-item">
+                        <span class="item-left">
+                            <input type="checkbox" data-target="panel-devTime" />
+                            <span>개발기간 단축</span>
+                        </span>
+                        <input type="number" class="menu-qty" data-target="panel-devTime" min="0" value="0" />
+                    </label>
+                    
+                    <div class="menu-group-title">설비 / 운영</div>
+                    <label class="menu-item">
+                        <span class="item-left">
+                            <input type="checkbox" data-target="panel-stdTime" />
+                            <span>ST 감소</span>
+                        </span>
+                        <input type="number" class="menu-qty" data-target="panel-stdTime" min="0" value="0" />
+                    </label>
+                    <label class="menu-item">
+                        <span class="item-left">
+                            <input type="checkbox" data-target="panel-eqpProd" />
+                            <span>설비 생산성 향상(UPEH)</span>
+                        </span>
+                        <input type="number" class="menu-qty" data-target="panel-eqpProd" min="0" value="0" />
+                    </label>
+                    <label class="menu-item">
+                        <span class="item-left">
+                            <input type="checkbox" data-target="panel-downLoss" />
+                            <span>정지 로스 감소</span>
+                        </span>
+                        <input type="number" class="menu-qty" data-target="panel-downLoss" min="0" value="0" />
+                    </label>
+                    <label class="menu-item">
+                        <span class="item-left">
+                            <input type="checkbox" data-target="panel-rundown" />
+                            <span>런다운 감소</span>
+                        </span>
+                        <input type="number" class="menu-qty" data-target="panel-rundown" min="0" value="0" />
+                    </label>
+                    
+                    <div class="menu-group-title">기타</div>
+                    <label class="menu-item">
+                        <span class="item-left">
+                            <input type="checkbox" data-target="panel-areaProd" />
+                            <span>면적당 생산</span>
+                        </span>
+                        <input type="number" class="menu-qty" data-target="panel-areaProd" min="0" value="0" />
+                    </label>
+                </aside>
+                
+                <!-- 우측 내용 -->
+                <div class="content">
+                    <div class="content-inner">
+                        <!-- <h1>▒ S.PKG MI기술그룹 - 개선효과계산기</h1> -->
+                        <p class="hint">
+                            좌측에서 계산 항목을 체크하면 해당 입력 테이블이 나타납니다.<br />
+                            각 항목의 결과에는
+                            <code>기본 수식</code>,
+                            <code>숫자 대입 수식</code>,
+                            <code>계산 결과</code>
+                            가 함께 표시됩니다.<br />
+                            체크박스 옆 숫자(개선안 개수)를 올리면 같은 계산식 창이 여러 개 생성됩니다.
+                        </p>
+                        <div id="global-summary" class="global-summary" >
+                            <div class="summary-left">
+                                <div class="summary-title">재무 효과 요약&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>계산이 끝난 후 클릭하여 초기화 해주세요.</code></div>
+                                <div class="summary-caption">
+                                    현재까지 <span class="summary-count">0</span>개 항목을 계산했고,<br />
+                                    추정 연간 효과 합계는
+                                    <span class="summary-total">0</span> 원입니다. (참고용 기준, 우측 성과항목은 아직 개발중입니다.)<br />
+                                    
+                                </div>
+                            </div>
+                            <div class="summary-right">
+                                <div class="badge-row">
+                                    <span class="badge badge-Data">DATA-1</span>
+                                    <span class="badge badge-Data">DATA-2</span>
+                                    <span class="badge badge-Data">DATA-3</span>
+                                </div>
+                                <div class="badge-row">
+                                    <span class="badge badge-Clear">저장리셋</span>
+                                    <span class="badge badge-Reset" onclick="location.reload()">초기화</span>
+                                    <span class="badge badge-Next">다음</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-grid">
+                            
+                            <!-- 재고일수 단축 -->
+                            <section id="panel-invDays" class="formula-panel">
+                                <h2>재고일수 단축</h2>
+                                <div class="cases" data-panel="invDays">
+                                    <div class="case">
+                                        <div class="formula-desc">
+                                            재고일수단축 = ((개선 전 재고일수 / 개선 후 재고일수) - 1) × 월재고비용 × (이자율 / 100)
+                                        </div>
+                                        <table class="input-table">
+                                            <tr><th>항목</th><th>입력값</th></tr>
+                                            <tr><td>개선 전 재고일수</td><td><input type="number" id="invDays-before" data-field="invDays-before" step="0.01" placeholder="(예시) 50일 → 50" /></td></tr>
+                                            <tr><td>개선 후 재고일수</td><td><input type="number" id="invDays-after" data-field="invDays-after" step="0.01" placeholder="(예시) 382시간 → 15.916667" /></td></tr>
+                                            <tr><td>월 재고비용</td><td><input type="number" id="invDays-monthly" data-field="invDays-monthly" step="0.01" placeholder="(예시) 5천만원 → 50000000" /></td></tr>
+                                            <tr><td>이자율(%)</td><td><input type="number" id="invDays-rate" data-field="invDays-rate" step="0.01" placeholder="(예시) 5% → 5" /></td></tr>
+                                        </table>
+                                        <button class="calc-btn" onclick="calcInvDays(this)">계산하기</button>
+                                        <div class="result" id="result-invDays">
+                                            <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
+                                            <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
+                                            <div><span class="result-label">결과:</span> <span class="value"></span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
 
-  <main>
-    <!-- 여기부터 finance 계산기 전체 -->
-    <div class="container">
-      <!-- 좌측 메뉴 -->
-      <aside class="sidebar">
-        <h2>계산 항목 선택</h2>
+                            <!-- 재고금액 감소 -->
+                            <section id="panel-invAmt" class="formula-panel">
+                              <h2>재고금액 감소</h2>
+                              <div class="cases" data-panel="invAmt">
+                                <div class="case">
+                                  <div class="formula-desc">
+                                    재고금액감소 = (개선 전 월재고비용 - 개선 후 월재고비용) × (이자율 / 100)
+                                  </div>
+                                  <table class="input-table">
+                                    <tr><th>항목</th><th>입력값</th></tr>
+                                    <tr><td>개선 전 월 재고비용</td><td><input type="number" id="invAmt-before" data-field="invAmt-before" step="0.01" placeholder="(예시) 5천만원 → 500000000" /></td></tr>
+                                    <tr><td>개선 후 월 재고비용</td><td><input type="number" id="invAmt-after" data-field="invAmt-after" step="0.01" placeholder="(예시) 3천만원 → 300000000" /></td></tr>
+                                    <tr><td>이자율(%)</td><td><input type="number" id="invAmt-rate" data-field="invAmt-rate" step="0.01" placeholder="(예시) 5% → 5"/></td></tr>
+                                  </table>
+                                  <button class="calc-btn" onclick="calcInvAmt(this)">계산하기</button>
+                                  <div class="result" id="result-invAmt">
+                                    <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
+                                    <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
+                                    <div><span class="result-label">결과:</span> <span class="value"></span></div>
+                                  </div>
+                                </div>
+                              </div>
+                            </section>
 
-        <div class="menu-group-title">재고 / 재공 (TAT)</div>
-        <label class="menu-item">
-          <span class="item-left">
-            <input type="checkbox" data-target="panel-invDays" />
-            <span>재고일수 단축</span>
-          </span>
-          <input type="number" class="menu-qty" data-target="panel-invDays" min="0" value="0" />
-        </label>
-        <label class="menu-item">
-          <span class="item-left">
-            <input type="checkbox" data-target="panel-invAmt" />
-            <span>재고금액 감소</span>
-          </span>
-          <input type="number" class="menu-qty" data-target="panel-invAmt" min="0" value="0" />
-        </label>
-        <label class="menu-item">
-          <span class="item-left">
-            <input type="checkbox" data-target="panel-tat" />
-            <span>TAT 단축</span>
-          </span>
-          <input type="number" class="menu-qty" data-target="panel-tat" min="0" value="0" />
-        </label>
+                            <!-- TAT 단축 -->
+                            <section id="panel-tat" class="formula-panel">
+                              <h2>TAT 단축</h2>
+                              <div class="cases" data-panel="tat">
+                                <div class="case">
+                                  <div class="formula-desc">
+                                    TAT단축 = ((개선 전TAT / 개선 후TAT) - 1) × 월재공비용 × (이자율 / 100)
+                                  </div>
+                                  <table class="input-table">
+                                    <tr><th>항목</th><th>입력값</th></tr>
+                                    <tr><td>개선 전 TAT</td><td><input type="number" id="tat-before" data-field="tat-before" step="0.01" placeholder="(예시) 50일 → 50" /></td></tr>
+                                    <tr><td>개선 후 TAT</td><td><input type="number" id="tat-after" data-field="tat-after" step="0.01" placeholder="(예시) 382시간 → 15.91667" /></td></tr>
+                                    <tr><td>월 재공비용</td><td><input type="number" id="tat-monthly" data-field="tat-monthly" step="0.01" placeholder="(예시) 3천만원 → 300000000" /></td></tr>
+                                    <tr><td>이자율(%)</td><td><input type="number" id="tat-rate" data-field="tat-rate" step="0.01" placeholder="(예시) 5% → 5" /></td></tr>
+                                  </table>
+                                  <button class="calc-btn" onclick="calcTat(this)">계산하기</button>
+                                  <div class="result" id="result-tat">
+                                    <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
+                                    <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
+                                    <div><span class="result-label">결과:</span> <span class="value"></span></div>
+                                  </div>
+                                </div>
+                              </div>
+                            </section>
 
-        <div class="menu-group-title">발생 / 스크랩 / 수율 / 웨이퍼 / Rework</div>
-        <label class="menu-item">
-          <span class="item-left">
-            <input type="checkbox" data-target="panel-occRate" />
-            <span>발생률 감소(%)</span>
-          </span>
-          <input type="number" class="menu-qty" data-target="panel-occRate" min="0" value="0" />
-        </label>
-        <label class="menu-item">
-          <span class="item-left">
-            <input type="checkbox" data-target="panel-occQty" />
-            <span>발생량 감소(수량, CC 등 정량기준)&nbsp; &nbsp;</span>
-          </span>
-          <input type="number" class="menu-qty" data-target="panel-occQty" min="0" value="0" />
-        </label>
-        <label class="menu-item">
-          <span class="item-left">
-            <input type="checkbox" data-target="panel-scrapRate" />
-            <span>스크랩 발생률 감소(%)</span>
-          </span>
-          <input type="number" class="menu-qty" data-target="panel-scrapRate" min="0" value="0" />
-        </label>
-        <label class="menu-item">
-          <span class="item-left">
-            <input type="checkbox" data-target="panel-scrapQty" />
-            <span>스크랩 발생량 감소</span>
-          </span>
-          <input type="number" class="menu-qty" data-target="panel-scrapQty" min="0" value="0" />
-        </label>
-        <label class="menu-item">
-          <span class="item-left">
-            <input type="checkbox" data-target="panel-waferLossRate" />
-            <span>웨이퍼 로스률 감소(%)</span>
-          </span>
-          <input type="number" class="menu-qty" data-target="panel-waferLossRate" min="0" value="0" />
-        </label>
-        <label class="menu-item">
-          <span class="item-left">
-            <input type="checkbox" data-target="panel-waferLossQty" />
-            <span>웨이퍼 로스량 감소</span>
-          </span>
-          <input type="number" class="menu-qty" data-target="panel-waferLossQty" min="0" value="0" />
-        </label>
-        <label class="menu-item">
-          <span class="item-left">
-            <input type="checkbox" data-target="panel-yieldStab" />
-            <span>수율 향상(안정화)</span>
-          </span>
-          <input type="number" class="menu-qty" data-target="panel-yieldStab" min="0" value="0" />
-        </label>
-        <label class="menu-item">
-          <span class="item-left">
-            <input type="checkbox" data-target="panel-yieldRamp" />
-            <span>수율 향상(Ramp-Up)</span>
-          </span>
-          <input type="number" class="menu-qty" data-target="panel-yieldRamp" min="0" value="0" />
-        </label>
-        <label class="menu-item">
-          <span class="item-left">
-            <input type="checkbox" data-target="panel-reworkRate" />
-            <span>리웍 발생률 감소</span>
-          </span>
-          <input type="number" class="menu-qty" data-target="panel-reworkRate" min="0" value="0" />
-        </label>
+                            <!-- 발생률 감소 (%) -->
+                            <section id="panel-occRate" class="formula-panel">
+                              <h2>발생률 감소 (%)</h2>
+                              <div class="cases" data-panel="occRate">
+                                <div class="case">
+                                  <div class="formula-desc">
+                                    발생량감소(%) = ((개선 전 발생률 / 개선 후발생률) - 1) × 발생량 × 처리단가
+                                  </div>
+                                  <table class="input-table">
+                                    <tr><th>항목</th><th>입력값</th></tr>
+                                    <tr><td>개선 전 발생률(0~1)</td><td><input type="number" id="occRate-beforeRate" data-field="occRate-beforeRate" step="0.0001" placeholder="(예시) 32.82% → 0.3282" /></td></tr>
+                                    <tr><td>개선 후 발생률(0~1)</td><td><input type="number" id="occRate-afterRate" data-field="occRate-afterRate" step="0.0001" placeholder="(예시) 20% → 0.2" /></td></tr>
+                                    <tr><td>발생량</td><td><input type="number" id="occRate-qty" data-field="occRate-qty" step="0.01" placeholder="(예시) 5.2k → 5200" /></td></tr>
+                                    <tr><td>처리단가</td><td><input type="number" id="occRate-unit" data-field="occRate-unit" step="0.01" placeholder="(예시) 3200원 → 3200" /></td></tr>
+                                  </table>
+                                  <button class="calc-btn" onclick="calcOccRate(this)">계산하기</button>
+                                  <div class="result" id="result-occRate">
+                                    <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
+                                    <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
+                                    <div><span class="result-label">결과:</span> <span class="value"></span></div>
+                                  </div>
+                                </div>
+                              </div>
+                            </section>
 
-        <div class="menu-group-title">사용기준 / 사용량 / 단가 / 비용</div>
-        <label class="menu-item">
-          <span class="item-left">
-            <input type="checkbox" data-target="panel-stdUp" />
-            <span>사용기준 증가</span>
-          </span>
-          <input type="number" class="menu-qty" data-target="panel-stdUp" min="0" value="0" />
-        </label>
-        <label class="menu-item">
-          <span class="item-left">
-            <input type="checkbox" data-target="panel-stdDown" />
-            <span>사용기준 감소</span>
-          </span>
-          <input type="number" class="menu-qty" data-target="panel-stdDown" min="0" value="0" />
-        </label>
-        <label class="menu-item">
-          <span class="item-left">
-            <input type="checkbox" data-target="panel-usageEqp" />
-            <span>전체사용량 감소(설비대수)</span>
-          </span>
-          <input type="number" class="menu-qty" data-target="panel-usageEqp" min="0" value="0" />
-        </label>
-        <label class="menu-item">
-          <span class="item-left">
-            <input type="checkbox" data-target="panel-usageTotal" />
-            <span>전체사용량 감소(cc)</span>
-          </span>
-          <input type="number" class="menu-qty" data-target="panel-usageTotal" min="0" value="0" />
-        </label>
-        <label class="menu-item">
-          <span class="item-left">
-            <input type="checkbox" data-target="panel-unitEqp" />
-            <span>단가 감축(설비대수)</span>
-          </span>
-          <input type="number" class="menu-qty" data-target="panel-unitEqp" min="0" value="0" />
-        </label>
-        <label class="menu-item">
-          <span class="item-left">
-            <input type="checkbox" data-target="panel-unitDown" />
-            <span>단가 감축(cc)</span>
-          </span>
-          <input type="number" class="menu-qty" data-target="panel-unitDown" min="0" value="0" />
-        </label>
-        <label class="menu-item">
-          <span class="item-left">
-            <input type="checkbox" data-target="panel-costSave" />
-            <span>비용 절감(수선비/재료비 등)</span>
-          </span>
-          <input type="number" class="menu-qty" data-target="panel-costSave" min="0" value="0" />
-        </label>
+                            <!-- 발생량 감소 (수량 기준) -->
+                            <section id="panel-occQty" class="formula-panel">
+                              <h2>발생량 감소 (수량 기준)</h2>
+                              <div class="cases" data-panel="occQty">
+                                <div class="case">
+                                  <div class="formula-desc">
+                                    발생량감소(cc) = (개선 전발생량 - 개선 후발생량) × 처리단가
+                                  </div>
+                                  <table class="input-table">
+                                    <tr><th>항목</th><th>입력값</th></tr>
+                                    <tr><td>개선 전 발생량</td><td><input type="number" id="occQty-before" data-field="occQty-before" step="0.01" placeholder="(예시) 15k → 15000" /></td></tr>
+                                    <tr><td>개선 후 발생량</td><td><input type="number" id="occQty-after" data-field="occQty-after" step="0.01" placeholder="(예시) 523개 혹은 cc → 523" /></td></tr>
+                                    <tr><td>처리단가</td><td><input type="number" id="occQty-unit" data-field="occQty-unit" step="0.01" placeholder="(예시) 8300원 → 8300" /></td></tr>
+                                  </table>
+                                  <button class="calc-btn" onclick="calcOccQty(this)">계산하기</button>
+                                  <div class="result" id="result-occQty">
+                                    <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
+                                    <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
+                                    <div><span class="result-label">결과:</span> <span class="value"></span></div>
+                                  </div>
+                                </div>
+                              </div>
+                            </section>
 
-        <div class="menu-group-title">인건비</div>
-        <label class="menu-item">
-          <span class="item-left">
-            <input type="checkbox" data-target="panel-timeSave" />
-            <span>시간 단축</span>
-          </span>
-          <input type="number" class="menu-qty" data-target="panel-timeSave" min="0" value="0" />
-        </label>
-        <label class="menu-item">
-          <span class="item-left">
-            <input type="checkbox" data-target="panel-headSave" />
-            <span>인원 단축</span>
-          </span>
-          <input type="number" class="menu-qty" data-target="panel-headSave" min="0" value="0" />
-        </label>
+                            <!-- 스크랩 발생률 감소 -->
+                            <section id="panel-scrapRate" class="formula-panel">
+                              <h2>스크랩 발생률 감소</h2>
+                              <div class="cases" data-panel="scrapRate">
+                                <div class="case">
+                                  <div class="formula-desc">
+                                    스크랩발생률감소 = ((개선 전스크랩률 (0~1) / 개선 후스크랩률 (0~1)) - 1) × 개선 후 스크랩양 × Chip원가 × 환율 × 기여도 × 12
+                                  </div>
+                                  <table class="input-table">
+                                    <tr><th>항목</th><th>입력값</th></tr>
+                                    <tr><td>개선 전 스크랩률(0~1)</td><td><input type="number" id="scrapRate-beforeRate" data-field="scrapRate-beforeRate" step="0.0001" placeholder="(예시) 11.23 → 0.1123" /></td></tr>
+                                    <tr><td>개선 후 스크랩률(0~1)</td><td><input type="number" id="scrapRate-afterRate" data-field="scrapRate-afterRate" step="0.0001" placeholder="(예시) 3% → 0.03" /></td></tr>
+                                    <tr><td>개선 후 스크랩양</td><td><input type="number" id="scrapRate-qtyAfter" data-field="scrapRate-qtyAfter" step="0.01" placeholder="(예시) 1,423 ea → 1423" /></td></tr>
+                                    <tr><td>Chip 원가</td><td><input type="number" id="scrapRate-cost" data-field="scrapRate-cost" step="0.01" placeholder="(예시) $10.23 → 10.23" /></td></tr>
+                                    <tr><td>환율($)</td><td><input type="number" id="scrapRate-fx" data-field="scrapRate-fx" data-autofx="usd-krw" step="0.01" placeholder="(안내) 1달러 환율 검색 후 입력" /></td></tr>
+                                    <tr><td>기여도(0~1)</td><td><input type="number" id="scrapRate-contrib" data-field="scrapRate-contrib" step="0.01" value="1" placeholder="(예시) 100% → 1" /></td></tr>
+                                  </table>
+                                  <button class="calc-btn" onclick="calcScrapRate(this)">계산하기</button>
+                                  <div class="result" id="result-scrapRate">
+                                    <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
+                                    <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
+                                    <div><span class="result-label">결과:</span> <span class="value"></span></div>
+                                  </div>
+                                </div>
+                              </div>
+                            </section>
 
-        <div class="menu-group-title">계획 / 투자 / 개발</div>
-        <label class="menu-item">
-          <span class="item-left">
-            <input type="checkbox" data-target="panel-planSave" />
-            <span>경영계획/투자품의 비용</span>
-          </span>
-          <input type="number" class="menu-qty" data-target="panel-planSave" min="0" value="0" />
-        </label>
-        <label class="menu-item">
-          <span class="item-left">
-            <input type="checkbox" data-target="panel-devCost" />
-            <span>개발비용 감소</span>
-          </span>
-          <input type="number" class="menu-qty" data-target="panel-devCost" min="0" value="0" />
-        </label>
-        <label class="menu-item">
-          <span class="item-left">
-            <input type="checkbox" data-target="panel-devTime" />
-            <span>개발기간 단축</span>
-          </span>
-          <input type="number" class="menu-qty" data-target="panel-devTime" min="0" value="0" />
-        </label>
+                            <!-- 스크랩 발생량 감소 -->
+                            <section id="panel-scrapQty" class="formula-panel">
+                              <h2>스크랩 발생량 감소</h2>
+                              <div class="cases" data-panel="scrapQty">
+                                <div class="case">
+                                  <div class="formula-desc">
+                                    스크랩발생량감소 = (개선 전스크랩량 - 개선 후스크랩량) × Chip원가 × 환율 × 기여도 × 12
+                                  </div>
+                                  <table class="input-table">
+                                    <tr><th>항목</th><th>입력값</th></tr>
+                                    <tr><td>개선 전 스크랩량</td><td><input type="number" id="scrapQty-before" data-field="scrapQty-before" step="0.01" placeholder="(예시) 3.2k → 3200" /></td></tr>
+                                    <tr><td>개선 후 스크랩량</td><td><input type="number" id="scrapQty-after" data-field="scrapQty-after" step="0.01" placeholder="(예시) 1,423 ea → 1423" /></td></tr>
+                                    <tr><td>Chip 원가</td><td><input type="number" id="scrapQty-cost" data-field="scrapQty-cost" step="0.01" placeholder="(예시) $10.23 → 10.23" /></td></tr>
+                                    <tr><td>환율($)</td><td><input type="number" id="scrapQty-fx" data-field="scrapQty-fx" data-autofx="usd-krw" step="0.01" placeholder="(안내) 1달러 환율 검색 후 입력" /></td></tr>
+                                    <tr><td>기여도(0~1)</td><td><input type="number" id="scrapQty-contrib" data-field="scrapQty-contrib" step="0.01" value="1" placeholder="(예시) 100% → 1" /></td></tr>
+                                  </table>
+                                  <button class="calc-btn" onclick="calcScrapQty(this)">계산하기</button>
+                                  <div class="result" id="result-scrapQty">
+                                    <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
+                                    <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
+                                    <div><span class="result-label">결과:</span> <span class="value"></span></div>
+                                  </div>
+                                </div>
+                              </div>
+                            </section>
 
-        <div class="menu-group-title">설비 / 운영</div>
-        <label class="menu-item">
-          <span class="item-left">
-            <input type="checkbox" data-target="panel-stdTime" />
-            <span>ST 감소</span>
-          </span>
-          <input type="number" class="menu-qty" data-target="panel-stdTime" min="0" value="0" />
-        </label>
-        <label class="menu-item">
-          <span class="item-left">
-            <input type="checkbox" data-target="panel-eqpProd" />
-            <span>설비 생산성 향상(UPEH)</span>
-          </span>
-          <input type="number" class="menu-qty" data-target="panel-eqpProd" min="0" value="0" />
-        </label>
-        <label class="menu-item">
-          <span class="item-left">
-            <input type="checkbox" data-target="panel-downLoss" />
-            <span>정지 로스 감소</span>
-          </span>
-          <input type="number" class="menu-qty" data-target="panel-downLoss" min="0" value="0" />
-        </label>
-        <label class="menu-item">
-          <span class="item-left">
-            <input type="checkbox" data-target="panel-rundown" />
-            <span>런다운 감소</span>
-          </span>
-          <input type="number" class="menu-qty" data-target="panel-rundown" min="0" value="0" />
-        </label>
+                            <!-- 웨이퍼 로스률 -->
+                            <section id="panel-waferLossRate" class="formula-panel">
+                              <h2>웨이퍼 로스률</h2>
+                              <div class="cases" data-panel="waferLossRate">
+                                <div class="case">
+                                  <div class="formula-desc">
+                                    웨이퍼 로스률 금액 = (1 - (개선 전수율 / 개선 후수율)) × 전체Chip수량 × 생산량(월) × (판가/2) × 환율 × 기여도 × 12
+                                  </div>
+                                  <table class="input-table">
+                                    <tr><th>항목</th><th>입력값</th></tr>
+                                    <tr><td>개선 전 로스률(0~1)</td><td><input type="number" id="waferLossRate-beforeRate" data-field="waferLossRate-beforeRate" step="0.0001" placeholder="(예시) 11.23% → 0.1123" /></td></tr>
+                                    <tr><td>개선 후 로스률(0~1)</td><td><input type="number" id="waferLossRate-afterRate" data-field="waferLossRate-afterRate" step="0.0001" placeholder="(예시) 3% → 0.03" /></td></tr>
+                                    <tr><td>발생량</td><td><input type="number" id="waferLossRate-qty" data-field="waferLossRate-qty" step="0.01" /></td></tr>
+                                    <tr><td>판가</td><td><input type="number" id="waferLossRate-price" data-field="waferLossRate-price" step="0.01" placeholder="(예시) $10.23 → 10.23" /></td></tr>
+                                    <tr><td>환율($)</td><td><input type="number" id="waferLossRate-fx" data-field="waferLossRate-fx" data-autofx="usd-krw" step="0.01" placeholder="(안내) 1달러 환율 검색 후 입력" /></td></tr>
+                                    <tr><td>기여도(0~1)</td><td><input type="number" id="waferLossRate-contrib" data-field="waferLossRate-contrib" step="0.01" value="1" placeholder="(예시) 100% → 1" /></td></tr>
+                                  </table>
+                                  <button class="calc-btn" onclick="calcWaferLossRate(this)">계산하기</button>
+                                  <div class="result" id="result-waferLossRate">
+                                    <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
+                                    <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
+                                    <div><span class="result-label">결과:</span> <span class="value"></span></div>
+                                  </div>
+                                </div>
+                              </div>
+                            </section>
 
-        <div class="menu-group-title">기타</div>
-        <label class="menu-item">
-          <span class="item-left">
-            <input type="checkbox" data-target="panel-areaProd" />
-            <span>면적당 생산</span>
-          </span>
-          <input type="number" class="menu-qty" data-target="panel-areaProd" min="0" value="0" />
-        </label>
-      </aside>
+                            <!-- 웨이퍼 로스량 -->
+                            <section id="panel-waferLossQty" class="formula-panel">
+                              <h2>웨이퍼 로스량</h2>
+                              <div class="cases" data-panel="waferLossQty">
+                                <div class="case">
+                                  <div class="formula-desc">
+                                    웨이퍼 로스량 = (개선 전 웨이퍼 로스량 - 개선 후 웨이퍼 로스량) × (웨이퍼판가/2) × 환율 × 기여도 × 12
+                                  </div>
+                                  <table class="input-table">
+                                    <tr><th>항목</th><th>입력값</th></tr>
+                                    <tr><td>개선 전 로스량</td><td><input type="number" id="waferLossQty-beforeRate" data-field="waferLossQty-beforeRate" step="0.0001" placeholder="(예시) 3.2k → 3200" /></td></tr>
+                                    <tr><td>개선 후 로스량</td><td><input type="number" id="waferLossQty-afterRate" data-field="waferLossQty-afterRate" step="0.0001" placeholder="(예시) 1,423 ea → 1423" /></td></tr>
+                                    <tr><td>웨이퍼 판가</td><td><input type="number" id="waferLossQty-price" data-field="waferLossQty-price" step="0.01" placeholder="(예시) $10.23 → 10.23" /></td></tr>
+                                    <tr><td>환율($)</td><td><input type="number" id="waferLossQty-fx" data-field="waferLossQty-fx" data-autofx="usd-krw" step="0.01" placeholder="(안내) 1달러 환율 검색 후 입력" /></td></tr>
+                                    <tr><td>기여도(0~1)</td><td><input type="number" id="waferLossQty-contrib" data-field="waferLossQty-contrib" step="0.01" value="1" placeholder="(예시) 5% → 0.05" /></td></tr>
+                                  </table>
+                                  <button class="calc-btn" onclick="calcWaferLossQty(this)">계산하기</button>
+                                  <div class="result" id="result-waferLossQty">
+                                    <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
+                                    <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
+                                    <div><span class="result-label">결과:</span> <span class="value"></span></div>
+                                  </div>
+                                </div>
+                              </div>
+                            </section>
 
-      <!-- 우측 내용 -->
-      <div class="content">
-        <div class="content-inner">
-          <!-- <h1>▒ S.PKG MI기술그룹 - 개선효과계산기</h1> -->
-          <p class="hint">
-            좌측에서 계산 항목을 체크하면 해당 입력 테이블이 나타납니다.<br />
-            각 항목의 결과에는
-            <code>기본 수식</code>,
-            <code>숫자 대입 수식</code>,
-            <code>계산 결과</code>
-            가 함께 표시됩니다.<br />
-            체크박스 옆 숫자(개선안 개수)를 올리면 같은 계산식 창이 여러 개 생성됩니다.
-          </p>
-		<div id="global-summary" class="global-summary" onclick="location.reload()">
-		  <div class="summary-left">
-			<div class="summary-title">재무 효과 요약&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>계산이 끝난 후 클릭하여 초기화 해주세요.</code></div>
-			<div class="summary-caption">
-			  현재까지 <span class="summary-count">0</span>개 항목을 계산했고,<br />
-			  추정 연간 효과 합계는
-			  <span class="summary-total">0</span> 원입니다. (참고용 기준, 우측 성과항목은 아직 개발중입니다.)<br />
-				
-			</div>
-		  </div>
-		  <div class="summary-right">
-			<span class="badge badge-saving">비용 절감</span>
-			<span class="badge badge-invest">CAPEX 절감</span>
-			<span class="badge badge-labor">인건비</span>
-		  </div>
-		</div>
-          <div class="panel-grid">
+                            <!-- 수율 향상 (안정화 단계) -->
+                            <section id="panel-yieldStab" class="formula-panel">
+                              <h2>수율 향상 (안정화)</h2>
+                              <div class="cases" data-panel="yieldStab">
+                                <div class="case">
+                                  <div class="formula-desc">
+                                    수율향상(안정화) = (1 - (개선 전수율 / 개선 후수율)) × 전체Chip수량 × 생산량(월) × (판가/2) × 환율 × 기여도 × 개월
+                                  </div>
+                                  <table class="input-table">
+                                    <tr><th>항목</th><th>입력값</th></tr>
+                                    <tr><td>개선 전 수율(0~1)</td><td><input type="number" id="yieldStab-before" data-field="yieldStab-before" step="0.0001" placeholder="(예시) 11.23% → 0.1123"/></td></tr>
+                                    <tr><td>개선 후 수율(0~1)</td><td><input type="number" id="yieldStab-after" data-field="yieldStab-after" step="0.0001" placeholder="(예시) 3% → 0.03"/></td></tr>
+                                    <tr><td>전체 Chip수량</td><td><input type="number" id="yieldStab-chips" data-field="yieldStab-chips" step="1" placeholder="(예시) 3% → 0.03"/></td></tr>
+                                    <tr><td>생산량(월)</td><td><input type="number" id="yieldStab-monthly" data-field="yieldStab-monthly" step="1" placeholder="(예시) 14k → 1400" /></td></tr>
+                                    <tr><td>칩 판가($)</td><td><input type="number" id="yieldStab-price" data-field="yieldStab-price" step="0.01" placeholder="(예시) $10.23 → 10.23" /></td></tr>
+                                    <tr><td>환율($)</td><td><input type="number" id="yieldStab-fx" data-field="yieldStab-fx" data-autofx="usd-krw" step="0.01" placeholder="(안내) 1달러 환율 검색 후 입력"/></td></tr>
+                                    <tr><td>기여도(0~1)</td><td><input type="number" id="yieldStab-contrib" data-field="yieldStab-contrib" step="0.01" value="1" placeholder="(예시) 5% → 0.05" /></td></tr>
+                                    <tr><td>개월</td><td><input type="number" id="yieldStab-months" data-field="yieldStab-months" step="1" value="12" placeholder="(예시) 5개월 → 5"/></td></tr>
+                                  </table>
+                                  <button class="calc-btn" onclick="calcYieldStab(this)">계산하기</button>
+                                  <div class="result" id="result-yieldStab">
+                                    <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
+                                    <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
+                                    <div><span class="result-label">결과:</span> <span class="value"></span></div>
+                                  </div>
+                                </div>
+                              </div>
+                            </section>
 
-        <!-- 재고일수 단축 -->
-        <section id="panel-invDays" class="formula-panel">
-          <h2>재고일수 단축</h2>
-          <div class="cases" data-panel="invDays">
-            <div class="case">
-              <div class="formula-desc">
-                재고일수단축 = ((개선 전 재고일수 / 개선 후 재고일수) - 1) × 월재고비용 × (이자율 / 100)
-              </div>
-              <table class="input-table">
-                <tr><th>항목</th><th>입력값</th></tr>
-                <tr><td>개선 전 재고일수</td><td><input type="number" id="invDays-before" data-field="invDays-before" step="0.01" placeholder="(예시) 50일 → 50" /></td></tr>
-                <tr><td>개선 후 재고일수</td><td><input type="number" id="invDays-after" data-field="invDays-after" step="0.01" placeholder="(예시) 20일 → 200" /></td></tr>
-                <tr><td>월 재고비용</td><td><input type="number" id="invDays-monthly" data-field="invDays-monthly" step="0.01" placeholder="(예시) 5천만원 → 50000000" /></td></tr>
-                <tr><td>이자율(%)</td><td><input type="number" id="invDays-rate" data-field="invDays-rate" step="0.01" placeholder="(예시) 5% → 5" /></td></tr>
-              </table>
-              <button class="calc-btn" onclick="calcInvDays(this)">계산하기</button>
-              <div class="result" id="result-invDays">
-                <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
-                <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
-                <div><span class="result-label">결과:</span> <span class="value"></span></div>
-              </div>
-            </div>
-          </div>
-        </section>
+                            <!-- 수율 향상 (램프업) -->
+                            <section id="panel-yieldRamp" class="formula-panel">
+                              <h2>수율 향상 (램프업)</h2>
+                              <div class="cases" data-panel="yieldRamp">
+                                <div class="case">
+                                  <div class="formula-desc">
+                                    수율향상(램프업) = 개선시점수율향상분 × Chip수량 × 생산량(월) × (칩판가/2) × 환율 × 개월
+                                  </div>
+                                  <table class="input-table">
+                                    <tr><th>항목</th><th>입력값</th></tr>
+                                    <tr><td>수율 향상분</td><td><input type="number" id="yieldRamp-improv" data-field="yieldRamp-improv" step="0.0001" placeholder="(예시) 2.95% → 0.0295"/></td></tr>
+                                    <tr><td>Chip수량</td><td><input type="number" id="yieldRamp-chips" data-field="yieldRamp-chips" step="1" placeholder="(예시) 385ea → 385"/></td></tr>
+                                    <tr><td>생산량(월)</td><td><input type="number" id="yieldRamp-monthly" data-field="yieldRamp-monthly" step="1" placeholder="(예시) 10M → 1000000"/></td></tr>
+                                    <tr><td>칩 판가($)</td><td><input type="number" id="yieldRamp-price" data-field="yieldRamp-price" step="0.01" placeholder="(예시) $10.23 → 10.23" ></td></tr>
+                                    <tr><td>환율($)</td><td><input type="number" id="yieldRamp-fx" data-field="yieldRamp-fx" data-autofx="usd-krw" step="0.01" class="fx-input" placeholder="(안내) 1달러 환율 검색 후 입력"/></td></tr>
+                                    <tr><td>개월</td><td><input type="number" id="yieldRamp-months" data-field="yieldRamp-months" step="1" value="12" placeholder="(예시) 5개월 → 5"/></td></tr>
+                                  </table>
+                                  <button class="calc-btn" onclick="calcYieldRamp(this)">계산하기</button>
+                                  <div class="result" id="result-yieldRamp">
+                                    <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
+                                    <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
+                                    <div><span class="result-label">결과:</span> <span class="value"></span></div>
+                                  </div>
+                                </div>
+                              </div>
+                            </section>
 
-        <!-- 재고금액 감소 -->
-        <section id="panel-invAmt" class="formula-panel">
-          <h2>재고금액 감소</h2>
-          <div class="cases" data-panel="invAmt">
-            <div class="case">
-              <div class="formula-desc">
-                재고금액감소 = (개선 전 월재고비용 - 개선 후 월재고비용) × (이자율 / 100)
-              </div>
-              <table class="input-table">
-                <tr><th>항목</th><th>입력값</th></tr>
-                <tr><td>개선 전 월 재고비용</td><td><input type="number" id="invAmt-before" data-field="invAmt-before" step="0.01" placeholder="(예시) 5천만원 → 500000000" /></td></tr>
-                <tr><td>개선 후 월 재고비용</td><td><input type="number" id="invAmt-after" data-field="invAmt-after" step="0.01" placeholder="(예시) 3천만원 → 300000000" /></td></tr>
-                <tr><td>이자율(%)</td><td><input type="number" id="invAmt-rate" data-field="invAmt-rate" step="0.01" placeholder="(예시) 5% → 5"/></td></tr>
-              </table>
-              <button class="calc-btn" onclick="calcInvAmt(this)">계산하기</button>
-              <div class="result" id="result-invAmt">
-                <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
-                <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
-                <div><span class="result-label">결과:</span> <span class="value"></span></div>
-              </div>
-            </div>
-          </div>
-        </section>
+                            <!-- 리웍 발생률 감소 -->
+                            <section id="panel-reworkRate" class="formula-panel">
+                              <h2>리웍 발생률 감소</h2>
+                              <div class="cases" data-panel="reworkRate">
+                                <div class="case">
+                                  <div class="formula-desc">
+                                    리웍 발생률 감소 = (((개선 전 리웍률 / 개선 후 리웍률) - 1) × 개선 후 월리웍량 / 생산CAPA) × 개선설비대수 × (설비대당가격 / 5)
+                                  </div>
+                                  <table class="input-table">
+                                    <tr><th>항목</th><th>입력값</th></tr>
+                                    <tr><td>개선 전 리웍율(%)</td><td><input type="number" id="reworkRate-beforeRate" data-field="reworkRate-beforeRate" step="0.0001"  placeholder="(예시) 11.23% → 0.1123"/></td></tr>
+                                    <tr><td>개선 후 리웍율(%)</td><td><input type="number" id="reworkRate-afterRate" data-field="reworkRate-afterRate" step="0.0001"  placeholder="(예시) 3% → 0.03"/></td></tr>
+                                    <tr><td>개선 후 월 리웍량</td><td><input type="number" id="reworkRate-monthly" data-field="reworkRate-monthly" step="0.01"  placeholder="(예시) 1.14k → 1140"/></td></tr>
+                                    <tr><td>생산 CAPA</td><td><input type="number" id="reworkRate-capacity" data-field="reworkRate-capacity" step="0.01"  placeholder="(예시) 38k → 0.03"/></td></tr>
+                                    <tr><td>개선 설비대수</td><td><input type="number" id="reworkRate-eqp" data-field="reworkRate-eqp" step="1" placeholder="(예시) 25대 → 25"/></td></tr>
+                                    <tr><td>설비 가격(원)</td><td><input type="number" id="reworkRate-price" data-field="reworkRate-price" step="1" placeholder="(예시) 7억원 → 700000000"/></td></tr>
+                                  </table>
+                                  <button class="calc-btn" onclick="calcReworkRate(this)">계산하기</button>
+                                  <div class="result" id="result-reworkRate">
+                                    <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
+                                    <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
+                                    <div><span class="result-label">결과:</span> <span class="value"></span></div>
+                                  </div>
+                                </div>
+                              </div>
+                            </section>
 
-        <!-- TAT 단축 -->
-        <section id="panel-tat" class="formula-panel">
-          <h2>TAT 단축</h2>
-          <div class="cases" data-panel="tat">
-            <div class="case">
-              <div class="formula-desc">
-                TAT단축 = ((개선 전TAT / 개선 후TAT) - 1) × 월재공비용 × (이자율 / 100)
-              </div>
-              <table class="input-table">
-                <tr><th>항목</th><th>입력값</th></tr>
-                <tr><td>개선 전 TAT</td><td><input type="number" id="tat-before" data-field="tat-before" step="0.01" placeholder="(예시) 5시간 → 5" /></td></tr>
-                <tr><td>개선 후 TAT</td><td><input type="number" id="tat-after" data-field="tat-after" step="0.01" placeholder="(예시) 3시간 → 3" /></td></tr>
-                <tr><td>월 재공비용</td><td><input type="number" id="tat-monthly" data-field="tat-monthly" step="0.01" placeholder="(예시) 3천만원 → 300000000" /></td></tr>
-                <tr><td>이자율(%)</td><td><input type="number" id="tat-rate" data-field="tat-rate" step="0.01" placeholder="(예시) 5% → 5" /></td></tr>
-              </table>
-              <button class="calc-btn" onclick="calcTat(this)">계산하기</button>
-              <div class="result" id="result-tat">
-                <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
-                <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
-                <div><span class="result-label">결과:</span> <span class="value"></span></div>
-              </div>
-            </div>
-          </div>
-        </section>
+                            <!-- 사용기준 증가 -->
+                            <section id="panel-stdUp" class="formula-panel">
+                              <h2>사용기준 증가</h2>
+                              <div class="cases" data-panel="stdUp">
+                                <div class="case">
 
-        <!-- 발생률 감소 (%) -->
-        <section id="panel-occRate" class="formula-panel">
-          <h2>발생률 감소 (%)</h2>
-          <div class="cases" data-panel="occRate">
-            <div class="case">
-              <div class="formula-desc">
-                발생량감소(%) = ((개선 전 발생률 / 개선 후발생률) - 1) × 발생량 × 처리단가
-              </div>
-              <table class="input-table">
-                <tr><th>항목</th><th>입력값</th></tr>
-                <tr><td>개선 전 발생률(0~1)</td><td><input type="number" id="occRate-beforeRate" data-field="occRate-beforeRate" step="0.0001" placeholder="(예시) 32.82% → 0.3282" /></td></tr>
-                <tr><td>개선 후 발생률(0~1)</td><td><input type="number" id="occRate-afterRate" data-field="occRate-afterRate" step="0.0001" placeholder="(예시) 20% → 0.2" /></td></tr>
-                <tr><td>발생량</td><td><input type="number" id="occRate-qty" data-field="occRate-qty" step="0.01" placeholder="(예시) 5.2k → 5200" /></td></tr>
-                <tr><td>처리단가</td><td><input type="number" id="occRate-unit" data-field="occRate-unit" step="0.01" placeholder="(예시) 3200원 → 3200" /></td></tr>
-              </table>
-              <button class="calc-btn" onclick="calcOccRate(this)">계산하기</button>
-              <div class="result" id="result-occRate">
-                <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
-                <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
-                <div><span class="result-label">결과:</span> <span class="value"></span></div>
-              </div>
-            </div>
-          </div>
-        </section>
+                                  <div class="formula-desc">
+                                    사용기준 향상(효율증가) = ((개선 후 사용기준 / 개선 전 사용기준) - 1) × 사용량 × 단가
+                                  </div>
+                                  <table class="input-table">
+                                    <tr><th>항목</th><th>입력값</th></tr>
+                                    <tr><td>개선 전 사용기준</td><td><input type="number" id="stdUp-before" data-field="stdUp-before" step="0.01" placeholder="(예시) 라이프타임 90일 → 90"/></td></tr>
+                                    <tr><td>개선 후 사용기준</td><td><input type="number" id="stdUp-after" data-field="stdUp-after" step="0.01" placeholder="(예시) 라이프타임 → 180"/></td></tr>
+                                    <tr><td>사용량</td><td><input type="number" id="stdUp-qty" data-field="stdUp-qty" step="0.01" placeholder="(예시) 연간 3200개 → 3200"/></td></tr>
+                                    <tr><td>단가(원)</td><td><input type="number" id="stdUp-price" data-field="stdUp-price" step="0.01" placeholder="(예시) 42,000원/개 → 42000"/></td></tr>
+                                  </table>
+                                  <button class="calc-btn" onclick="calcStdUp(this)">계산하기</button>
+                                  <div class="result" id="result-stdUp">
+                                    <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
+                                    <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
+                                    <div><span class="result-label">결과:</span> <span class="value"></span></div>
+                                  </div>
+                                </div>
+                              </div>
+                            </section>
 
-        <!-- 발생량 감소 (수량 기준) -->
-        <section id="panel-occQty" class="formula-panel">
-          <h2>발생량 감소 (수량 기준)</h2>
-          <div class="cases" data-panel="occQty">
-            <div class="case">
-              <div class="formula-desc">
-                발생량감소(cc) = (개선 전발생량 - 개선 후발생량) × 처리단가
-              </div>
-              <table class="input-table">
-                <tr><th>항목</th><th>입력값</th></tr>
-                <tr><td>개선 전 발생량</td><td><input type="number" id="occQty-before" data-field="occQty-before" step="0.01" placeholder="(예시) 15k → 15000" /></td></tr>
-                <tr><td>개선 후 발생량</td><td><input type="number" id="occQty-after" data-field="occQty-after" step="0.01" placeholder="(예시) 523개 혹은 cc → 523" /></td></tr>
-                <tr><td>처리단가</td><td><input type="number" id="occQty-unit" data-field="occQty-unit" step="0.01" placeholder="(예시) 8300원 → 8300" /></td></tr>
-              </table>
-              <button class="calc-btn" onclick="calcOccQty(this)">계산하기</button>
-              <div class="result" id="result-occQty">
-                <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
-                <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
-                <div><span class="result-label">결과:</span> <span class="value"></span></div>
-              </div>
-            </div>
-          </div>
-        </section>
+                            <!-- 사용기준 감소 -->
+                            <section id="panel-stdDown" class="formula-panel">
+                              <h2>사용기준 감소</h2>
+                              <div class="cases" data-panel="stdDown">
+                                <div class="case">
+                                  <div class="formula-desc">
+                                    사용기준감소 = (1 - (개선 후 사용기준 / 개선 전 사용기준)) × 사용량 × 단가
+                                  </div>
+                                  <table class="input-table">
+                                    <tr><th>항목</th><th>입력값</th></tr>
+                                    <tr><td>개선 전 사용기준</td><td><input type="number" id="stdDown-before" data-field="stdDown-before" step="0.01" placeholder="(예시) 3,289 Nm³/톤 → 3289"/></td></tr>
+                                    <tr><td>개선 후 사용기준</td><td><input type="number" id="stdDown-after" data-field="stdDown-after" step="0.01" placeholder="(예시) 3,194 Nm³/톤 → 3194"/></td></tr>
+                                    <tr><td>사용량</td><td><input type="number" id="stdDown-qty" data-field="stdDown-qty" step="0.01" placeholder="(예시)  → "/></td></tr>
+                                    <tr><td>단가</td><td><input type="number" id="stdDown-price" data-field="stdDown-price" step="0.01" placeholder="(예시)  → "/></td></tr>
+                                  </table>
+                                  <button class="calc-btn" onclick="calcStdDown(this)">계산하기</button>
+                                  <div class="result" id="result-stdDown">
+                                    <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
+                                    <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
+                                    <div><span class="result-label">결과:</span> <span class="value"></span></div>
+                                  </div>
+                                </div>
+                              </div>
+                            </section>
 
-        <!-- 스크랩 발생률 감소 -->
-        <section id="panel-scrapRate" class="formula-panel">
-          <h2>스크랩 발생률 감소</h2>
-          <div class="cases" data-panel="scrapRate">
-            <div class="case">
-              <div class="formula-desc">
-                스크랩발생률감소 = ((개선 전스크랩률 (0~1) / 개선 후스크랩률 (0~1)) - 1) × 개선 후 스크랩양 × Chip원가 × 환율 × 기여도 × 12
-              </div>
-              <table class="input-table">
-                <tr><th>항목</th><th>입력값</th></tr>
-                <tr><td>개선 전 스크랩률(0~1)</td><td><input type="number" id="scrapRate-beforeRate" data-field="scrapRate-beforeRate" step="0.0001" placeholder="(예시) 3시간 → 3" /></td></tr>
-                <tr><td>개선 후 스크랩률(0~1)</td><td><input type="number" id="scrapRate-afterRate" data-field="scrapRate-afterRate" step="0.0001" placeholder="(예시) 3시간 → 3" /></td></tr>
-                <tr><td>개선 후 스크랩양</td><td><input type="number" id="scrapRate-qtyAfter" data-field="scrapRate-qtyAfter" step="0.01" placeholder="(예시) 1,423 ea → 1423" /></td></tr>
-                <tr><td>Chip 원가</td><td><input type="number" id="scrapRate-cost" data-field="scrapRate-cost" step="0.01" placeholder="(예시) $10.23 → 10.23" /></td></tr>
-                <tr><td>환율($)</td><td><input type="number" id="scrapRate-fx" data-field="scrapRate-fx" data-autofx="usd-krw" step="0.01" placeholder="(안내) 1달러 환율 검색 후 입력" /></td></tr>
-                <tr><td>기여도(0~1)</td><td><input type="number" id="scrapRate-contrib" data-field="scrapRate-contrib" step="0.01" value="1" placeholder="(예시) 50% → 0.5" /></td></tr>
-              </table>
-              <button class="calc-btn" onclick="calcScrapRate(this)">계산하기</button>
-              <div class="result" id="result-scrapRate">
-                <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
-                <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
-                <div><span class="result-label">결과:</span> <span class="value"></span></div>
-              </div>
-            </div>
-          </div>
-        </section>
+                            <!-- 전체사용량 감소 (설비대수) -->
+                            <section id="panel-usageEqp" class="formula-panel">
+                              <h2>전체사용량 감소 (설비대수)</h2>
+                              <div class="cases" data-panel="usageEqp">
+                                <div class="case">
+                                  <div class="formula-desc">
+                                    전체사용량감소(설비대수) = (개선 전 대당사용량 - 개선 후 대당사용량) × 단가 × 설비대수
+                                  </div>
+                                  <table class="input-table">
+                                    <tr><th>항목</th><th>입력값</th></tr>
+                                    <tr><td>개선 전 대당 사용량</td><td><input type="number" id="usageEqp-before" data-field="usageEqp-before" step="0.01" placeholder="(예시)  → "/></td></tr>
+                                    <tr><td>개선 후 대당 사용량</td><td><input type="number" id="usageEqp-after" data-field="usageEqp-after" step="0.01" placeholder="(예시)  → "/></td></tr>
+                                    <tr><td>단가</td><td><input type="number" id="usageEqp-price" data-field="usageEqp-price" step="0.01" placeholder="(예시)  → "/></td></tr>
+                                    <tr><td>설비대수</td><td><input type="number" id="usageEqp-eqp" data-field="usageEqp-eqp" step="1" placeholder="(예시)  → "/></td></tr>
+                                  </table>
+                                  <button class="calc-btn" onclick="calcUsageEqp(this)">계산하기</button>
+                                  <div class="result" id="result-usageEqp">
+                                    <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
+                                    <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
+                                    <div><span class="result-label">결과:</span> <span class="value"></span></div>
+                                  </div>
+                                </div>
+                              </div>
+                            </section>
 
-        <!-- 스크랩 발생량 감소 -->
-        <section id="panel-scrapQty" class="formula-panel">
-          <h2>스크랩 발생량 감소</h2>
-          <div class="cases" data-panel="scrapQty">
-            <div class="case">
-              <div class="formula-desc">
-                스크랩발생량감소 = (개선 전스크랩량 - 개선 후스크랩량) × Chip원가 × 환율 × 기여도 × 12
-              </div>
-              <table class="input-table">
-                <tr><th>항목</th><th>입력값</th></tr>
-                <tr><td>개선 전 스크랩량</td><td><input type="number" id="scrapQty-before" data-field="scrapQty-before" step="0.01" placeholder="(예시) 3.2k → 3200" /></td></tr>
-                <tr><td>개선 후 스크랩량</td><td><input type="number" id="scrapQty-after" data-field="scrapQty-after" step="0.01" placeholder="(예시) 1,423 ea → 1423" /></td></tr>
-                <tr><td>Chip 원가</td><td><input type="number" id="scrapQty-cost" data-field="scrapQty-cost" step="0.01" placeholder="(예시) $10.23 → 10.23" /></td></tr>
-                <tr><td>환율($)</td><td><input type="number" id="scrapQty-fx" data-field="scrapQty-fx" data-autofx="usd-krw" step="0.01" placeholder="(안내) 1달러 환율 검색 후 입력" /></td></tr>
-                <tr><td>기여도(0~1)</td><td><input type="number" id="scrapQty-contrib" data-field="scrapQty-contrib" step="0.01" value="1" placeholder="(예시) 50% → 0.5" /></td></tr>
-              </table>
-              <button class="calc-btn" onclick="calcScrapQty(this)">계산하기</button>
-              <div class="result" id="result-scrapQty">
-                <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
-                <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
-                <div><span class="result-label">결과:</span> <span class="value"></span></div>
-              </div>
-            </div>
-          </div>
-        </section>
+                            <!-- 전체사용량 감소 (cc) -->
+                            <section id="panel-usageTotal" class="formula-panel">
+                              <h2>전체사용량 감소 (cc)</h2>
+                              <div class="cases" data-panel="usageTotal">
+                                <div class="case">
+                                  <div class="formula-desc">
+                                    전체사용량감소(cc) = (개선 전사용량 - 개선 후사용량) × 단가
+                                  </div>
+                                  <table class="input-table">
+                                    <tr><th>항목</th><th>입력값</th></tr>
+                                    <tr><td>개선 전 사용량</td><td><input type="number" id="usageTotal-before" data-field="usageTotal-before" step="0.01" placeholder="(예시)  → "/></td></tr>
+                                    <tr><td>개선 후 사용량</td><td><input type="number" id="usageTotal-after" data-field="usageTotal-after" step="0.01" placeholder="(예시)  → "/></td></tr>
+                                    <tr><td>단가</td><td><input type="number" id="usageTotal-price" data-field="usageTotal-price" step="0.01" placeholder="(예시)  → "/></td></tr>
+                                  </table>
+                                  <button class="calc-btn" onclick="calcUsageTotal(this)">계산하기</button>
+                                  <div class="result" id="result-usageTotal">
+                                    <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
+                                    <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
+                                    <div><span class="result-label">결과:</span> <span class="value"></span></div>
+                                  </div>
+                                </div>
+                              </div>
+                            </section>
 
-        <!-- 웨이퍼 로스률 -->
-        <section id="panel-waferLossRate" class="formula-panel">
-          <h2>웨이퍼 로스률</h2>
-          <div class="cases" data-panel="waferLossRate">
-            <div class="case">
-              <div class="formula-desc">
-                웨이퍼 로스률 금액 = (1 - (개선 전수율 / 개선 후수율)) × 전체Chip수량 × 생산량(월) × (판가/2) × 환율 × 기여도 × 12
-              </div>
-              <table class="input-table">
-                <tr><th>항목</th><th>입력값</th></tr>
-                <tr><td>개선 전 로스률(%)</td><td><input type="number" id="waferLossRate-beforeRate" data-field="waferLossRate-beforeRate" step="0.0001" /></td></tr>
-                <tr><td>개선 후 로스률(%)</td><td><input type="number" id="waferLossRate-afterRate" data-field="waferLossRate-afterRate" step="0.0001" /></td></tr>
-                <tr><td>발생량</td><td><input type="number" id="waferLossRate-qty" data-field="waferLossRate-qty" step="0.01" /></td></tr>
-                <tr><td>판가</td><td><input type="number" id="waferLossRate-price" data-field="waferLossRate-price" step="0.01" /></td></tr>
-                <tr><td>환율($)</td><td><input type="number" id="waferLossRate-fx" data-field="waferLossRate-fx" data-autofx="usd-krw" step="0.01"/></td></tr>
-                <tr><td>기여도(0~1)</td><td><input type="number" id="waferLossRate-contrib" data-field="waferLossRate-contrib" step="0.01" value="1" /></td></tr>
-              </table>
-              <button class="calc-btn" onclick="calcWaferLossRate(this)">계산하기</button>
-              <div class="result" id="result-waferLossRate">
-                <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
-                <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
-                <div><span class="result-label">결과:</span> <span class="value"></span></div>
-              </div>
-            </div>
-          </div>
-        </section>
+                            <!-- 단가 감축 (설비대수) -->
+                            <section id="panel-unitEqp" class="formula-panel">
+                              <h2>단가 감축 (설비대수)</h2>
+                              <div class="cases" data-panel="unitEqp">
+                                <div class="case">
+                                  <div class="formula-desc">
+                                    단가감축(설비대수) = (개선 전단가 - 개선 후단가) × 대당 사용량 × 설비대수
+                                  </div>
+                                  <table class="input-table">
+                                    <tr><th>항목</th><th>입력값</th></tr>
+                                    <tr><td>개선 전 단가</td><td><input type="number" id="unitEqp-before" data-field="unitEqp-before" step="0.01" placeholder="(예시)  → "/></td></tr>
+                                    <tr><td>개선 후 단가</td><td><input type="number" id="unitEqp-after" data-field="unitEqp-after" step="0.01" placeholder="(예시)  → "/></td></tr>
+                                    <tr><td>대당 사용량</td><td><input type="number" id="unitEqp-usage" data-field="unitEqp-usage" step="0.01" placeholder="(예시)  → "/></td></tr>
+                                    <tr><td>설비대수</td><td><input type="number" id="unitEqp-eqp" data-field="unitEqp-eqp" step="1" placeholder="(예시)  → "/></td></tr>
+                                  </table>
+                                  <button class="calc-btn" onclick="calcUnitEqp(this)">계산하기</button>
+                                  <div class="result" id="result-unitEqp">
+                                    <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
+                                    <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
+                                    <div><span class="result-label">결과:</span> <span class="value"></span></div>
+                                  </div>
+                                </div>
+                              </div>
+                            </section>
 
-        <!-- 웨이퍼 로스량 -->
-        <section id="panel-waferLossQty" class="formula-panel">
-          <h2>웨이퍼 로스량</h2>
-          <div class="cases" data-panel="waferLossQty">
-            <div class="case">
-              <div class="formula-desc">
-                웨이퍼 로스량 = (개선 전 웨이퍼 로스량 - 개선 후 웨이퍼 로스량) × (웨이퍼판가/2) × 환율 × 기여도 × 12
-              </div>
-              <table class="input-table">
-                <tr><th>항목</th><th>입력값</th></tr>
-                <tr><td>개선 전 로스량</td><td><input type="number" id="waferLossQty-beforeRate" data-field="waferLossQty-beforeRate" step="0.0001" /></td></tr>
-                <tr><td>개선 후 로스량</td><td><input type="number" id="waferLossQty-afterRate" data-field="waferLossQty-afterRate" step="0.0001" /></td></tr>
-                <tr><td>웨이퍼 판가</td><td><input type="number" id="waferLossQty-price" data-field="waferLossQty-price" step="0.01" /></td></tr>
-                <tr><td>환율($)</td><td><input type="number" id="waferLossQty-fx" data-field="waferLossQty-fx" data-autofx="usd-krw" step="0.01"/></td></tr>
-                <tr><td>기여도(0~1)</td><td><input type="number" id="waferLossQty-contrib" data-field="waferLossQty-contrib" step="0.01" value="1" /></td></tr>
-              </table>
-              <button class="calc-btn" onclick="calcWaferLossQty(this)">계산하기</button>
-              <div class="result" id="result-waferLossQty">
-                <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
-                <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
-                <div><span class="result-label">결과:</span> <span class="value"></span></div>
-              </div>
-            </div>
-          </div>
-        </section>
+                            <!-- 단가 감축 (cc) -->
+                            <section id="panel-unitDown" class="formula-panel">
+                              <h2>단가 감축 (cc)</h2>
+                              <div class="cases" data-panel="unitDown">
+                                <div class="case">
+                                  <div class="formula-desc">
+                                    단가감축(cc) = (개선 전단가 - 개선 후단가) × 사용량
+                                  </div>
+                                  <table class="input-table">
+                                    <tr><th>항목</th><th>입력값</th></tr>
+                                    <tr><td>개선 전 단가</td><td><input type="number" id="unitDown-before" data-field="unitDown-before" step="0.01" placeholder="(예시)  → "/></td></tr>
+                                    <tr><td>개선 후 단가</td><td><input type="number" id="unitDown-after" data-field="unitDown-after" step="0.01" placeholder="(예시)  → "/></td></tr>
+                                    <tr><td>사용량</td><td><input type="number" id="unitDown-qty" data-field="unitDown-qty" step="0.01" placeholder="(예시)  → "/></td></tr>
+                                  </table>
+                                  <button class="calc-btn" onclick="calcUnitDown(this)">계산하기</button>
+                                  <div class="result" id="result-unitDown">
+                                    <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
+                                    <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
+                                    <div><span class="result-label">결과:</span> <span class="value"></span></div>
+                                  </div>
+                                </div>
+                              </div>
+                            </section>
 
-        <!-- 수율 향상 (안정화 단계) -->
-        <section id="panel-yieldStab" class="formula-panel">
-          <h2>수율 향상 (안정화)</h2>
-          <div class="cases" data-panel="yieldStab">
-            <div class="case">
-              <div class="formula-desc">
-                수율향상(안정화) = (1 - (개선 전수율 / 개선 후수율)) × 전체Chip수량 × 생산량(월) × (판가/2) × 환율 × 기여도 × 개월
-              </div>
-              <table class="input-table">
-                <tr><th>항목</th><th>입력값</th></tr>
-                <tr><td>개선 전 수율(%)</td><td><input type="number" id="yieldStab-before" data-field="yieldStab-before" step="0.0001" /></td></tr>
-                <tr><td>개선 후 수율(%)</td><td><input type="number" id="yieldStab-after" data-field="yieldStab-after" step="0.0001" /></td></tr>
-                <tr><td>전체 Chip수량</td><td><input type="number" id="yieldStab-chips" data-field="yieldStab-chips" step="1" /></td></tr>
-                <tr><td>생산량(월)</td><td><input type="number" id="yieldStab-monthly" data-field="yieldStab-monthly" step="1" /></td></tr>
-                <tr><td>칩 판가($)</td><td><input type="number" id="yieldStab-price" data-field="yieldStab-price" step="0.01" /></td></tr>
-                <tr><td>환율($)</td><td><input type="number" id="yieldStab-fx" data-field="yieldStab-fx" data-autofx="usd-krw" step="0.01" /></td></tr>
-                <tr><td>기여도(0~1)</td><td><input type="number" id="yieldStab-contrib" data-field="yieldStab-contrib" step="0.01" value="1" /></td></tr>
-                <tr><td>개월</td><td><input type="number" id="yieldStab-months" data-field="yieldStab-months" step="1" value="12" /></td></tr>
-              </table>
-              <button class="calc-btn" onclick="calcYieldStab(this)">계산하기</button>
-              <div class="result" id="result-yieldStab">
-                <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
-                <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
-                <div><span class="result-label">결과:</span> <span class="value"></span></div>
-              </div>
-            </div>
-          </div>
-        </section>
+                            <!-- 비용 절감 (기계료/수선비/재료비) -->
+                            <section id="panel-costSave" class="formula-panel">
+                              <h2>비용 절감 (기계료/수선비/재료비)</h2>
+                              <div class="cases" data-panel="costSave">
+                                <div class="case">
+                                  <div class="formula-desc">
+                                    비용절감 = (개선 전단가 - 개선 후단가) × 수량
+                                  </div>
+                                  <table class="input-table">
+                                    <tr><th>항목</th><th>입력값</th></tr>
+                                    <tr><td>개선 전 단가</td><td><input type="number" id="costSave-before" data-field="costSave-before" step="0.01" placeholder="(예시)  → "/></td></tr>
+                                    <tr><td>개선 후 단가</td><td><input type="number" id="costSave-after" data-field="costSave-after" step="0.01" placeholder="(예시)  → "/></td></tr>
+                                    <tr><td>수량</td><td><input type="number" id="costSave-qty" data-field="costSave-qty" step="0.01" placeholder="(예시)  → "/></td></tr>
+                                  </table>
+                                  <button class="calc-btn" onclick="calcCostSave(this)">계산하기</button>
+                                  <div class="result" id="result-costSave">
+                                    <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
+                                    <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
+                                    <div><span class="result-label">결과:</span> <span class="value"></span></div>
+                                  </div>
+                                </div>
+                              </div>
+                            </section>
 
-        <!-- 수율 향상 (램프업) -->
-        <section id="panel-yieldRamp" class="formula-panel">
-          <h2>수율 향상 (램프업)</h2>
-          <div class="cases" data-panel="yieldRamp">
-            <div class="case">
-              <div class="formula-desc">
-                수율향상(램프업) = 개선시점수율향상분 × Chip수량 × 생산량(월) × (칩판가/2) × 환율 × 개월
-              </div>
-              <table class="input-table">
-                <tr><th>항목</th><th>입력값</th></tr>
-                <tr><td>수율 향상분</td><td><input type="number" id="yieldRamp-improv" data-field="yieldRamp-improv" step="0.0001" /></td></tr>
-                <tr><td>Chip수량</td><td><input type="number" id="yieldRamp-chips" data-field="yieldRamp-chips" step="1" /></td></tr>
-                <tr><td>생산량(월)</td><td><input type="number" id="yieldRamp-monthly" data-field="yieldRamp-monthly" step="1" /></td></tr>
-                <tr><td>칩 판가($)</td><td><input type="number" id="yieldRamp-price" data-field="yieldRamp-price" step="0.01" /></td></tr>
-                <tr><td>환율($)</td><td><input type="number" id="yieldRamp-fx" data-field="yieldRamp-fx" data-autofx="usd-krw" step="0.01" class="fx-input" /></td></tr>
-                <tr><td>개월</td><td><input type="number" id="yieldRamp-months" data-field="yieldRamp-months" step="1" value="12" /></td></tr>
-              </table>
-              <button class="calc-btn" onclick="calcYieldRamp(this)">계산하기</button>
-              <div class="result" id="result-yieldRamp">
-                <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
-                <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
-                <div><span class="result-label">결과:</span> <span class="value"></span></div>
-              </div>
-            </div>
-          </div>
-        </section>
+                            <!-- 시간 단축 -->
+                            <section id="panel-timeSave" class="formula-panel">
+                              <h2>업무시간 단축</h2>
+                              <div class="cases" data-panel="timeSave">
+                                <div class="case">
+                                  <div class="formula-desc">
+                                    업무시간단축 = (개선 전 회당업무시간 - 개선 후 회당업무시간) × 작업횟수 × (임금 / 총업무시간) × 인원수 × 개월
+                                  </div>
+                                  <table class="input-table">
+                                    <tr><th>항목</th><th>입력값</th></tr>
+                                    <tr><td>개선 전 회당 업무시간(시간)</td><td><input type="number" id="timeSave-before" data-field="timeSave-before" step="0.01" placeholder="(예시)  → "/></td></tr>
+                                    <tr><td>개선 후 회당 업무시간(시간)</td><td><input type="number" id="timeSave-after" data-field="timeSave-after" step="0.01" placeholder="(예시)  → "/></td></tr>
+                                    <tr><td>작업횟수(회)</td><td><input type="number" id="timeSave-count" data-field="timeSave-count" step="1" placeholder="(예시)  → "/></td></tr>
+                                    <tr><td>임금(연간, 원/인)</td><td><input type="number" id="timeSave-wage" data-field="timeSave-wage" step="1" placeholder="(예시)  → "/></td></tr>
+                                    <tr><td>총업무시간(연간, 시간)</td><td><input type="number" id="timeSave-total" data-field="timeSave-total" step="1" value="2080" placeholder="(안내) 260일 기준 2080시간"/></td></tr>
+                                    <tr><td>인원수(명)</td><td><input type="number" id="timeSave-head" data-field="timeSave-head" step="1" placeholder="(예시)  → "/></td></tr>
+                                    <tr><td>개월</td><td><input type="number" id="timeSave-months" data-field="timeSave-months" step="1" value="1" placeholder="(예시)  → "/></td></tr>
+                                  </table>
+                                  <button class="calc-btn" onclick="calcTimeSave(this)">계산하기</button>
+                                  <div class="result" id="result-timeSave">
+                                    <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
+                                    <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
+                                    <div><span class="result-label">결과:</span> <span class="value"></span></div>
+                                  </div>
+                                </div>
+                              </div>
+                            </section>
 
-        <!-- 리웍 발생률 감소 -->
-        <section id="panel-reworkRate" class="formula-panel">
-          <h2>리웍 발생률 감소</h2>
-          <div class="cases" data-panel="reworkRate">
-            <div class="case">
-              <div class="formula-desc">
-                리웍 발생률 감소 = (((개선 전 리웍률 / 개선 후 리웍률) - 1) × 개선 후 월리웍량 / 생산CAPA) × 개선설비대수 × (설비대당가격 / 5)
-              </div>
-              <table class="input-table">
-                <tr><th>항목</th><th>입력값</th></tr>
-                <tr><td>개선 전 리웍율(%)</td><td><input type="number" id="reworkRate-beforeRate" data-field="reworkRate-beforeRate" step="0.0001" /></td></tr>
-                <tr><td>개선 후 리웍율(%)</td><td><input type="number" id="reworkRate-afterRate" data-field="reworkRate-afterRate" step="0.0001" /></td></tr>
-                <tr><td>개선 후 월 리웍량</td><td><input type="number" id="reworkRate-monthly" data-field="reworkRate-monthly" step="0.01" /></td></tr>
-                <tr><td>생산 CAPA</td><td><input type="number" id="reworkRate-capacity" data-field="reworkRate-capacity" step="0.01" /></td></tr>
-                <tr><td>개선 설비대수</td><td><input type="number" id="reworkRate-eqp" data-field="reworkRate-eqp" step="1" /></td></tr>
-                <tr><td>설비 가격(원)</td><td><input type="number" id="reworkRate-price" data-field="reworkRate-price" step="1" /></td></tr>
-              </table>
-              <button class="calc-btn" onclick="calcReworkRate(this)">계산하기</button>
-              <div class="result" id="result-reworkRate">
-                <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
-                <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
-                <div><span class="result-label">결과:</span> <span class="value"></span></div>
-              </div>
-            </div>
-          </div>
-        </section>
+                            <!-- 인원 단축 -->
+                            <section id="panel-headSave" class="formula-panel">
+                              <h2>인원 단축</h2>
+                              <div class="cases" data-panel="headSave">
+                                <div class="case">
+                                  <div class="formula-desc">
+                                    인원단축 = (개선 전작업인원수 - 개선 후작업인원수) × 임금
+                                  </div>
+                                  <table class="input-table">
+                                    <tr><th>항목</th><th>입력값</th></tr>
+                                    <tr><td>개선 전 작업 인원수(명)</td><td><input type="number" id="headSave-before" data-field="headSave-before" step="1" placeholder="(예시)  → "/></td></tr>
+                                    <tr><td>개선 후 작업 인원수(명)</td><td><input type="number" id="headSave-after" data-field="headSave-after" step="1" placeholder="(예시)  → "/></td></tr>
+                                    <tr><td>임금(기간 기준, 원/인)</td><td><input type="number" id="headSave-wage" data-field="headSave-wage" step="1" placeholder="(예시)  → "/></td></tr>
+                                  </table>
+                                  <button class="calc-btn" onclick="calcHeadSave(this)">계산하기</button>
+                                  <div class="result" id="result-headSave">
+                                    <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
+                                    <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
+                                    <div><span class="result-label">결과:</span> <span class="value"></span></div>
+                                  </div>
+                                </div>
+                              </div>
+                            </section>
 
-        <!-- 사용기준 증가 -->
-        <section id="panel-stdUp" class="formula-panel">
-          <h2>사용기준 증가</h2>
-          <div class="cases" data-panel="stdUp">
-            <div class="case">
+                            <!-- 경영계획/투자품의 비용 -->
+                            <section id="panel-planSave" class="formula-panel">
+                              <h2>경영계획/투자품의 비용</h2>
+                              <div class="cases" data-panel="planSave">
+                                <div class="case">
+                                  <div class="formula-desc">
+                                    비용차 = 계획비용 - 실적비용
+                                  </div>
+                                  <table class="input-table">
+                                    <tr><th>항목</th><th>입력값</th></tr>
+                                    <tr><td>계획비용</td><td><input type="number" id="planSave-plan" data-field="planSave-plan" step="1" placeholder="(예시)  → "/></td></tr>
+                                    <tr><td>실적비용</td><td><input type="number" id="planSave-actual" data-field="planSave-actual" step="1" placeholder="(예시)  → "/></td></tr>
+                                  </table>
+                                  <button class="calc-btn" onclick="calcPlanSave(this)">계산하기</button>
+                                  <div class="result" id="result-planSave">
+                                    <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
+                                    <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
+                                    <div><span class="result-label">결과:</span> <span class="value"></span></div>
+                                  </div>
+                                </div>
+                              </div>
+                            </section>
 
-              <div class="formula-desc">
-                사용기준향상(증가) = ((개선 후사용기준 / 개선 전사용기준) - 1) × 사용량 × 단가
-              </div>
-              <table class="input-table">
-                <tr><th>항목</th><th>입력값</th></tr>
-                <tr><td>개선 전 사용기준</td><td><input type="number" id="stdUp-before" data-field="stdUp-before" step="0.01" /></td></tr>
-                <tr><td>개선 후 사용기준</td><td><input type="number" id="stdUp-after" data-field="stdUp-after" step="0.01" /></td></tr>
-                <tr><td>사용량</td><td><input type="number" id="stdUp-qty" data-field="stdUp-qty" step="0.01" /></td></tr>
-                <tr><td>단가</td><td><input type="number" id="stdUp-price" data-field="stdUp-price" step="0.01" /></td></tr>
-              </table>
-              <button class="calc-btn" onclick="calcStdUp(this)">계산하기</button>
-              <div class="result" id="result-stdUp">
-                <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
-                <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
-                <div><span class="result-label">결과:</span> <span class="value"></span></div>
-              </div>
-            </div>
-          </div>
-        </section>
+                            <!-- 개발비용 감소 -->
+                            <section id="panel-devCost" class="formula-panel">
+                              <h2>개발비용 감소</h2>
+                              <div class="cases" data-panel="devCost">
+                                <div class="case">
+                                  <div class="formula-desc">
+                                    개발비용감소 = (개선 전개발비용 - 개선 후개발비용) × 개발건수
+                                  </div>
+                                  <table class="input-table">
+                                    <tr><th>항목</th><th>입력값</th></tr>
+                                    <tr><td>개선 전 개발비용 (건당)</td><td><input type="number" id="devCost-before" data-field="devCost-before" step="1" placeholder="(예시)  → "/></td></tr>
+                                    <tr><td>개선 후 개발비용 (건당)</td><td><input type="number" id="devCost-after" data-field="devCost-after" step="1" placeholder="(예시)  → "/></td></tr>
+                                    <tr><td>개발건수</td><td><input type="number" id="devCost-count" data-field="devCost-count" step="1" placeholder="(예시)  → "/></td></tr>
+                                  </table>
+                                  <button class="calc-btn" onclick="calcDevCost(this)">계산하기</button>
+                                  <div class="result" id="result-devCost">
+                                    <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
+                                    <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
+                                    <div><span class="result-label">결과:</span> <span class="value"></span></div>
+                                  </div>
+                                </div>
+                              </div>
+                            </section>
 
-        <!-- 사용기준 감소 -->
-        <section id="panel-stdDown" class="formula-panel">
-          <h2>사용기준 감소</h2>
-          <div class="cases" data-panel="stdDown">
-            <div class="case">
-              <div class="formula-desc">
-                사용기준감소 = (1 - (개선 후사용기준 / 개선 전사용기준)) × 사용량 × 단가
-              </div>
-              <table class="input-table">
-                <tr><th>항목</th><th>입력값</th></tr>
-                <tr><td>개선 전 사용기준</td><td><input type="number" id="stdDown-before" data-field="stdDown-before" step="0.01" /></td></tr>
-                <tr><td>개선 후 사용기준</td><td><input type="number" id="stdDown-after" data-field="stdDown-after" step="0.01" /></td></tr>
-                <tr><td>사용량</td><td><input type="number" id="stdDown-qty" data-field="stdDown-qty" step="0.01" /></td></tr>
-                <tr><td>단가</td><td><input type="number" id="stdDown-price" data-field="stdDown-price" step="0.01" /></td></tr>
-              </table>
-              <button class="calc-btn" onclick="calcStdDown(this)">계산하기</button>
-              <div class="result" id="result-stdDown">
-                <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
-                <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
-                <div><span class="result-label">결과:</span> <span class="value"></span></div>
-              </div>
-            </div>
-          </div>
-        </section>
+                            <!-- 개발기간 단축 -->
+                            <section id="panel-devTime" class="formula-panel">
+                              <h2>개발기간 단축</h2>
+                              <div class="cases" data-panel="devTime">
+                                <div class="case">
+                                  <div class="formula-desc">
+                                    개발기간단축(일) = ((개선 전 개발기간 / 개선 후 개발기간) - 1) × 개발비용 × 개발건수
+                                  </div>
+                                  <table class="input-table">
+                                    <tr><th>항목</th><th>입력값</th></tr>
+                                    <tr><td>개선 전 개발기간(일)</td><td><input type="number" id="devTime-before" data-field="devTime-before" step="0.01" placeholder="(예시)  → "/></td></tr>
+                                    <tr><td>개선 후 개발기간(일)</td><td><input type="number" id="devTime-after" data-field="devTime-after" step="0.01" placeholder="(예시)  → "/></td></tr>
+                                    <tr><td>개발비용(건당)</td><td><input type="number" id="devTime-cost" data-field="devTime-cost" step="1" placeholder="(예시)  → "/></td></tr>
+                                    <tr><td>개발건수</td><td><input type="number" id="devTime-count" data-field="devTime-count" step="1" placeholder="(예시)  → "/></td></tr>
+                                  </table>
+                                  <button class="calc-btn" onclick="calcDevTime(this)">계산하기</button>
+                                  <div class="result" id="result-devTime">
+                                    <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
+                                    <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
+                                    <div><span class="result-label">결과:</span> <span class="value"></span></div>
+                                  </div>
+                                </div>
+                              </div>
+                            </section>
 
-        <!-- 전체사용량 감소 (설비대수) -->
-        <section id="panel-usageEqp" class="formula-panel">
-          <h2>전체사용량 감소 (설비대수)</h2>
-          <div class="cases" data-panel="usageEqp">
-            <div class="case">
-              <div class="formula-desc">
-                전체사용량감소(설비대수) = (개선 전 대당사용량 - 개선 후 대당사용량) × 단가 × 설비대수
-              </div>
-              <table class="input-table">
-                <tr><th>항목</th><th>입력값</th></tr>
-                <tr><td>개선 전 대당 사용량</td><td><input type="number" id="usageEqp-before" data-field="usageEqp-before" step="0.01" /></td></tr>
-                <tr><td>개선 후 대당 사용량</td><td><input type="number" id="usageEqp-after" data-field="usageEqp-after" step="0.01" /></td></tr>
-                <tr><td>단가</td><td><input type="number" id="usageEqp-price" data-field="usageEqp-price" step="0.01" /></td></tr>
-                <tr><td>설비대수</td><td><input type="number" id="usageEqp-eqp" data-field="usageEqp-eqp" step="1" /></td></tr>
-              </table>
-              <button class="calc-btn" onclick="calcUsageEqp(this)">계산하기</button>
-              <div class="result" id="result-usageEqp">
-                <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
-                <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
-                <div><span class="result-label">결과:</span> <span class="value"></span></div>
-              </div>
-            </div>
-          </div>
-        </section>
+                            <!-- ST 감소 -->
+                            <section id="panel-stdTime" class="formula-panel">
+                              <h2>ST 감소</h2>
+                              <div class="cases" data-panel="stdTime">
+                                <div class="case">
+                                  <div class="formula-desc">
+                                    ST감소 = ((개선 전ST / 개선 후ST) - 1) × 설비점유율 × 설비대수 × (설비가격 / 5) × 기여도
+                                  </div>
+                                  <table class="input-table">
+                                    <tr><th>항목</th><th>입력값</th></tr>
+                                    <tr><td>개선 전 ST</td><td><input type="number" id="stdTime-before" data-field="stdTime-before" step="0.01" placeholder="(예시)  → "/></td></tr>
+                                    <tr><td>개선 후 ST</td><td><input type="number" id="stdTime-after" data-field="stdTime-after" step="0.01" placeholder="(예시)  → "/></td></tr>
+                                    <tr><td>설비 점유율(%)</td><td><input type="number" id="stdTime-util" data-field="stdTime-util" step="0.01" placeholder="(예시)  → "/></td></tr>
+                                    <tr><td>설비대수</td><td><input type="number" id="stdTime-eqp" data-field="stdTime-eqp" step="1" placeholder="(예시)  → "/></td></tr>
+                                    <tr><td>설비 가격(원)</td><td><input type="number" id="stdTime-price" data-field="stdTime-price" step="1" placeholder="(예시)  → "/></td></tr>
+                                    <tr><td>기여도(0~1)</td><td><input type="number" id="stdTime-contrib" data-field="stdTime-contrib" step="0.01" value="1" placeholder="(예시)  → "/></td></tr>
+                                  </table>
+                                  <button class="calc-btn" onclick="calcStdTime(this)">계산하기</button>
+                                  <div class="result" id="result-stdTime">
+                                    <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
+                                    <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
+                                    <div><span class="result-label">결과:</span> <span class="value"></span></div>
+                                  </div>
+                                </div>
+                              </div>
+                            </section>
 
-        <!-- 전체사용량 감소 (cc) -->
-        <section id="panel-usageTotal" class="formula-panel">
-          <h2>전체사용량 감소 (cc)</h2>
-          <div class="cases" data-panel="usageTotal">
-            <div class="case">
-              <div class="formula-desc">
-                전체사용량감소(cc) = (개선 전사용량 - 개선 후사용량) × 단가
-              </div>
-              <table class="input-table">
-                <tr><th>항목</th><th>입력값</th></tr>
-                <tr><td>개선 전 사용량</td><td><input type="number" id="usageTotal-before" data-field="usageTotal-before" step="0.01" /></td></tr>
-                <tr><td>개선 후 사용량</td><td><input type="number" id="usageTotal-after" data-field="usageTotal-after" step="0.01" /></td></tr>
-                <tr><td>단가</td><td><input type="number" id="usageTotal-price" data-field="usageTotal-price" step="0.01" /></td></tr>
-              </table>
-              <button class="calc-btn" onclick="calcUsageTotal(this)">계산하기</button>
-              <div class="result" id="result-usageTotal">
-                <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
-                <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
-                <div><span class="result-label">결과:</span> <span class="value"></span></div>
-              </div>
-            </div>
-          </div>
-        </section>
+                            <!-- 설비 생산성 향상 -->
+                            <section id="panel-eqpProd" class="formula-panel">
+                              <h2>설비 생산성 향상</h2>
+                              <div class="cases" data-panel="eqpProd">
+                                <div class="case">
+                                  <div class="formula-desc">
+                                    설비생산성향상 = ((개선 후생산성 / 개선 전생산성) - 1) × 설비대수 × (설비가격 / 5) × 기여도
+                                  </div>
+                                  <table class="input-table">
+                                    <tr><th>항목</th><th>입력값</th></tr>
+                                    <tr><td>개선 전 생산성</td><td><input type="number" id="eqpProd-before" data-field="eqpProd-before" step="0.01" placeholder="(예시)  → "/></td></tr>
+                                    <tr><td>개선 후 생산성</td><td><input type="number" id="eqpProd-after" data-field="eqpProd-after" step="0.01" placeholder="(예시)  → "/></td></tr>
+                                    <tr><td>설비대수</td><td><input type="number" id="eqpProd-eqp" data-field="eqpProd-eqp" step="1" placeholder="(예시)  → "/></td></tr>
+                                    <tr><td>설비 가격(원)</td><td><input type="number" id="eqpProd-price" data-field="eqpProd-price" step="1" placeholder="(예시)  → "/></td></tr>
+                                    <tr><td>기여도(0~1)</td><td><input type="number" id="eqpProd-contrib" data-field="eqpProd-contrib" step="0.01" value="1" placeholder="(예시)  → "/></td></tr>
+                                  </table>
+                                  <button class="calc-btn" onclick="calcEqpProd(this)">계산하기</button>
+                                  <div class="result" id="result-eqpProd">
+                                    <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
+                                    <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
+                                    <div><span class="result-label">결과:</span> <span class="value"></span></div>
+                                  </div>
+                                </div>
+                              </div>
+                            </section>
 
-        <!-- 단가 감축 (설비대수) -->
-        <section id="panel-unitEqp" class="formula-panel">
-          <h2>단가 감축 (설비대수)</h2>
-          <div class="cases" data-panel="unitEqp">
-            <div class="case">
-              <div class="formula-desc">
-                단가감축(설비대수) = (개선 전단가 - 개선 후단가) × 대당 사용량 × 설비대수
-              </div>
-              <table class="input-table">
-                <tr><th>항목</th><th>입력값</th></tr>
-                <tr><td>개선 전 단가</td><td><input type="number" id="unitEqp-before" data-field="unitEqp-before" step="0.01" /></td></tr>
-                <tr><td>개선 후 단가</td><td><input type="number" id="unitEqp-after" data-field="unitEqp-after" step="0.01" /></td></tr>
-                <tr><td>대당 사용량</td><td><input type="number" id="unitEqp-usage" data-field="unitEqp-usage" step="0.01" /></td></tr>
-                <tr><td>설비대수</td><td><input type="number" id="unitEqp-eqp" data-field="unitEqp-eqp" step="1" /></td></tr>
-              </table>
-              <button class="calc-btn" onclick="calcUnitEqp(this)">계산하기</button>
-              <div class="result" id="result-unitEqp">
-                <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
-                <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
-                <div><span class="result-label">결과:</span> <span class="value"></span></div>
-              </div>
-            </div>
-          </div>
-        </section>
+                            <!-- 정지 로스 감소 -->
+                            <section id="panel-downLoss" class="formula-panel">
+                              <h2>정지 로스 감소</h2>
+                              <div class="cases" data-panel="downLoss">
+                                <div class="case">
+                                  <div class="formula-desc">
+                                    정지로스감소 = ((개선 전정지시간 / 총작업시간) - (개선 후정지시간 / 총작업시간)) × 설비대수 × (대당가격 / 5) × 기여도
+                                  </div>
+                                  <table class="input-table">
+                                    <tr><th>항목</th><th>입력값</th></tr>
+                                    <tr><td>개선 전 정지시간(분)</td><td><input type="number" id="downLoss-before" data-field="downLoss-before" step="0.01" placeholder="(예시)  → "/></td></tr>
+                                    <tr><td>개선 후 정지시간(분)</td><td><input type="number" id="downLoss-after" data-field="downLoss-after" step="0.01" placeholder="(예시)  → "/></td></tr>
+                                    <tr><td>총작업시간(분)</td><td><input type="number" id="downLoss-total" data-field="downLoss-total" step="1" value="1440" placeholder="(예시)  → "/></td></tr>
+                                    <tr><td>설비대수</td><td><input type="number" id="downLoss-eqp" data-field="downLoss-eqp" step="1" placeholder="(예시)  → "/></td></tr>
+                                    <tr><td>설비 가격(원)</td><td><input type="number" id="downLoss-price" data-field="downLoss-price" step="1" placeholder="(예시)  → "/></td></tr>
+                                    <tr><td>기여도(0~1)</td><td><input type="number" id="downLoss-contrib" data-field="downLoss-contrib" step="0.01" value="1" placeholder="(예시)  → "/></td></tr>
+                                  </table>
+                                  <button class="calc-btn" onclick="calcDownLoss(this)">계산하기</button>
+                                  <div class="result" id="result-downLoss">
+                                    <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
+                                    <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
+                                    <div><span class="result-label">결과:</span> <span class="value"></span></div>
+                                  </div>
+                                </div>
+                              </div>
+                            </section>
 
-        <!-- 단가 감축 (cc) -->
-        <section id="panel-unitDown" class="formula-panel">
-          <h2>단가 감축 (cc)</h2>
-          <div class="cases" data-panel="unitDown">
-            <div class="case">
-              <div class="formula-desc">
-                단가감축(cc) = (개선 전단가 - 개선 후단가) × 사용량
-              </div>
-              <table class="input-table">
-                <tr><th>항목</th><th>입력값</th></tr>
-                <tr><td>개선 전 단가</td><td><input type="number" id="unitDown-before" data-field="unitDown-before" step="0.01" /></td></tr>
-                <tr><td>개선 후 단가</td><td><input type="number" id="unitDown-after" data-field="unitDown-after" step="0.01" /></td></tr>
-                <tr><td>사용량</td><td><input type="number" id="unitDown-qty" data-field="unitDown-qty" step="0.01" /></td></tr>
-              </table>
-              <button class="calc-btn" onclick="calcUnitDown(this)">계산하기</button>
-              <div class="result" id="result-unitDown">
-                <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
-                <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
-                <div><span class="result-label">결과:</span> <span class="value"></span></div>
-              </div>
-            </div>
-          </div>
-        </section>
+                            <!-- 런다운 감소 -->
+                            <section id="panel-rundown" class="formula-panel">
+                              <h2>런다운 감소</h2>
+                              <div class="cases" data-panel="rundown">
+                                <div class="case">
+                                  <div class="formula-desc">
+                                    런다운감소 = ((개선 전런다운시간 / 총작업시간) - (개선 후런다운시간 / 총작업시간)) × 설비대수 × (대당가격 / 5) × 기여도
+                                  </div>
+                                  <table class="input-table">
+                                    <tr><th>항목</th><th>입력값</th></tr>
+                                    <tr><td>개선 전 런다운시간</td><td><input type="number" id="rundown-before" data-field="rundown-before" step="0.01" placeholder="(예시)  → "/></td></tr>
+                                    <tr><td>개선 후 런다운시간</td><td><input type="number" id="rundown-after" data-field="rundown-after" step="0.01" placeholder="(예시)  → "/></td></tr>
+                                    <tr><td>총작업시간(분)</td><td><input type="number" id="rundown-total" data-field="rundown-total" step="1" value="1440" placeholder="(예시)  → "/></td></tr>
+                                    <tr><td>설비대수</td><td><input type="number" id="rundown-eqp" data-field="rundown-eqp" step="1" placeholder="(예시)  → "/></td></tr>
+                                    <tr><td>설비 가격(원)</td><td><input type="number" id="rundown-price" data-field="rundown-price" step="1" placeholder="(예시)  → "/></td></tr>
+                                    <tr><td>기여도(0~1)</td><td><input type="number" id="rundown-contrib" data-field="rundown-contrib" step="0.01" value="1" placeholder="(예시)  → "/></td></tr>
+                                  </table>
+                                  <button class="calc-btn" onclick="calcRundown(this)">계산하기</button>
+                                  <div class="result" id="result-rundown">
+                                    <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
+                                    <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
+                                    <div><span class="result-label">결과:</span> <span class="value"></span></div>
+                                  </div>
+                                </div>
+                              </div>
+                            </section>
 
-        <!-- 비용 절감 (기계료/수선비/재료비) -->
-        <section id="panel-costSave" class="formula-panel">
-          <h2>비용 절감 (기계료/수선비/재료비)</h2>
-          <div class="cases" data-panel="costSave">
-            <div class="case">
-              <div class="formula-desc">
-                비용절감 = (개선 전단가 - 개선 후단가) × 수량
-              </div>
-              <table class="input-table">
-                <tr><th>항목</th><th>입력값</th></tr>
-                <tr><td>개선 전 단가</td><td><input type="number" id="costSave-before" data-field="costSave-before" step="0.01" /></td></tr>
-                <tr><td>개선 후 단가</td><td><input type="number" id="costSave-after" data-field="costSave-after" step="0.01" /></td></tr>
-                <tr><td>수량</td><td><input type="number" id="costSave-qty" data-field="costSave-qty" step="0.01" /></td></tr>
-              </table>
-              <button class="calc-btn" onclick="calcCostSave(this)">계산하기</button>
-              <div class="result" id="result-costSave">
-                <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
-                <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
-                <div><span class="result-label">결과:</span> <span class="value"></span></div>
-              </div>
-            </div>
-          </div>
-        </section>
+                            <!-- 면적당 생산 -->
+                            <section id="panel-areaProd" class="formula-panel">
+                              <h2>면적당 생산</h2>
+                              <div class="cases" data-panel="areaProd">
+                                <div class="case">
+                                  <div class="formula-desc">
+                                    면적당생산 = 활용완료면적(개선 전 면적 - 개선 후 면적) × 평당건설비용
+                                  </div>
+                                  <table class="input-table">
+                                    <tr><th>항목</th><th>입력값</th></tr>
+                                    <tr><td>개선 전 면적</td><td><input type="number" id="areaProd-beforearea" data-field="areaProd-beforearea" step="0.01" placeholder="(예시)  → "/></td></tr>
+                                    <tr><td>개선 후 면적</td><td><input type="number" id="areaProd-afterarea" data-field="areaProd-afterarea" step="0.01" placeholder="(예시)  → "/></td></tr>
+                                    <tr><td>평당 건설비용</td><td><input type="number" id="areaProd-cost" data-field="areaProd-cost" step="1" placeholder="(예시)  → "/></td></tr>
+                                  </table>
+                                  <button class="calc-btn" onclick="calcAreaProd(this)">계산하기</button>
+                                  <div class="result" id="result-areaProd">
+                                    <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
+                                    <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
+                                    <div><span class="result-label">결과:</span> <span class="value"></span></div>
+                                  </div>
+                                </div>
+                              </div>
+                            </section>
 
-        <!-- 시간 단축 -->
-        <section id="panel-timeSave" class="formula-panel">
-          <h2>업무시간 단축</h2>
-          <div class="cases" data-panel="timeSave">
-            <div class="case">
-              <div class="formula-desc">
-                업무시간단축 = (개선 전 회당업무시간 - 개선 후 회당업무시간) × 작업횟수 × (임금 / 총업무시간) × 인원수 × 개월
-              </div>
-              <table class="input-table">
-                <tr><th>항목</th><th>입력값</th></tr>
-                <tr><td>개선 전 회당 업무시간(시간)</td><td><input type="number" id="timeSave-before" data-field="timeSave-before" step="0.01" /></td></tr>
-                <tr><td>개선 후 회당 업무시간(시간)</td><td><input type="number" id="timeSave-after" data-field="timeSave-after" step="0.01" /></td></tr>
-                <tr><td>작업횟수(회)</td><td><input type="number" id="timeSave-count" data-field="timeSave-count" step="1" /></td></tr>
-                <tr><td>임금(연간, 원/인)</td><td><input type="number" id="timeSave-wage" data-field="timeSave-wage" step="1" /></td></tr>
-                <tr><td>총업무시간(연간, 시간)</td><td><input type="number" id="timeSave-total" data-field="timeSave-total" step="1" value="2080" /></td></tr>
-                <tr><td>인원수(명)</td><td><input type="number" id="timeSave-head" data-field="timeSave-head" step="1" /></td></tr>
-                <tr><td>개월</td><td><input type="number" id="timeSave-months" data-field="timeSave-months" step="1" value="1" /></td></tr>
-              </table>
-              <button class="calc-btn" onclick="calcTimeSave(this)">계산하기</button>
-              <div class="result" id="result-timeSave">
-                <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
-                <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
-                <div><span class="result-label">결과:</span> <span class="value"></span></div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- 인원 단축 -->
-        <section id="panel-headSave" class="formula-panel">
-          <h2>인원 단축</h2>
-          <div class="cases" data-panel="headSave">
-            <div class="case">
-              <div class="formula-desc">
-                인원단축 = (개선 전작업인원수 - 개선 후작업인원수) × 임금
-              </div>
-              <table class="input-table">
-                <tr><th>항목</th><th>입력값</th></tr>
-                <tr><td>개선 전 작업 인원수(명)</td><td><input type="number" id="headSave-before" data-field="headSave-before" step="1" /></td></tr>
-                <tr><td>개선 후 작업 인원수(명)</td><td><input type="number" id="headSave-after" data-field="headSave-after" step="1" /></td></tr>
-                <tr><td>임금(기간 기준, 원/인)</td><td><input type="number" id="headSave-wage" data-field="headSave-wage" step="1" /></td></tr>
-              </table>
-              <button class="calc-btn" onclick="calcHeadSave(this)">계산하기</button>
-              <div class="result" id="result-headSave">
-                <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
-                <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
-                <div><span class="result-label">결과:</span> <span class="value"></span></div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- 경영계획/투자품의 비용 -->
-        <section id="panel-planSave" class="formula-panel">
-          <h2>경영계획/투자품의 비용</h2>
-          <div class="cases" data-panel="planSave">
-            <div class="case">
-              <div class="formula-desc">
-                비용차 = 계획비용 - 실적비용
-              </div>
-              <table class="input-table">
-                <tr><th>항목</th><th>입력값</th></tr>
-                <tr><td>계획비용</td><td><input type="number" id="planSave-plan" data-field="planSave-plan" step="1" /></td></tr>
-                <tr><td>실적비용</td><td><input type="number" id="planSave-actual" data-field="planSave-actual" step="1" /></td></tr>
-              </table>
-              <button class="calc-btn" onclick="calcPlanSave(this)">계산하기</button>
-              <div class="result" id="result-planSave">
-                <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
-                <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
-                <div><span class="result-label">결과:</span> <span class="value"></span></div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- 개발비용 감소 -->
-        <section id="panel-devCost" class="formula-panel">
-          <h2>개발비용 감소</h2>
-          <div class="cases" data-panel="devCost">
-            <div class="case">
-              <div class="formula-desc">
-                개발비용감소 = (개선 전개발비용 - 개선 후개발비용) × 개발건수
-              </div>
-              <table class="input-table">
-                <tr><th>항목</th><th>입력값</th></tr>
-                <tr><td>개선 전 개발비용 (건당)</td><td><input type="number" id="devCost-before" data-field="devCost-before" step="1" /></td></tr>
-                <tr><td>개선 후 개발비용 (건당)</td><td><input type="number" id="devCost-after" data-field="devCost-after" step="1" /></td></tr>
-                <tr><td>개발건수</td><td><input type="number" id="devCost-count" data-field="devCost-count" step="1" /></td></tr>
-              </table>
-              <button class="calc-btn" onclick="calcDevCost(this)">계산하기</button>
-              <div class="result" id="result-devCost">
-                <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
-                <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
-                <div><span class="result-label">결과:</span> <span class="value"></span></div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- 개발기간 단축 -->
-        <section id="panel-devTime" class="formula-panel">
-          <h2>개발기간 단축</h2>
-          <div class="cases" data-panel="devTime">
-            <div class="case">
-              <div class="formula-desc">
-                개발기간단축(일) = ((개선 전 개발기간 / 개선 후 개발기간) - 1) × 개발비용 × 개발건수
-              </div>
-              <table class="input-table">
-                <tr><th>항목</th><th>입력값</th></tr>
-                <tr><td>개선 전 개발기간(일)</td><td><input type="number" id="devTime-before" data-field="devTime-before" step="0.01" /></td></tr>
-                <tr><td>개선 후 개발기간(일)</td><td><input type="number" id="devTime-after" data-field="devTime-after" step="0.01" /></td></tr>
-                <tr><td>개발비용(건당)</td><td><input type="number" id="devTime-cost" data-field="devTime-cost" step="1" /></td></tr>
-                <tr><td>개발건수</td><td><input type="number" id="devTime-count" data-field="devTime-count" step="1" /></td></tr>
-              </table>
-              <button class="calc-btn" onclick="calcDevTime(this)">계산하기</button>
-              <div class="result" id="result-devTime">
-                <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
-                <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
-                <div><span class="result-label">결과:</span> <span class="value"></span></div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- ST 감소 -->
-        <section id="panel-stdTime" class="formula-panel">
-          <h2>ST 감소</h2>
-          <div class="cases" data-panel="stdTime">
-            <div class="case">
-              <div class="formula-desc">
-                ST감소 = ((개선 전ST / 개선 후ST) - 1) × 설비점유율 × 설비대수 × (설비가격 / 5) × 기여도
-              </div>
-              <table class="input-table">
-                <tr><th>항목</th><th>입력값</th></tr>
-                <tr><td>개선 전 ST</td><td><input type="number" id="stdTime-before" data-field="stdTime-before" step="0.01" /></td></tr>
-                <tr><td>개선 후 ST</td><td><input type="number" id="stdTime-after" data-field="stdTime-after" step="0.01" /></td></tr>
-                <tr><td>설비 점유율(%)</td><td><input type="number" id="stdTime-util" data-field="stdTime-util" step="0.01" /></td></tr>
-                <tr><td>설비대수</td><td><input type="number" id="stdTime-eqp" data-field="stdTime-eqp" step="1" /></td></tr>
-                <tr><td>설비 가격(원)</td><td><input type="number" id="stdTime-price" data-field="stdTime-price" step="1" /></td></tr>
-                <tr><td>기여도(0~1)</td><td><input type="number" id="stdTime-contrib" data-field="stdTime-contrib" step="0.01" value="1" /></td></tr>
-              </table>
-              <button class="calc-btn" onclick="calcStdTime(this)">계산하기</button>
-              <div class="result" id="result-stdTime">
-                <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
-                <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
-                <div><span class="result-label">결과:</span> <span class="value"></span></div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- 설비 생산성 향상 -->
-        <section id="panel-eqpProd" class="formula-panel">
-          <h2>설비 생산성 향상</h2>
-          <div class="cases" data-panel="eqpProd">
-            <div class="case">
-              <div class="formula-desc">
-                설비생산성향상 = ((개선 후생산성 / 개선 전생산성) - 1) × 설비대수 × (설비가격 / 5) × 기여도
-              </div>
-              <table class="input-table">
-                <tr><th>항목</th><th>입력값</th></tr>
-                <tr><td>개선 전 생산성</td><td><input type="number" id="eqpProd-before" data-field="eqpProd-before" step="0.01" /></td></tr>
-                <tr><td>개선 후 생산성</td><td><input type="number" id="eqpProd-after" data-field="eqpProd-after" step="0.01" /></td></tr>
-                <tr><td>설비대수</td><td><input type="number" id="eqpProd-eqp" data-field="eqpProd-eqp" step="1" /></td></tr>
-                <tr><td>설비 가격(원)</td><td><input type="number" id="eqpProd-price" data-field="eqpProd-price" step="1" /></td></tr>
-                <tr><td>기여도(0~1)</td><td><input type="number" id="eqpProd-contrib" data-field="eqpProd-contrib" step="0.01" value="1" /></td></tr>
-              </table>
-              <button class="calc-btn" onclick="calcEqpProd(this)">계산하기</button>
-              <div class="result" id="result-eqpProd">
-                <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
-                <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
-                <div><span class="result-label">결과:</span> <span class="value"></span></div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- 정지 로스 감소 -->
-        <section id="panel-downLoss" class="formula-panel">
-          <h2>정지 로스 감소</h2>
-          <div class="cases" data-panel="downLoss">
-            <div class="case">
-              <div class="formula-desc">
-                정지로스감소 = ((개선 전정지시간 / 총작업시간) - (개선 후정지시간 / 총작업시간)) × 설비대수 × (대당가격 / 5) × 기여도
-              </div>
-              <table class="input-table">
-                <tr><th>항목</th><th>입력값</th></tr>
-                <tr><td>개선 전 정지시간(분)</td><td><input type="number" id="downLoss-before" data-field="downLoss-before" step="0.01" /></td></tr>
-                <tr><td>개선 후 정지시간(분)</td><td><input type="number" id="downLoss-after" data-field="downLoss-after" step="0.01" /></td></tr>
-                <tr><td>총작업시간(분)</td><td><input type="number" id="downLoss-total" data-field="downLoss-total" step="1" value="1440" /></td></tr>
-                <tr><td>설비대수</td><td><input type="number" id="downLoss-eqp" data-field="downLoss-eqp" step="1" /></td></tr>
-                <tr><td>설비 가격(원)</td><td><input type="number" id="downLoss-price" data-field="downLoss-price" step="1" /></td></tr>
-                <tr><td>기여도(0~1)</td><td><input type="number" id="downLoss-contrib" data-field="downLoss-contrib" step="0.01" value="1" /></td></tr>
-              </table>
-              <button class="calc-btn" onclick="calcDownLoss(this)">계산하기</button>
-              <div class="result" id="result-downLoss">
-                <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
-                <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
-                <div><span class="result-label">결과:</span> <span class="value"></span></div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- 런다운 감소 -->
-        <section id="panel-rundown" class="formula-panel">
-          <h2>런다운 감소</h2>
-          <div class="cases" data-panel="rundown">
-            <div class="case">
-              <div class="formula-desc">
-                런다운감소 = ((개선 전런다운시간 / 총작업시간) - (개선 후런다운시간 / 총작업시간)) × 설비대수 × (대당가격 / 5) × 기여도
-              </div>
-              <table class="input-table">
-                <tr><th>항목</th><th>입력값</th></tr>
-                <tr><td>개선 전 런다운시간</td><td><input type="number" id="rundown-before" data-field="rundown-before" step="0.01" /></td></tr>
-                <tr><td>개선 후 런다운시간</td><td><input type="number" id="rundown-after" data-field="rundown-after" step="0.01" /></td></tr>
-                <tr><td>총작업시간(분)</td><td><input type="number" id="rundown-total" data-field="rundown-total" step="1" value="1440" /></td></tr>
-                <tr><td>설비대수</td><td><input type="number" id="rundown-eqp" data-field="rundown-eqp" step="1" /></td></tr>
-                <tr><td>설비 가격(원)</td><td><input type="number" id="rundown-price" data-field="rundown-price" step="1" /></td></tr>
-                <tr><td>기여도(0~1)</td><td><input type="number" id="rundown-contrib" data-field="rundown-contrib" step="0.01" value="1" /></td></tr>
-              </table>
-              <button class="calc-btn" onclick="calcRundown(this)">계산하기</button>
-              <div class="result" id="result-rundown">
-                <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
-                <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
-                <div><span class="result-label">결과:</span> <span class="value"></span></div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- 면적당 생산 -->
-        <section id="panel-areaProd" class="formula-panel">
-          <h2>면적당 생산</h2>
-          <div class="cases" data-panel="areaProd">
-            <div class="case">
-              <div class="formula-desc">
-                면적당생산 = 활용완료면적(개선 전 면적 - 개선 후 면적) × 평당건설비용
-              </div>
-              <table class="input-table">
-                <tr><th>항목</th><th>입력값</th></tr>
-                <tr><td>개선 전 면적</td><td><input type="number" id="areaProd-beforearea" data-field="areaProd-beforearea" step="0.01" /></td></tr>
-                <tr><td>개선 후 면적</td><td><input type="number" id="areaProd-afterarea" data-field="areaProd-afterarea" step="0.01" /></td></tr>
-                <tr><td>평당 건설비용</td><td><input type="number" id="areaProd-cost" data-field="areaProd-cost" step="1" /></td></tr>
-              </table>
-              <button class="calc-btn" onclick="calcAreaProd(this)">계산하기</button>
-              <div class="result" id="result-areaProd">
-                <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
-                <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
-                <div><span class="result-label">결과:</span> <span class="value"></span></div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-      </div>
-    </div>
-  </div>
-</div>
-	</main>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                        </main>
 
 <script>
   // 체크박스 → 패널 show/hide + 수량 동기화
