@@ -1,378 +1,616 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>S.PKG MI-Nexus Portal - v0.15</title>
-    <style>
-        :root {
-            --mi-deep-blue: #003B70;
-            --mi-teal: #00A6C2;
-            --mi-navy: #0A1E3F;
-            --mi-bg: #070b12;
-            --mi-surface: #0f172a;
-            --mi-text-main: #f9fafb;
-            --mi-text-sub: #9ca3af;
-            --mi-accent: #22c55e;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            background: radial-gradient(circle at top left, #0f172a 0, #020617 45%, #000000 100%);
-            color: var(--mi-text-main);
-            background-image:linear-gradient(to bottom, rgba(15,23,42,0.7), rgba(15,23,42,0.9)),
-                url("https://images.pexels.com/photos/34088/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=1600");
-            background-size: cover;
-            background-position: center;
-            filter: saturate(1.1);
-            z-index: -1;
-        }
-
-        a {
-            color: inherit;
-            text-decoration: none;
-        }
-
-        /* ===== 상단 네비게이션 ===== */
-        .navbar-wrapper {
-            position: sticky;
-            top: 0;
-            z-index: 20;
-            backdrop-filter: blur(16px);
-            background: linear-gradient(to bottom, rgba(15,23,42,0.92), rgba(15,23,42,0.0));
-            border-bottom: 1px solid rgba(15,23,42,0.9);
-        }
-
-        .navbar {
-            max-width: 1420px;
-            margin: 0 auto;
-            padding: 10px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-        }
-
-        .navbar-left {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 13px;
-        }
-
-        .mi-logo {
-            width: 26px;
-            height: 26px;
-            border-radius: 999px;
-            background: radial-gradient(circle at 20% 0%, #38bdf8, #0f172a 60%, #000 80%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        .navbar-title-main {
-            font-weight: 600;
-            font-size: 13px;
-        }
-
-        .navbar-title-sub {
-            font-size: 12px;
-            color: var(--mi-text-sub);
-        }
-
-        .navbar-menu {
-            display: flex;
-            align-items: center;
-            gap: 18px;
-            font-size: 12px;
-            color: var(--mi-text-sub);
-        }
-
-        .navbar-right {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .navbar-cta {
-            font-size: 11px;
-            padding: 2px;
-            border-radius: 999px;
-            border: none;
-            background: transparent;
-        }
-
-        .top-status-bar {
-            font-size: 11px;
-            border-radius: 999px;
-            border: none;
-            background: linear-gradient(135deg, var(--mi-teal), #22c55e);
-            color: #020617;
-            font-weight: 500;
-            box-shadow: 0 0 18px rgba(34,197,94,0.4);
-            padding: 4px 10px;
-            white-space: nowrap;
-        }
-
-        #clock {
-            font-variant-numeric: tabular-nums;
-        }
-
-        #fx-rate {
-            font-variant-numeric: tabular-nums;
-        }
-
-        .notice-bar {
-            max-width: 1380px;
-            margin: 0 auto 8px auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 999px;
-            background: rgba(56,189,248,0.12);
-            color: #e0f2fe;
-            font-weight: 500;
-            border: 1px solid rgba(56,189,248,0.4);
-            font-size: 12px;
-            padding: 4px 16px;
-        }
-
-        @media (max-width: 900px) {
-            .navbar {
-                padding: 8px 16px;
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>S.PKG MI-Nexus Portal - v0.15</title>
+        <style>
+            :root {
+                --mi-deep-blue: #003B70;
+                --mi-teal: #00A6C2;
+                --mi-navy: #0A1E3F;
+                --mi-bg: #070b12;
+				--mi-surface: #0f172a;
+				--mi-text-main: #f9fafb;
+				--mi-text-sub: #9ca3af;
+				--mi-accent: #22c55e;
+			}
+			
+			* {
+				box-sizing: border-box;
+				margin: 0;
+				padding: 0;
             }
-            .navbar-menu {
-                display: none;
+			
+			body {                
+                font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+                background: radial-gradient(circle at top left, #0f172a 0, #020617 45%, #000000 100%);
+                color: var(--mi-text-main);
+                background-image: linear-gradient(to bottom, rgba(15,23,42,0.7), rgba(15,23,42,0.9)),
+                    url("https://images.pexels.com/photos/34088/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=1600");
+                background-size: cover;
+                background-position: center;
+                filter: saturate(1.1);
+                z-index: -1;
+                height: 100vh;
+                overflow-y: hidden;
+                }
+			
+			body::-webkit-scrollbar {
+				display: none;
+			}
+			
+			a {
+				color: inherit;
+				text-decoration: none;
+			}
+			
+			/* ===== 상단 네비게이션 ===== */
+			.navbar-wrapper {
+				position: sticky;
+				top: 0;
+				z-index: 20;
+                backdrop-filter: blur(16px);
+                background: linear-gradient(to bottom, rgba(15,23,42,0.92), rgba(15,23,42,0.0));
+                border-bottom: 1px solid rgba(15,23,42,0.9);
             }
-        }
+			
+			.navbar {
+				max-width: 1420px;
+				margin: 0 auto;
+				padding: 10px 20px;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				gap: 16px;
+			}
+			
+			.navbar-left {
+				display: flex;
+				align-items: center;
+				gap: 10px;
+				font-size: 13px;
+			}
+			
+			.mi-logo {
+				width: 26px;
+				height: 26px;
+				border-radius: 999px;
+				background: radial-gradient(circle at 20% 0%, #38bdf8, #0f172a 60%, #000 80%);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				overflow: hidden;
+			}
+			
+			.navbar-title-main {
+				font-weight: 600;
+				font-size: 13px;
+			}
+			
+			.navbar-title-sub {
+				font-size: 12px;
+				color: var(--mi-text-sub);
+			}
+			
+			.navbar-menu {
+				display: flex;
+				align-items: center;
+				gap: 18px;
+				font-size: 12px;
+				color: var(--mi-text-sub);
+			}
+			
+			.navbar-right {
+				display: flex;
+				gap: 10px;
+				align-items: center;
+			}
+			
+			.navbar-cta {
+				font-size: 11px;
+				padding: 2px;
+				border-radius: 999px;
+				border: none;
+				background: transparent;
+			}
+			
+			.top-status-bar {
+				font-size: 11px;
+				border-radius: 999px;
+				border: none;
+				background: linear-gradient(135deg, var(--mi-teal), #22c55e);
+				color: #020617;
+				font-weight: 500;
+				box-shadow: 0 0 18px rgba(34,197,94,0.4);
+				padding: 4px 10px;
+				white-space: nowrap;
+			}
+			
+			#clock {
+				font-variant-numeric: tabular-nums;
+			}
+			
+			#fx-rate {
+				font-variant-numeric: tabular-nums;
+			}
+			
+			.notice-bar {
+				max-width: 1380px;
+				margin: 0 auto 8px auto;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				border-radius: 999px;
+				background: rgba(56,189,248,0.12);
+				color: #e0f2fe;
+				font-weight: 500;
+				border: 1px solid rgba(56,189,248,0.4);
+				font-size: 12px;
+				padding: 4px 16px;
+			}
+			
 
-        /* ===== 상위 메뉴 기본 스타일 (hover 밑줄 유지) ===== */
-        .navbar-menu > a,
-        .navbar-menu > .nav-item > .nav-link {
-            position: relative;
-            padding: 4px 0;
-            background: none;
-            border: none;
-            font: inherit;
-            color: inherit;
-            cursor: pointer;
-        }
+			
+			/* ===== 상위 메뉴 기본 스타일 (hover 밑줄 유지) ===== */
+			.navbar-menu > a,
+			.navbar-menu > .nav-item > .nav-link {
+				position: relative;
+				padding: 4px 0;
+				background: none;
+				border: none;
+				font: inherit;
+				color: inherit;
+				cursor: pointer;
+			}
+			
+			.navbar-menu > a::after,
+			.navbar-menu > .nav-item > .nav-link::after {
+				content: "";
+				position: absolute;
+				left: 0;
+				bottom: -2px;
+				width: 0;
+				height: 2px;
+				border-radius: 999px;
+				background: linear-gradient(90deg, #38bdf8, #22c55e);
+				transition: width 0.2s ease;
+			}
+			
+			.navbar-menu > a:hover::after,
+			.navbar-menu > .nav-item > .nav-link:hover::after {
+				width: 100%;
+			}
+			
+			.nav-highlight {
+				color: #ffffff;
+				font-weight: 700;
+			}
+			
+			/* ===== 드롭다운 컨테이너 / 서브메뉴 ===== */
+			.nav-item {
+				position: relative;
+				display: flex;
+				align-items: center;
+			}
+			
+			.nav-submenu {
+				position: absolute;
+				top: 120%;
+				left: 0;
+				min-width: 180px;
+				padding: 8px;
+				border-radius: 12px;
+				background: rgba(15, 23, 42, 0.98);
+				border: 1px solid rgba(148, 163, 184, 0.5);
+				box-shadow: 0 18px 40px rgba(15, 23, 42, 0.9);
+				opacity: 0;
+				transform: translateY(-4px);
+				pointer-events: none;
+				transition: opacity 0.18s ease, transform 0.18s ease;
+				z-index: 30;
+			}
+			
+			.nav-submenu a {
+				display: block;
+				padding: 8px 10px;
+				border-radius: 8px;
+				font-size: 12px;
+				color: var(--mi-text-main);
+				white-space: nowrap;
+			}
+			
+			.nav-submenu a:hover {
+				background: rgba(30, 64, 175, 0.65);
+			}
+			
+			.nav-submenu a::after {
+				content: none !important;
+			}
+			
+			.nav-item.open .nav-submenu {
+				opacity: 1;
+				transform: translateY(0);
+				pointer-events: auto;
+			}
+			
 
-        .navbar-menu > a::after,
-        .navbar-menu > .nav-item > .nav-link::after {
-            content: "";
-            position: absolute;
-            left: 0;
-            bottom: -2px;
-            width: 0;
-            height: 2px;
-            border-radius: 999px;
-            background: linear-gradient(90deg, #38bdf8, #22c55e);
-            transition: width 0.2s ease;
-        }
+            
+            @media (max-width: 900px) {
+                .navbar {
+                    padding: 8px 16px;
+                }
+                .navbar-menu {
+                    display: none;
+                }
+                .container{
+                    font-size: 0.5rem;
+                }
+                .sidebar{
+                    width:250;
+                }
+            }
+            
+            
+            /* =============================
+            개선효과계산기 레이아웃 (finance)
+            ============================= */
+            .container {
+                display: flex;
+                height: 100vh;
+                max-width: 1350px;      /* 계산기 전체 1120px 안으로 */
+                margin: 0px auto 40px; /* 위/아래 여백 + 가운데 정렬 */
+                box-sizing: border-box;
+                /* background: rgba(3,7,18,0.9);     살짝 어두운 박스 느낌 (원하면 조정) */
+                border-radius: 12px;
+                box-shadow: 0 0 20px rgba(0,0,0,0.4);
+            }
+            
+            .content {
+                flex: 1;
+                background: transparent;
+                overflow-y: auto;
+                display: flex;
+                justify-content: center;
+            }
+            
+            /* 내부 콘텐츠(제목 + 설명 + 카드들) */
+            .content-inner {
+                width: 100%;
+                box-sizing: border-box;
+                overflow-y: auto;
+            }
+            
+            /* 카드들 */
+            
+            
+            .card {
+                background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.9) 0, rgba(15, 23, 42, 0.98) 60%, #020617 100%);
+                border-radius: 14px;
+                border: 1px solid rgba(15, 23, 42, 0.9);
+                box-shadow:
+                    0 18px 40px rgba(0, 0, 0, 0.8),
+                    0 0 0 1px rgba(148, 163, 184, 0.15);
+                padding: 16px 18px 18px;
+                margin-bottom: 18px;
+                width: 100%;
+            }
+            
+            .card-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 8px;
+                margin-bottom: 10px;
+            }
+            
+            .card-header h2 {
+                font-size: 15px;
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }
+            
+            .card-header h2::before {
+                content: "";
+                width: 6px;
+                height: 18px;
+                border-radius: 999px;
+                background: linear-gradient(180deg, var(--mi-teal), var(--mi-accent));
+            }
+            
+            .card-header .pill {
+                font-size: 11px;
+                padding: 3px 8px;
+                border-radius: 999px;
+                border: 1px solid var(--mi-border);
+                color: var(--mi-text-sub);
+                background: rgba(15, 23, 42, 0.9);
+            }
+            
+            /* Summary (financeSummary) */
+            .summary-grid {
+                display: grid;
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+                gap: 10px;
+            }
+            
+            @media (max-width: 900px) {
+                .summary-grid {
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                }
+            }
+            
+            @media (max-width: 640px) {
+                body {
+                    padding: 16px;
+                }
+                
+                .summary-grid {
+                    grid-template-columns: minmax(0, 1fr);
+                }
+            }
+            
+            .summary-item {
+                background: linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.9));
+                border-radius: 10px;
+                border: 1px solid rgba(30, 64, 175, 0.65);
+                padding: 8px 10px;
+            }
+            
+            .summary-item label {
+                display: block;
+                font-size: 12px;
+                color: var(--mi-text-sub);
+                margin-bottom: 4px;
+            }
+            
+            .summary-item .value {
+                font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+                font-size: 13px;
+                padding: 6px 8px;
+                border-radius: 6px;
+                background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.95));
+                border: 1px solid rgba(55, 65, 81, 0.9);
+                text-align: right;
+                color: var(--mi-text-main);
+            }
+            
+            .summary-item[data-kind="ratio"] .value {
+                color: var(--mi-accent);
+            }
+            
+            
+            /* 합계 */
+            .global-summary {
+                align-items: center;
+                
+                flex-direction: column;
+                gap: 16px;
+                margin: 5px 10px 16px;     /* 위쪽에 붙는 한 줄 느낌 */
+                /*padding: 10px 16px; */
+                border-radius: 20px;
+                background: radial-gradient(circle at 0% 0%,
+                    rgba(56,189,248,0.0),
+                    rgba(15,23,42,0.0)
+                );
+                border: 1px solid rgba(148,163,184,0.0);
+                font-size: 12px;
+                color: #e5e7eb;
+                width: 100%;
+                
+            }
+                        
+            .global-summary .summary-title {
+                font-size: 13px;
+                font-weight: 600;
+                letter-spacing: 0.03em;
+                color: #f9fafb;
+                margin-bottom: 2px;
+            }
+            
+            .global-summary .summary-caption {
+                font-size: 13px;
+                color: #9ca3af;
+                line-height: 1.4;
+            }
+            
+            .global-summary .summary-total {
+                font-weight: 700;
+                color: #FCE300;
+            }
+            
+            .global-summary .summary-count {
+                font-weight: 700;
+                color: #72FFAD;
+            }
+            
+            .global-summary .summary-right {
+                display: flex;
+                flex-direction: column;   /* 세로로 쌓기 */
+                align-items: flex-end;    /* 오른쪽 정렬 유지하고 싶으면 */
+                gap: 10px;
+            }
+            
+            
+            .global-summary .badge-row {
+                display: flex;
+                justify-content: space-between;
+                flex-wrap: wrap;
+            }
+            
+            .global-summary .box {
+                font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+                font-size: 14px;
+                padding: 6px 8px;
+                border-radius: 6px;
+                background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.95));
+                border: 1px solid rgba(55, 65, 81, 0.9);
+                text-align: right;
+                color: var(--mi-text-main);
+            }
+            
+            .global-summary .badge {
+                display: inline-flex;
+                align-items: center;
+                padding: 3px 8px;
+                border-radius: 999px;
+                font-size: 12px;
+                border: 1px solid rgba(148,163,184,0.6);
+                background: rgba(15,23,42,0.9);
+                white-space: nowrap;
+            }
+            
+            .global-summary .badge-Data {
+                border-color: rgba(197,34,54,0.70);
+                background-color: rgba(197,34,54,0.3);
+                justify-content: center;
+                min-width: 80px;
+                border-radius: 0px;
+                cursor: pointer;
+            }
+            
+            .global-summary .badge-Reset {
+                border-color: rgba(59,130,246,0.7);
+                background-color: rgba(59,130,246,0.3);
+                justify-content: center;
+                min-width: 80px;
+                border-radius: 0px;
+                cursor: pointer;                
+            }
+            
+            .global-summary .badge-Clear {
+                border-color: rgba(244,114,182,0.7);
+                background-color: rgba(244,114,182,0.3);
+                justify-content: center;
+                min-width: 80px;
+                border-radius: 0px;
+                cursor: pointer;
+            }
+            
+            .global-summary .badge-Next {
+                border-color: rgba(20,151,64,0.70);
+                background-color: rgba(0,171,46,0.3);
+                justify-content: center;
+                min-width: 80px;
+                border-top-left-radius: 20px 0;
+                border-top-right-radius: 0px;
+                border-bottom-left-radius: 20px 20px;
+                border-bottom-right-radius: 0px;
+                cursor: pointer;
+            }
+            
+            .global-summary .badge-Total {
+                border-color: rgba(18,78,94,0.70);
+            }
+            
+            .global-summary .badge-invTotal {
+                border-color: rgba(250,204,21,0.7);
+                color: rgba(250,204,21,0.7);
+                background:rgba(0,0,0,0.00);
+                min-width: 250px;
+                justify-content: center;
+            }
+            
+            .global-summary .badge-scrapTotal {
+                border-color: rgba(249,145,72,0.70);
+                color: rgba(249,145,72,0.70);
+                background:rgba(0,0,0,0.00);
+                min-width: 250px;
+                justify-content: center;
+            }
+            
+            .global-summary .badge-materialTotal {
+                border-color: rgba(79,224,132,0.70);
+                color: rgba(79,224,132,0.7);
+                background:rgba(0,0,0,0.00);
+                min-width: 250px;
+                justify-content: center;
+            }
+            
+            .global-summary .badge-laborTotal {
+                border-color: rgba(84,198,248,0.70);
+                color: rgba(84,198,248,0.70);
+                background:rgba(0,0,0,0.00);
+                min-width: 250px;
+                justify-content: center;
+            }
+            
+            .global-summary .badge-devTotal {
+                border-color: rgba(202,154,249,0.70);
+                color: rgba(202,154,249,0.70);
+                background:rgba(0,0,0,0.00);
+                min-width: 250px;
+                justify-content: center;
+            }
+            
+            .global-summary .badge-prodTotal {
+                border-color: rgba(228,125,125,0.70);
+                color: rgba(228,125,125,0.7);
+                background:rgba(0,0,0,0.00);
+                min-width: 250px;
+                justify-content: center;
+            }
+            .hide-inner {
+                display: none !important;
+            }
+            
+            .global-summary-footer {                
+                border-top: 1px solid rgba(148, 163, 184, 0.4);
+                padding-top: 0.5rem;
+                display: flex;
+                justify-content: space-between; /* 좌우 여백 자동 분배 */
+                align-items: center;
+                flex-wrap: wrap; /* 화면 좁으면 자동 줄바꿈 */                
+                gap: 10px;
+            }
+            
+            .summary-item .total-value {
+                font-weight: 600;
+                min-width: 60px;
+                text-align: right;
+                color: #BEC3CD;
+            }
+            
+            /* 각 항목(라벨 + 값) */
+            .global-summary-footer .total-row {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 0.85rem;
+            }
+            
+            .global-summary-footer .total-label {
+                color: #e5e7eb;
+            }
+            
+            .global-summary-footer .total-value {
+                font-weight: 600;
+                min-width: 60px;
+                text-align: right;
+                color: #BEC3CD;
+            }
+            
+            
+            /* DATA 1/2/3가 저장돼 있을 때 상태 */
+            .global-summary .badge-Data.saved {
+                border-color: rgba(20,151,64,0.9);
+                background-color: rgba(0,171,46,0.55);
+                color: #0b1120;
+                font-weight: 600;
+}
 
-        .navbar-menu > a:hover::after,
-        .navbar-menu > .nav-item > .nav-link:hover::after {
-            width: 100%;
-        }
-
-        .nav-highlight {
-            color: #ffffff;
-            font-weight: 700;
-        }
-
-        /* ===== 드롭다운 컨테이너 / 서브메뉴 ===== */
-        .nav-item {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-
-        .nav-submenu {
-            position: absolute;
-            top: 120%;
-            left: 0;
-            min-width: 180px;
-            padding: 8px;
-            border-radius: 12px;
-            background: rgba(15, 23, 42, 0.98);
-            border: 1px solid rgba(148, 163, 184, 0.5);
-            box-shadow: 0 18px 40px rgba(15, 23, 42, 0.9);
-            opacity: 0;
-            transform: translateY(-4px);
-            pointer-events: none;
-            transition: opacity 0.18s ease, transform 0.18s ease;
-            z-index: 30;
-        }
-
-        .nav-submenu a {
-            display: block;
-            padding: 8px 10px;
-            border-radius: 8px;
-            font-size: 12px;
-            color: var(--mi-text-main);
-            white-space: nowrap;
-        }
-
-        .nav-submenu a:hover {
-            background: rgba(30, 64, 175, 0.65);
-        }
-
-        .nav-submenu a::after {
-            content: none !important;
-        }
-
-        .nav-item.open .nav-submenu {
-            opacity: 1;
-            transform: translateY(0);
-            pointer-events: auto;
-        }
-
-        /* ===== 메인 콘텐츠 ===== */
-        main {
-            min-height: 100vh;
-            padding: 16px 16px 40px;
-        }
-
-        .main-inner {
-            max-width: 1380px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .hero-card {
-            padding: 24px 26px;
-            border-radius: 18px;
-            background:
-                radial-gradient(circle at 0% 0%, rgba(56,189,248,0.25), transparent 55%),
-                radial-gradient(circle at 100% 100%, rgba(34,197,94,0.25), transparent 55%),
-                #020617;
-            border: 1px solid rgba(148,163,184,0.45);
-            box-shadow: 0 22px 45px rgba(15,23,42,0.75);
-        }
-
-        .hero-title {
-            font-size: 22px;
-            font-weight: 650;
-            margin-bottom: 8px;
-        }
-
-        .hero-sub {
-            font-size: 13px;
-            color: var(--mi-text-sub);
-            margin-bottom: 16px;
-        }
-
-        .hero-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-        }
-
-        .tag-pill {
-            font-size: 11px;
-            padding: 4px 9px;
-            border-radius: 999px;
-            border: 1px solid rgba(148,163,184,0.6);
-            background: rgba(15,23,42,0.85);
-            color: #e5e7eb;
-            white-space: nowrap;
-        }
-
-        /* 스크롤바 숨기기 (WebKit) */
-        body::-webkit-scrollbar {
-            display: none;
-        }
-
-        /* ===== 설정 패널 ===== */
-        .config-panel {
-            position: fixed;
-            right: 16px;
-            bottom: 16px;
-            z-index: 40;
-            font-size: 11px;
-            color: #e5e7eb;
-        }
-
-        .config-toggle {
-            padding: 6px 10px;
-            border-radius: 999px;
-            border: 1px solid rgba(148,163,184,0.7);
-            background: rgba(15,23,42,0.95);
-            cursor: pointer;
-        }
-
-        .config-body {
-            margin-top: 8px;
-            padding: 10px;
-            width: 260px;
-            border-radius: 12px;
-            background: rgba(15,23,42,0.98);
-            border: 1px solid rgba(148,163,184,0.7);
-            box-shadow: 0 18px 40px rgba(15,23,42,0.95);
-            display: none;
-        }
-
-        .config-body.open {
-            display: block;
-        }
-
-        .config-body label {
-            display: block;
-            margin-bottom: 4px;
-            font-size: 10px;
-            color: #9ca3af;
-        }
-
-        .config-body input[type="text"],
-        .config-body textarea {
-            width: 100%;
-            border-radius: 8px;
-            border: 1px solid rgba(55,65,81,0.9);
-            background: #020617;
-            color: #e5e7eb;
-            font-size: 11px;
-            padding: 4px 6px;
-            margin-bottom: 8px;
-            resize: vertical;
-        }
-
-        .config-body textarea {
-            min-height: 40px;
-        }
-
-        .config-body small {
-            display: block;
-            color: #6b7280;
-            margin-bottom: 4px;
-        }
-
-        .config-apply-btn {
-            width: 100%;
-            padding: 6px 0;
-            border-radius: 8px;
-            border: none;
-            background: linear-gradient(135deg, var(--mi-teal), #22c55e);
-            color: #020617;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 4px;
-        }
-    </style>
-</head>
-	<body>
-		<!-- 상단 네비 -->
-		<header class="navbar-wrapper">
-			<div class="navbar">
+            
+        </style>
+    </head>
+    
+    
+    
+    <body>
+        <!-- 상단 네비 -->
+        <header class="navbar-wrapper">
+            <div class="navbar">
 				<div class="navbar-left">
 					<div class="mi-logo">
 						<img src="../img/logo_32.png" alt="" width="26" height="26">						
@@ -399,188 +637,374 @@
 					<a href="../page/plan.html">개발현황</a>
 					<a href="../page/about.html">About</a>
 				</nav>
-
-            <div class="navbar-right">
-                <button class="navbar-cta">
-                    <div class="top-status-bar">
-                        <div id="clock"></div>
+				
+				<div class="navbar-right">
+					<button class="navbar-cta">
+						<div class="top-status-bar">
+							<div id="clock"></div>
+						</div>
+					</button>
+					<button class="navbar-cta">
+						<div class="top-status-bar">
+							<div id="fx-rate"></div>
+						</div>
+					</button>
+				</div>
+			</div>
+			<!-- 공지 -->
+			<div class="notice-bar">
+				◈◈◈ 저장된 시나리오를 불러와 항목·케이스별 재무 효과를 비교·분석하는 상세 리포트 페이지입니다. 현재 개발중입니다. ◈◈◈
+			</div>
+        </header>
+        
+        
+        <main>
+            <!-- 여기부터 finance 계산기 전체 -->
+            <div class="container">
+                <div class="content">
+                        <div id="global-summary" class="global-summary" >
+                            
+                            <section class="card">
+                                <div class="card-header">
+                                    <h2>요약 재무 효과 (financeSummary)</h2>
+                                </div>
+                                <div class="summary-grid">
+                                    <div class="summary-item">
+                                        <label>재고/재공</label>
+                                        <div class="value"><span class="total-value" id="invTotal-value">-</span></div>
+                                    </div>
+                                    <div class="summary-item">
+                                        <label>품질/불량</label>
+                                        <div class="value"><span class="total-value" id="scrapTotal-value">-</span></div>
+                                    </div>
+                                    <div class="summary-item">
+                                        <label>재료/단가</label>
+                                        <div class="value"><span class="total-value" id="materialTotal-value">-</span></div>
+                                    </div>
+                                    <div class="summary-item">
+                                        <label>DATA 불러오기</label>
+                                        <div class="box">
+                                        <div class="badge-row">
+                                            <span class="badge badge-Data">DATA 1</span>
+                                            <span class="badge badge-Data">DATA 2</span>
+                                            <span class="badge badge-Data">DATA 3</span>
+                                        </div>
+                                            </div>
+                                    </div>
+                                    <div class="summary-item" data-kind="ratio">
+                                        <label>인건비</label>
+                                        <div class="value"><span class="total-value" id="laborTotal-value">-</span></div>
+                                    </div>
+                                    <div class="summary-item" data-kind="ratio">
+                                        <label>투자/개발</label>
+                                        <div class="value"><span class="total-value" id="devTotal-value">-</span></div>
+                                    </div>
+                                    <div class="summary-item" data-kind="ratio">
+                                        <label>인건비</label>
+                                        <div class="value"><span class="total-value" id="prodTotal-value">-</span></div>
+                                    </div>
+                                    <div class="summary-item">
+                                        <label>DATA 불러오기</label>
+                                        <div class="box">
+                                        <div class="badge-row">
+                                            <span class="badge badge-Next">돌아가기</span>
+                                            <span class="badge badge-Clear">데이터리셋</span>
+                                            <span class="badge badge-Reset">초기화</span>
+                                        </div>
+                                            </div>
+                                    </div>
+                                </div>
+                            </section>
                     </div>
-                </button>
-                <button class="navbar-cta">
-                    <div class="top-status-bar">
-                        <div id="fx-rate"></div>
-                    </div>
-                </button>
-            </div>
-        </div>
-        <!-- 공지 -->
-        <div class="notice-bar" id="cfg-notice">
-            ◈◈◈ MI-Nexus Portal : 하나의 포털 · 하나의 기준 · 한 번의 조회 ◈◈◈
-        </div>
-    </header>
-
-    <main>
-        <div class="main-inner">
-            <section class="hero-card">
-                <h1 class="hero-title" id="cfg-hero-title">MI-Nexus 메인 포털</h1>
-                <p class="hero-sub" id="cfg-hero-sub">
-                    상단 메뉴의 <strong>재무성과</strong>를 클릭하면
-                    <strong>일반 재무성과 / 상세 재무성과</strong> 서브메뉴가 펼쳐집니다.<br/>
-                    각 메뉴는 개별 HTML 페이지(예: <code>finance-basic.html</code>, <code>finance-detail.html</code>)로 연결해 사용하세요.
-                </p>
-                <div class="hero-tags" id="cfg-hero-tags">
-                    <span class="tag-pill">재무성과 요약 Dashboard</span>
-                    <span class="tag-pill">Spotfire / DB 연동</span>
-                    <span class="tag-pill">모듈별 효과 집계</span>
                 </div>
-            </section>
-        </div>
-    </main>
+            </div>
+        </main>
+        
 
-    <!-- 설정 패널 -->
-    <section class="config-panel">
-        <button type="button" class="config-toggle" id="config-toggle">⚙ 텍스트 편집</button>
-        <div class="config-body" id="config-body">
-            <label>포털 이름</label>
-            <input type="text" id="input-portal-name" value="S.PKG MI-Nexus Portal" />
+<script>
+	async function loadUsdKrwRate() {
+	  try {
+		const res = await fetch('https://open.er-api.com/v6/latest/USD');
+		if (!res.ok) {
+		  console.error('HTTP error', res.status);
+		  return;
+		}
+		const data = await res.json();
+		const usdKrw = data.rates && data.rates.KRW;
+		if (!usdKrw) {
+		  console.error('KRW rate not found');
+		  return;
+		}
 
-            <label>포털 부제 (부서명 등)</label>
-            <input type="text" id="input-portal-sub" value="Metrology &amp; Inspection" />
+		console.log('USD→KRW 환율:', usdKrw);
 
-            <label>상단 공지문</label>
-            <textarea id="input-notice">MI-Nexus Portal : 하나의 포털 · 하나의 기준 · 한 번의 조회</textarea>
+		// 환율 입력칸들 자동 채우기 (원하는 input에 data-autofx="usd-krw" 달기)
+		document.querySelectorAll('input[data-autofx="usd-krw"]').forEach(function (inp) {
+		  inp.value = usdKrw;
+		});
 
-            <label>Hero 제목</label>
-            <input type="text" id="input-hero-title" value="MI-Nexus 메인 포털" />
+	  } catch (e) {
+		console.error('환율 fetch 오류:', e);
+	  }
+	}
 
-            <label>Hero 설명</label>
-            <textarea id="input-hero-sub">상단 메뉴의 재무성과를 클릭하면 일반 재무성과 / 상세 재무성과 서브메뉴가 펼쳐집니다. 각 메뉴는 개별 HTML 페이지로 연결해 사용하세요.</textarea>
+	// 페이지 로드 시 환율 자동 조회
+	window.addEventListener('DOMContentLoaded', loadUsdKrwRate);
+</script>
 
-            <label>태그 리스트</label>
-            <small>콤마(,)로 구분해서 입력</small>
-            <textarea id="input-hero-tags">재무성과 요약 Dashboard, Spotfire / DB 연동, 모듈별 효과 집계</textarea>
+<script>
+	  function updateClock() {
+		const now = new Date();
+		const yyyy = now.getFullYear();
+		const mm = String(now.getMonth() + 1).padStart(2, '0');
+		const dd = String(now.getDate()).padStart(2, '0');
+		const hh = String(now.getHours()).padStart(2, '0');
+		const mi = String(now.getMinutes()).padStart(2, '0');
+		const ss = String(now.getSeconds()).padStart(2, '0');
 
-            <button type="button" class="config-apply-btn" id="config-apply-btn">적용</button>
-        </div>
-    </section>
+		const text = `${yyyy}-${mm}-${dd} ${hh}:${mi}:${ss}`;
+		const clockEl = document.getElementById('clock');
+		if (clockEl) clockEl.textContent = text;
+	  }
 
-    <script>
-        /* 시계 */
-        function updateClock() {
-            const now = new Date();
-            const yyyy = now.getFullYear();
-            const mm = String(now.getMonth() + 1).padStart(2, "0");
-            const dd = String(now.getDate()).padStart(2, "0");
-            const hh = String(now.getHours()).padStart(2, "0");
-            const mi = String(now.getMinutes()).padStart(2, "0");
-            const ss = String(now.getSeconds()).padStart(2, "0");
-            const text = `${yyyy}-${mm}-${dd} ${hh}:${mi}:${ss}`;
-            const clockEl = document.getElementById("clock");
-            if (clockEl) clockEl.textContent = text;
-        }
-        updateClock();
-        setInterval(updateClock, 1000);
+	  async function updateFx() {
+		const fxEl = document.getElementById('fx-rate');
+		if (!fxEl) return;
 
-        /* 환율 */
-        async function updateFx() {
-            const fxEl = document.getElementById("fx-rate");
-            if (!fxEl) return;
-            try {
-                const res = await fetch("https://open.er-api.com/v6/latest/USD");
-                const data = await res.json();
-                const krw = data.rates && data.rates.KRW;
-                if (!krw) {
-                    fxEl.textContent = "환율: 데이터 없음";
-                    return;
-                }
-                fxEl.textContent = `USD/KRW ${krw.toLocaleString(undefined, {
-                    maximumFractionDigits: 2,
-                })}`;
-            } catch (e) {
-                fxEl.textContent = "환율: 불러오기 오류";
-            }
-        }
-        updateFx();
-        setInterval(updateFx, 10 * 60 * 1000);
-    </script>
+		try {
+		  // 네가 썼던 open.exchangerate 계열 예시
+		  const res = await fetch('https://open.er-api.com/v6/latest/USD');
+		  const data = await res.json();
 
-    <script>
-        /* 재무성과 드롭다운 열고 닫기 */
-        document.addEventListener("DOMContentLoaded", () => {
-            const financeItem = document.querySelector(".nav-item-finance");
-            if (!financeItem) return;
+		  const krw = data.rates.KRW;  // USD 기준 KRW 환율
+		  fxEl.textContent = `USD/KRW ${krw.toLocaleString(undefined, {
+			maximumFractionDigits: 2
+		  })}`;
+		} catch (e) {
+		  fxEl.textContent = '환율: 불러오기 오류';
+		}
+	  }
 
-            const trigger = financeItem.querySelector(".nav-link");
+	  updateClock();
+	  setInterval(updateClock, 1000);
 
-            trigger.addEventListener("click", (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                financeItem.classList.toggle("open");
-            });
+	  updateFx();                      // 처음 1번
+	  setInterval(updateFx, 10 * 60 * 1000); // 10분마다 갱신
+	</script>
+		
+		
+		<script>
+			document.addEventListener("DOMContentLoaded", () => {
+				/* ===== 재무성과 서브메뉴 열기/닫기 ===== */
+				const financeItem = document.querySelector(".nav-item-finance");
+				if (financeItem) {
+					const trigger = financeItem.querySelector(".nav-link");
+					trigger.addEventListener("click", (e) => {
+						e.preventDefault();
+						e.stopPropagation();
+						financeItem.classList.toggle("open");
+					});
+					
+					document.addEventListener("click", (e) => {
+						if (!financeItem.contains(e.target)) {
+							financeItem.classList.remove("open");
+						}
+					});
+				}
+				
 
-            document.addEventListener("click", (e) => {
-                if (!financeItem.contains(e.target)) {
-                    financeItem.classList.remove("open");
-                }
-            });
-        });
-    </script>
+			});
 
-    <script>
-        /* 설정 패널 로직 */
-        document.addEventListener("DOMContentLoaded", () => {
-            const toggleBtn = document.getElementById("config-toggle");
-            const bodyEl = document.getElementById("config-body");
-            const applyBtn = document.getElementById("config-apply-btn");
 
-            const inputPortalName = document.getElementById("input-portal-name");
-            const inputPortalSub = document.getElementById("input-portal-sub");
-            const inputNotice = document.getElementById("input-notice");
-            const inputHeroTitle = document.getElementById("input-hero-title");
-            const inputHeroSub = document.getElementById("input-hero-sub");
-            const inputHeroTags = document.getElementById("input-hero-tags");
+		</script>
+        
+        
+<script>
+(function () {
+  const STORAGE_PREFIX = 'mi-finance-slot-';
+  const ACTIVE_SLOT_KEY = 'mi-finance-active-slot';
 
-            const portalNameEl = document.getElementById("cfg-portal-name");
-            const portalSubEl = document.getElementById("cfg-portal-sub");
-            const noticeEl = document.getElementById("cfg-notice");
-            const heroTitleEl = document.getElementById("cfg-hero-title");
-            const heroSubEl = document.getElementById("cfg-hero-sub");
-            const heroTagsEl = document.getElementById("cfg-hero-tags");
+  // 숫자 → "123,456 원"
+  function fmtKRW(num) {
+    if (!isFinite(num) || num === 0) return '-';
+    return num.toLocaleString('ko-KR', { maximumFractionDigits: 0 }) + ' 원';
+  }
 
-            toggleBtn.addEventListener("click", () => {
-                bodyEl.classList.toggle("open");
-            });
+  // 슬롯 번호로 데이터 로드
+  function loadSlotData(slot) {
+    const raw = localStorage.getItem(STORAGE_PREFIX + slot);
+    if (!raw) return null;
 
-            applyBtn.addEventListener("click", () => {
-                if (portalNameEl) portalNameEl.textContent = inputPortalName.value || "S.PKG MI-Nexus Portal";
-                if (portalSubEl) portalSubEl.textContent = inputPortalSub.value || "Metrology & Inspection";
-                if (noticeEl) noticeEl.textContent = inputNotice.value || "MI-Nexus Portal : 하나의 포털 · 하나의 기준 · 한 번의 조회";
-                if (heroTitleEl) heroTitleEl.textContent = inputHeroTitle.value || "MI-Nexus 메인 포털";
+    try {
+      return JSON.parse(raw);   // { totals, detail, cases }
+    } catch (e) {
+      console.error('슬롯 데이터 파싱 오류', e);
+      return null;
+    }
+  }
 
-                if (heroSubEl) {
-                    heroSubEl.textContent = inputHeroSub.value || "";
-                }
+  // 1) 글로벌 요약(invTotal~prodTotal) 다시 뿌리기
+  function applyTotalsToUI(slotData) {
+    const TOTAL_FIELDS = [
+      { key: 'invTotal',      elId: 'invTotal-value' },
+      { key: 'scrapTotal',    elId: 'scrapTotal-value' },
+      { key: 'materialTotal', elId: 'materialTotal-value' },
+      { key: 'laborTotal',    elId: 'laborTotal-value' },
+      { key: 'devTotal',      elId: 'devTotal-value' },
+      { key: 'prodTotal',     elId: 'prodTotal-value' }
+    ];
 
-                if (heroTagsEl) {
-                    heroTagsEl.innerHTML = "";
-                    const raw = inputHeroTags.value || "";
-                    const tags = raw.split(",").map(t => t.trim()).filter(t => t.length > 0);
-                    if (tags.length === 0) {
-                        const span = document.createElement("span");
-                        span.className = "tag-pill";
-                        span.textContent = "태그 없음";
-                        heroTagsEl.appendChild(span);
-                    } else {
-                        tags.forEach(t => {
-                            const span = document.createElement("span");
-                            span.className = "tag-pill";
-                            span.textContent = t;
-                            heroTagsEl.appendChild(span);
-                        });
-                    }
-                }
-            });
-        });
-    </script>
-</body>
+    // 데이터가 없으면 0으로 초기화
+    const totals = (slotData && slotData.totals) ? slotData.totals : {};
+
+    TOTAL_FIELDS.forEach(field => {
+      const el = document.getElementById(field.elId);
+      if (!el) return;
+
+      const val = totals[field.key] || 0;
+      el.textContent = fmtKRW(val);
+    });
+  }
+
+  // 2) 각 패널 합계(invDays, occRate …)를 특정 위치에 뿌리기
+  //    => id 규칙: "invDays-sum", "occRate-sum"
+  function applyPanelSumsToUI(slotData) {
+    const GROUP_PANELS = {
+      invTotal:    ['invDays', 'invAmt', 'tat'],
+      scrapTotal:  ['occRate', 'occQty', 'scrapRate', 'scrapQty',
+                    'waferLossRate', 'waferLossQty',
+                    'yieldStab', 'yieldRamp', 'reworkRate'],
+      materialTotal: ['stdUp', 'stdDown', 'usageEqp', 'usageTotal',
+                      'unitEqp', 'unitDown', 'costSave'],
+      laborTotal:    ['timeSave', 'headSave'],
+      devTotal:      ['planSave', 'devCost', 'devTime'],
+      prodTotal:     ['stdTime', 'eqpProd', 'downLoss', 'rundown', 'areaProd']
+    };
+
+    const detail = (slotData && slotData.detail) ? slotData.detail : {};
+
+    Object.entries(GROUP_PANELS).forEach(([groupKey, panelNames]) => {
+      const groupDetail = detail[groupKey] || {};
+
+      panelNames.forEach(panelName => {
+        const el = document.getElementById(panelName + '-sum'); // 예: id="invDays-sum"
+        if (!el) return;
+
+        const val = groupDetail[panelName] || 0;
+        el.textContent = fmtKRW(val);
+      });
+    });
+  }
+
+  // 3) 케이스 데이터 확인용 (원하면 콘솔로만 확인)
+  function debugPrintCases(slotData) {
+    if (!slotData || !slotData.cases) return;
+    console.log('저장된 케이스 데이터:', slotData.cases);
+  }
+
+  // DATA 1~3 저장 여부에 따라 배지 색상 업데이트 (.badge-Data.saved)
+  function updateDataBadges() {
+    const badges = document.querySelectorAll('.global-summary .badge-Data');
+    badges.forEach((badge, idx) => {
+      const slot = idx + 1; // 첫 번째 = 1, 두 번째 = 2, 세 번째 = 3
+      const saved = !!localStorage.getItem(STORAGE_PREFIX + slot);
+      badge.classList.toggle('saved', saved);
+    });
+  }
+
+  // DATA 1/2/3 중 선택된 슬롯의 데이터를 화면에 반영
+  function renderSlot(slot) {
+    const data = loadSlotData(slot);
+
+    if (!data) {
+      console.warn('선택한 슬롯에 저장된 DATA가 없습니다. slot:', slot);
+      // 데이터 없으면 0/빈 값으로 초기화
+      applyTotalsToUI(null);
+      applyPanelSumsToUI(null);
+    } else {
+      applyTotalsToUI(data);
+      applyPanelSumsToUI(data);
+      // 필요하면 케이스 디버깅
+      // debugPrintCases(data);
+    }
+
+    // 마지막으로 본 슬롯 기록
+    localStorage.setItem(ACTIVE_SLOT_KEY, String(slot));
+    updateDataBadges();
+  }
+
+  // DATA 1~3 전체 삭제 (detail 페이지에서 리셋 버튼 쓸 경우)
+  function clearAllSlots() {
+    if (!confirm('DATA 1~3에 저장된 내용을 모두 삭제할까요?')) return;
+
+    for (let i = 1; i <= 3; i++) {
+      localStorage.removeItem(STORAGE_PREFIX + i);
+    }
+    localStorage.removeItem(ACTIVE_SLOT_KEY);
+
+    // 화면도 초기화
+    applyTotalsToUI(null);
+    applyPanelSumsToUI(null);
+    updateDataBadges();
+  }
+
+  // 다음 페이지로 이동 (필요하면 URL 수정)
+  function goNextPage() {
+    window.location.href = 'finance-basic.html'; // 임시
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    // 1) 처음 진입 시: 마지막으로 본 슬롯 or 기본 1번 로드
+    const active = parseInt(localStorage.getItem(ACTIVE_SLOT_KEY) || '1', 10) || 1;
+    renderSlot(active);
+
+    // 2) DATA 1/2/3 배지 클릭 시 → 해당 슬롯 데이터 불러오기
+    const dataBadges = document.querySelectorAll('.global-summary .badge-Data');
+    dataBadges.forEach((badge, idx) => {
+      const slot = idx + 1;
+      badge.addEventListener('click', () => renderSlot(slot));
+    });
+
+    // 3) "저장리셋" 배지 (있으면) → 슬롯 삭제 + 화면 초기화
+    const clearBadge = document.querySelector('.global-summary .badge-Clear');
+    if (clearBadge) clearBadge.addEventListener('click', clearAllSlots);
+
+    // 4) "다음→" 배지 (3단계 넘어갈 거면)
+    const nextBadge = document.querySelector('.global-summary .badge-Next');
+    if (nextBadge) nextBadge.addEventListener('click', goNextPage);
+
+    // 5) 처음 진입 시 저장 여부에 따른 색 반영
+    updateDataBadges();
+  });
+})();
+</script>
+
+        
+        
+<script>
+  // 천단위 콤마 포맷 함수
+  function formatWithComma(value) {
+    const numeric = value.replace(/[^0-9]/g, "");             // 숫자만 남기기
+    return numeric.replace(/\B(?=(\d{3})+(?!\d))/g, ",");    // 천단위 ,
+  }
+
+  // 표시용 → 숫자값 추출용
+  function getNumericValue(str) {
+    return str.replace(/,/g, ""); // 콤마 제거
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    // 모든 금액 필드에 적용
+    document.querySelectorAll('.money-input').forEach(input => {
+      input.addEventListener('input', e => {
+        const value = e.target.value;
+        const formatted = formatWithComma(value);
+        e.target.value = formatted;   // ex) 5000000 → 5,000,000
+      });
+    });
+  });
+</script>
+
+        
+    </body>
 </html>
