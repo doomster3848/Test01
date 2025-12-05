@@ -188,7 +188,7 @@
 			}
 			
 			/* ===== 드롭다운 컨테이너 / 서브메뉴 ===== */
-			.nav-item {
+            .nav-item {
 				position: relative;
 				display: flex;
 				align-items: center;
@@ -257,7 +257,7 @@
             ============================= */
             .container {
                 display: flex;
-                height: 100vh;
+                height: 95vh;
                 max-width: 1350px;      /* 계산기 전체 1120px 안으로 */
                 margin: 0px auto 40px; /* 위/아래 여백 + 가운데 정렬 */
                 box-sizing: border-box;
@@ -308,15 +308,30 @@
             }
             .sidebar input[type="checkbox"] {
                 margin-right: 6px;
+                accent-color: var(--mi-teal);
             }
             .item-left {
                 display: flex;
                 align-items: center;
             }
             .menu-qty {
+                /*
                 width: 48px;
                 padding: 2px 4px;
                 font-size: 12px;
+                  
+                */
+                width: 60px;
+                padding: 3px 4px;
+                border-radius: 8px;
+                border: 1px solid rgba(55,65,81,0.9);
+                background: #020617;
+                color: #e5e7eb;
+                
+                text-align: left;
+                font-size: 11px;
+                
+                font-variant-numeric: tabular-nums;
             }
             
             /* 오른쪽 영역 전체 */
@@ -376,6 +391,139 @@
                 margin: 0 auto 40px auto;
             }
             
+            /* ===== 우측 패널: 다크 카드 스타일 ===== */
+            .formula-panel {
+                display: none;
+                width: 100%;
+                max-width: 480px;
+                margin-left: 16px;
+                
+                padding: 14px 14px 12px;
+                border-radius: 16px;
+                background: rgba(15,23,42,0.96);
+                border: 1px solid rgba(148,163,184,0.55);
+                box-shadow: 0 18px 30px rgba(15,23,42,0.9);
+                
+                box-sizing: border-box;
+                color: var(--mi-text-main);
+                font-size: 11px;
+            }
+            
+            .formula-panel h2 {
+                margin: 0 0 4px;
+                font-size: 13px;
+                font-weight: 600;
+            }
+            
+            .formula-panel .formula-desc {
+                font-size: 12px;
+                color: var(--mi-text-sub);
+                margin-bottom: 8px;
+            }
+            
+            /* 케이스 구분선 */
+            .cases .case {
+                padding-top: 6px;
+                margin-top: 6px;
+                border-top: 1px dashed rgba(31,41,55,0.9);
+            }
+            .cases .case:first-child {
+                border-top: none;
+                margin-top: 0;
+                padding-top: 0;
+            }
+            
+            /* 테이블 기반 입력 영역 */
+            .input-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 8px;
+                font-size: 12px;
+            }
+            
+            .input-table th,
+            .input-table td {
+                padding: 4px 6px;
+                border-bottom: 1px solid rgba(31,41,55,0.9);
+            }
+            
+            .input-table th {
+                width: 45%;
+                background: #020617;
+                color: var(--mi-text-sub);
+                font-weight: 500;
+            }
+            
+            .input-table td {
+                background: transparent;
+            }
+            
+            /* 패널 내부의 숫자 입력 필드 */
+            .input-table input[type="number"],
+            .input-table input[type="text"] {
+                width: 100%;
+                box-sizing: border-box;
+                padding: 4px 6px;
+                border-radius: 8px;
+                border: 1px solid rgba(55,65,81,0.9);
+                background: #020617;
+                color: #e5e7eb;
+                font-size: 12px;
+                font-variant-numeric: tabular-nums;
+            }
+            
+            /* 계산 버튼 – financeSummary 스타일 느낌 */
+            .calc-btn {
+                margin-top: 6px;
+                padding: 6px 0;
+                width: 100%;
+                border-radius: 999px;
+                border: none;
+                background: linear-gradient(135deg, var(--mi-teal), #22c55e);
+                color: #020617;
+                font-size: 11px;
+                font-weight: 600;
+                cursor: pointer;
+            }
+            .calc-btn:hover {
+                filter: brightness(1.05);
+            }
+            
+            /* 결과 박스 */
+            .result {
+                margin-top: 6px;
+                font-size: 12px;
+                background: rgba(15,23,42,0.98);
+                border-radius: 10px;
+                padding: 6px 8px;
+                border: 1px solid rgba(31,41,55,0.9);
+                line-height: 1.5;
+            }
+            
+            .result div {
+                margin: 2px 0;
+            }
+            
+            .result-label {
+                font-weight: 600;
+                color: #e5e7eb;
+            }
+            
+            .result span.value {
+                font-weight: 700;
+                color: #a5ffce;
+                margin-left: 10px;
+            }
+            
+            .formula-panel .result .base,
+            .formula-panel .result .substitute,
+            .formula-panel .result .improve {
+                color: #e5e7eb;
+            }
+
+            
+            
+            /* ================================================
             .formula-panel {
                 display: none;
                 padding-top: 14px;
@@ -474,6 +622,8 @@
             .formula-panel .result .improve {
                 color: #111827;
             }
+            
+            ================================================ */
             code {
                 font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
                 font-size: 12px;
@@ -487,6 +637,75 @@
             
             
             /* 그래프 스타일 */
+            /* ===== 결과 미니 그래프: 다크 대시보드 스타일 ===== */
+            .result-graph {
+                margin: 6px 0 2px;
+                padding: 6px 8px;
+                border-radius: 10px;
+                background: rgba(15, 23, 42, 0.98);
+                border: 1px solid rgba(31, 41, 55, 0.9);
+            }
+            
+            .result-graph-title {
+                font-size: 12px;
+                font-weight: 600;
+                color: var(--mi-text-sub);
+                margin-bottom: 4px;
+            }
+            
+            .result-graph-bars {
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+            }
+            
+            .result-graph-bar {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 12px;
+                color: var(--mi-text-sub);
+            }
+            
+            .result-graph-bar .bar-caption {
+                width: 24px;
+                text-align: center;
+                opacity: 0.9;
+            }
+            
+            .result-graph-bar .bar-track {
+                flex: 1;
+                height: 10px;
+                background: #020617;
+                border-radius: 999px;
+                overflow: hidden;
+                border: 1px solid rgba(55, 65, 81, 0.9);
+            }
+            
+            .result-graph-bar .bar-fill {
+                inset: 0;
+                height: 100%;                
+                width: 0%;
+                transition: width 0.25s ease-out;
+            }
+            
+            /* Before / After 색상 */
+            .result-graph-bar.before .bar-fill {
+                background: linear-gradient(90deg, #f97373, #fb7185);
+            }
+            
+            .result-graph-bar.after .bar-fill {
+                background: linear-gradient(90deg, #38bdf8, #22c55e);
+            }
+            
+            .result-graph-bar .bar-value {
+                width: 72px;
+                text-align: right;
+                color: #e5e7eb;
+                font-variant-numeric: tabular-nums;
+            }
+
+            /* ================================================
             .result-graph {
                 margin: 4px 0;
                 padding: 4px 6px;
@@ -538,6 +757,9 @@
                 text-align: right;
                 color: #111827;
             }
+            ================================================ /*
+            
+            
             /* 전체 합계 요약 바 */
             
             .global-summary {
@@ -598,12 +820,11 @@
             }
             
             .global-summary .badge {
-                cursor: pointer;
                 display: inline-flex;
                 align-items: center;
                 padding: 3px 8px;
                 border-radius: 999px;
-                font-size: 10px;
+                font-size: 12px;
                 border: 1px solid rgba(148,163,184,0.6);
                 background: rgba(15,23,42,0.9);
                 white-space: nowrap;
@@ -615,6 +836,7 @@
                 justify-content: center;
                 min-width: 80px;
                 border-radius: 0px;
+                cursor: pointer;
             }
             
             .global-summary .badge-Reset {
@@ -622,7 +844,8 @@
                 background-color: rgba(59,130,246,0.3);
                 justify-content: center;
                 min-width: 80px;
-                border-radius: 0px;                
+                border-radius: 0px;
+                cursor: pointer;                
             }
             
             .global-summary .badge-Clear {
@@ -631,6 +854,7 @@
                 justify-content: center;
                 min-width: 80px;
                 border-radius: 0px;
+                cursor: pointer;
             }
             
             .global-summary .badge-Next {
@@ -638,7 +862,11 @@
                 background-color: rgba(0,171,46,0.3);
                 justify-content: center;
                 min-width: 80px;
-                border-radius: 0px;
+                border-top-left-radius: 0;
+                border-top-right-radius: 20px 0px;
+                border-bottom-left-radius: 0;
+                border-bottom-right-radius: 20px 20px;
+                cursor: pointer;
             }
             
             .global-summary .badge-Total {
@@ -646,65 +874,96 @@
             }
             
             .global-summary .badge-invTotal {
-                border-color: rgba(59,130,246,0.7);
+                border-color: rgba(250,204,21,0.7);
+                color: rgba(250,204,21,0.7);
+                background:rgba(0,0,0,0.00);
+                min-width: 250px;
+                justify-content: center;
             }
             
             .global-summary .badge-scrapTotal {
-                border-color: rgba(59,130,246,0.7);
+                border-color: rgba(249,145,72,0.70);
+                color: rgba(249,145,72,0.70);
+                background:rgba(0,0,0,0.00);
+                min-width: 250px;
+                justify-content: center;
             }
             
             .global-summary .badge-materialTotal {
-                border-color: rgba(59,130,246,0.7);
+                border-color: rgba(79,224,132,0.70);
+                color: rgba(79,224,132,0.7);
+                background:rgba(0,0,0,0.00);
+                min-width: 250px;
+                justify-content: center;
             }
             
             .global-summary .badge-laborTotal {
-                border-color: rgba(59,130,246,0.7);
+                border-color: rgba(84,198,248,0.70);
+                color: rgba(84,198,248,0.70);
+                background:rgba(0,0,0,0.00);
+                min-width: 250px;
+                justify-content: center;
             }
             
             .global-summary .badge-devTotal {
-                border-color: rgba(59,130,246,0.7);
+                border-color: rgba(202,154,249,0.70);
+                color: rgba(202,154,249,0.70);
+                background:rgba(0,0,0,0.00);
+                min-width: 250px;
+                justify-content: center;
             }
             
             .global-summary .badge-prodTotal {
-                border-color: rgba(59,130,246,0.7);
+                border-color: rgba(228,125,125,0.70);
+                color: rgba(228,125,125,0.7);
+                background:rgba(0,0,0,0.00);
+                min-width: 250px;
+                justify-content: center;
             }
             .hide-inner {
                 display: none !important;
             }
             
-            .global-summary-footer {
-  border-top: 1px solid rgba(148, 163, 184, 0.4);
-  padding-top: 0.5rem;
-  display: flex;
-  justify-content: space-between; /* 좌우 여백 자동 분배 */
-  align-items: center;
-  flex-wrap: wrap; /* 화면 좁으면 자동 줄바꿈 */
-  gap: 10px;
-}
-
-/* 각 항목(라벨 + 값) */
-.global-summary-footer .total-row {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.85rem;
-}
-
-.global-summary-footer .total-label {
-  color: #e5e7eb;
-}
-
-.global-summary-footer .total-value {
-  font-weight: 600;
-  min-width: 60px;
-  text-align: right;
-}
+            .global-summary-footer {                
+                border-top: 1px solid rgba(148, 163, 184, 0.4);
+                padding-top: 0.5rem;
+                display: flex;
+                justify-content: space-between; /* 좌우 여백 자동 분배 */
+                align-items: center;
+                flex-wrap: wrap; /* 화면 좁으면 자동 줄바꿈 */                
+                gap: 10px;
+            }
             
+            /* 각 항목(라벨 + 값) */
+            .global-summary-footer .total-row {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 0.85rem;
+            }
+            
+            .global-summary-footer .total-label {
+                color: #e5e7eb;
+            }
+            
+            .global-summary-footer .total-value {
+                font-weight: 600;
+                min-width: 60px;
+                text-align: right;
+                color: #BEC3CD;
+            }
+            
+            
+            /* DATA 1/2/3가 저장돼 있을 때 상태 */
+            .global-summary .badge-Data.saved {
+                border-color: rgba(20,151,64,0.9);
+                background-color: rgba(0,171,46,0.55);
+                color: #0b1120;
+                font-weight: 600;
+        
         </style>
     </head>
-    
-    
-    
+        
     <body>
         <!-- 상단 네비 -->
         <header class="navbar-wrapper">
@@ -751,7 +1010,7 @@
 			</div>
 			<!-- 공지 -->
 			<div class="notice-bar">
-				구성, 화면, KPI, 조직도는 계속 업데이트될 예정이며, 이 About 페이지는 그 방향성을 공유하기 위한 초안 버전입니다.
+				다양한 재무성과를 한번에
 			</div>
         </header>
         
@@ -796,7 +1055,7 @@
                     <label class="menu-item">
                         <span class="item-left">
                             <input type="checkbox" data-target="panel-occQty" />
-                            <span>발생량 감소(수량, CC 등 정량기준)&nbsp; &nbsp;</span>
+                            <span>발생량 감소(정량)&nbsp; &nbsp;</span>
                         </span>
                         <input type="number" class="menu-qty" data-target="panel-occQty" min="0" value="0" />
                     </label>
@@ -999,48 +1258,40 @@
                                     현재까지 <span class="summary-count">0</span>개 항목을 계산했고,
                                     추정 연간 효과 합계는
                                     <span class="summary-total">0</span> 원입니다.<br />
-                                    
                                 </div>
                             </div>
                             <div class="global-summary-footer">
                                 <div class="total-row" data-total="invTotal">
-                                    <span class="total-label">재고 관련 합계 (invTotal)</span>
-                                    <span class="total-value" id="invTotal-value">-</span>
+                                    <span class="badge badge-invTotal">재고/재공&nbsp;&nbsp;<span class="total-value" id="invTotal-value"></span></span>                                    
                                 </div>
                                 <div class="total-row" data-total="scrapTotal">
-                                    <span class="total-label">스크랩 관련 합계 (scrapTotal)</span>
-                                    <span class="total-value" id="scrapTotal-value">-</span>
+                                    <span class="badge badge-scrapTotal">품질/불량&nbsp;&nbsp;<span class="total-value" id="scrapTotal-value"></span> </span>                                    
                                 </div>
                                 <div class="total-row" data-total="materialTotal">
-                                    <span class="total-label">원자재 관련 합계 (materialTotal)</span>
-                                    <span class="total-value" id="materialTotal-value">-</span>
+                                    <span class="badge badge-materialTotal">원자재&nbsp;&nbsp;<span class="total-value" id="materialTotal-value"></span></span>                                    
                                 </div>
                                 <div class="total-row" data-total="laborTotal">
-                                    <span class="total-label">인건비 관련 합계 (laborTotal)</span>
-                                    <span class="total-value" id="laborTotal-value">-</span>
+                                    <span class="badge badge-laborTotal">인건비&nbsp;&nbsp;<span class="total-value" id="laborTotal-value"></span></span>                                    
                                 </div>
                                 <div class="total-row" data-total="devTotal">
-                                    <span class="total-label">개발 관련 합계 (devTotal)</span>
-                                    <span class="total-value" id="devTotal-value">-</span>
+                                    <span class="badge badge-devTotal">투자/개발&nbsp;&nbsp;<span class="total-value" id="devTotal-value"></span></span>                                    
                                 </div>
                                 <div class="total-row" data-total="prodTotal">
-                                    <span class="total-label">생산성 관련 합계 (prodTotal)</span>
-                                    <span class="total-value" id="prodTotal-value">-</span>
+                                    <span class="badge badge-prodTotal">생산성&nbsp;&nbsp;<span class="total-value" id="prodTotal-value"></span></span>                                    
                                 </div>
                             </div>
                             <div class="summary-right">
                                 <div class="badge-row">
-                                    <span class="badge badge-Data">DATA-1</span>
-                                    <span class="badge badge-Data">DATA-2</span>
-                                    <span class="badge badge-Data">DATA-3</span>
+                                    <span class="badge badge-Data">DATA 1</span>
+                                    <span class="badge badge-Data">DATA 2</span>
+                                    <span class="badge badge-Data">DATA 3</span>
                                     <span class="badge badge-Clear">저장리셋</span>
                                     <span class="badge badge-Reset" onclick="location.reload()">초기화</span>
-                                    <span class="badge badge-Next">다음</span>
+                                    <span class="badge badge-Next">다음→</span>
                                 </div>
-                            </div>
-
+                            </div>                           
                         </div>
-
+                        
                         <div class="panel-grid">
                             
                             <!-- 재고일수 단축 -->
@@ -1049,17 +1300,66 @@
                                 <div class="cases" data-panel="invDays">
                                     <div class="case">
                                         <div class="formula-desc">
-                                            재고일수단축 = ((개선 전 재고일수 / 개선 후 재고일수) - 1) × 월재고비용 × (이자율 / 100)
+                                            재고일수를 35일에서 30일로 단축한 경우 (월 재고금액 100억원)
                                         </div>
                                         <table class="input-table">
                                             <tr><th>항목</th><th>입력값</th></tr>
-                                            <tr><td>개선 전 재고일수</td><td><input type="number" id="invDays-before" data-field="invDays-before" step="0.01" placeholder="(예시) 50일 → 50" /></td></tr>
-                                            <tr><td>개선 후 재고일수</td><td><input type="number" id="invDays-after" data-field="invDays-after" step="0.01" placeholder="(예시) 382시간 → 15.916667" /></td></tr>
-                                            <tr><td>월 재고비용</td><td><input type="number" id="invDays-monthly" data-field="invDays-monthly" step="0.01" placeholder="(예시) 5천만원 → 50000000" /></td></tr>
-                                            <tr><td>이자율(%)</td><td><input type="number" id="invDays-rate" data-field="invDays-rate" step="0.01" placeholder="(예시) 5% → 5" /></td></tr>
+                                            <tr><td>개선 전 재고일수</td><td><input type="number" id="invDays-before" data-field="invDays-before" step="0.01" placeholder="(예시) 35일 → 35" /></td></tr>
+                                            <tr><td>개선 후 재고일수</td><td><input type="number" id="invDays-after" data-field="invDays-after" step="0.01" placeholder="(예시) 30일 → 30" /></td></tr>
+                                            <tr><td>월 재고비용</td><td><input type="number" id="invDays-monthly" data-field="invDays-monthly" step="0.01" placeholder="(예시) 10억원 → 1000000000" /></td></tr>
+                                            <tr><td>이자율(%)</td><td><input type="number" id="invDays-rate" data-field="invDays-rate" step="0.01" placeholder="(예시) 1.9% → 1.9" /></td></tr>
                                         </table>
                                         <button class="calc-btn" onclick="calcInvDays(this)">계산하기</button>
                                         <div class="result" id="result-invDays">
+                                            <div><span class="result-label">기본 수식:</span> <span class="base">( ( 개선전 / 개선후 ) - 1 ) × 월재고비용 × ( 이자율 / 100 )</span></div>
+                                            <div><span class="result-label">대입 수식:</span> <span class="substitute">( ( 35일 / 30일 ) - 1 ) x 100억원 x ( 1.9% / 100 )</span></div>
+                                            <div><span class="result-label">결&nbsp;&nbsp;&nbsp;과:</span><span class="value">31,666,667원</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            
+                            <!-- 재고금액 감소 -->
+                            <section id="panel-invAmt" class="formula-panel">
+                                <h2>재고금액 감소</h2>
+                                <div class="cases" data-panel="invAmt">
+                                    <div class="case">
+                                        <div class="formula-desc">
+                                            월 재고금액을 50억원 → 30억으로 감소한 경우
+                                        </div>
+                                        <table class="input-table">
+                                            <tr><th>항목</th><th>입력값</th></tr>
+                                            <tr><td>개선 전 월 재고비용</td><td><input type="number" id="invAmt-before" data-field="invAmt-before" step="0.01" placeholder="(예시) 50억원 → 500000000" /></td></tr>
+                                            <tr><td>개선 후 월 재고비용</td><td><input type="number" id="invAmt-after" data-field="invAmt-after" step="0.01" placeholder="(예시) 30억원 → 300000000" /></td></tr>
+                                            <tr><td>이자율(%)</td><td><input type="number" id="invAmt-rate" data-field="invAmt-rate" step="0.01" placeholder="(예시) 1.9% → 1.9"/></td></tr>
+                                        </table>
+                                        <button class="calc-btn" onclick="calcInvAmt(this)">계산하기</button>
+                                        <div class="result" id="result-invAmt">
+                                            <div><span class="result-label">기본 수식:</span> <span class="base">(개선전 - 개선후 ) × (이자율 / 100)</span></div>
+                                            <div><span class="result-label">대입 수식:</span> <span class="substitute">( 50억원 - 30억원 ) x ( 1.9% / 100 )</span></div>
+                                            <div><span class="result-label">결과:</span> <span class="value">38,000,000</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            
+                            <!-- TAT 단축 -->
+                            <section id="panel-tat" class="formula-panel">
+                                <h2>TAT 단축</h2>
+                                <div class="cases" data-panel="tat">
+                                    <div class="case">
+                                        <div class="formula-desc">
+                                            TAT단축 = ((개선 전TAT / 개선 후TAT) - 1) × 월재공비용 × (이자율 / 100)
+                                        </div>
+                                        <table class="input-table">
+                                            <tr><th>항목</th><th>입력값</th></tr>
+                                            <tr><td>개선 전 TAT</td><td><input type="number" id="tat-before" data-field="tat-before" step="0.01" placeholder="(예시) 50일 → 50" /></td></tr>
+                                            <tr><td>개선 후 TAT</td><td><input type="number" id="tat-after" data-field="tat-after" step="0.01" placeholder="(예시) 382시간 → 15.91667" /></td></tr>
+                                            <tr><td>월 재공비용</td><td><input type="number" id="tat-monthly" data-field="tat-monthly" step="0.01" placeholder="(예시) 3천만원 → 300000000" /></td></tr>
+                                            <tr><td>이자율(%)</td><td><input type="number" id="tat-rate" data-field="tat-rate" step="0.01" placeholder="(예시) 5% → 5" /></td></tr>
+                                        </table>
+                                        <button class="calc-btn" onclick="calcTat(this)">계산하기</button>
+                                        <div class="result" id="result-tat">
                                             <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
                                             <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
                                             <div><span class="result-label">결과:</span> <span class="value"></span></div>
@@ -1067,65 +1367,16 @@
                                     </div>
                                 </div>
                             </section>
-
-                            <!-- 재고금액 감소 -->
-                            <section id="panel-invAmt" class="formula-panel">
-                              <h2>재고금액 감소</h2>
-                              <div class="cases" data-panel="invAmt">
-                                <div class="case">
-                                  <div class="formula-desc">
-                                    재고금액감소 = (개선 전 월재고비용 - 개선 후 월재고비용) × (이자율 / 100)
-                                  </div>
-                                  <table class="input-table">
-                                    <tr><th>항목</th><th>입력값</th></tr>
-                                    <tr><td>개선 전 월 재고비용</td><td><input type="number" id="invAmt-before" data-field="invAmt-before" step="0.01" placeholder="(예시) 5천만원 → 500000000" /></td></tr>
-                                    <tr><td>개선 후 월 재고비용</td><td><input type="number" id="invAmt-after" data-field="invAmt-after" step="0.01" placeholder="(예시) 3천만원 → 300000000" /></td></tr>
-                                    <tr><td>이자율(%)</td><td><input type="number" id="invAmt-rate" data-field="invAmt-rate" step="0.01" placeholder="(예시) 5% → 5"/></td></tr>
-                                  </table>
-                                  <button class="calc-btn" onclick="calcInvAmt(this)">계산하기</button>
-                                  <div class="result" id="result-invAmt">
-                                    <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
-                                    <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
-                                    <div><span class="result-label">결과:</span> <span class="value"></span></div>
-                                  </div>
-                                </div>
-                              </div>
-                            </section>
-
-                            <!-- TAT 단축 -->
-                            <section id="panel-tat" class="formula-panel">
-                              <h2>TAT 단축</h2>
-                              <div class="cases" data-panel="tat">
-                                <div class="case">
-                                  <div class="formula-desc">
-                                    TAT단축 = ((개선 전TAT / 개선 후TAT) - 1) × 월재공비용 × (이자율 / 100)
-                                  </div>
-                                  <table class="input-table">
-                                    <tr><th>항목</th><th>입력값</th></tr>
-                                    <tr><td>개선 전 TAT</td><td><input type="number" id="tat-before" data-field="tat-before" step="0.01" placeholder="(예시) 50일 → 50" /></td></tr>
-                                    <tr><td>개선 후 TAT</td><td><input type="number" id="tat-after" data-field="tat-after" step="0.01" placeholder="(예시) 382시간 → 15.91667" /></td></tr>
-                                    <tr><td>월 재공비용</td><td><input type="number" id="tat-monthly" data-field="tat-monthly" step="0.01" placeholder="(예시) 3천만원 → 300000000" /></td></tr>
-                                    <tr><td>이자율(%)</td><td><input type="number" id="tat-rate" data-field="tat-rate" step="0.01" placeholder="(예시) 5% → 5" /></td></tr>
-                                  </table>
-                                  <button class="calc-btn" onclick="calcTat(this)">계산하기</button>
-                                  <div class="result" id="result-tat">
-                                    <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
-                                    <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
-                                    <div><span class="result-label">결과:</span> <span class="value"></span></div>
-                                  </div>
-                                </div>
-                              </div>
-                            </section>
-
+                            
                             <!-- 발생률 감소 (%) -->
                             <section id="panel-occRate" class="formula-panel">
-                              <h2>발생률 감소 (%)</h2>
-                              <div class="cases" data-panel="occRate">
-                                <div class="case">
-                                  <div class="formula-desc">
-                                    발생량감소(%) = ((개선 전 발생률 / 개선 후발생률) - 1) × 발생량 × 처리단가
-                                  </div>
-                                  <table class="input-table">
+                                <h2>발생률 감소 (%)</h2>
+                                <div class="cases" data-panel="occRate">
+                                    <div class="case">
+                                        <div class="formula-desc">
+                                            발생량감소(%) = ((개선 전 발생률 / 개선 후발생률) - 1) × 발생량 × 처리단가
+                                        </div>
+                                        <table class="input-table">
                                     <tr><th>항목</th><th>입력값</th></tr>
                                     <tr><td>개선 전 발생률(0~1)</td><td><input type="number" id="occRate-beforeRate" data-field="occRate-beforeRate" step="0.0001" placeholder="(예시) 32.82% → 0.3282" /></td></tr>
                                     <tr><td>개선 후 발생률(0~1)</td><td><input type="number" id="occRate-afterRate" data-field="occRate-afterRate" step="0.0001" placeholder="(예시) 20% → 0.2" /></td></tr>
@@ -1151,7 +1402,7 @@
                                     발생량감소(cc) = (개선 전발생량 - 개선 후발생량) × 처리단가
                                   </div>
                                   <table class="input-table">
-                                    <tr><th>항목</th><th>입력값</th></tr>
+                                      <tr><th>항목</th><th>입력값</th></tr>
                                     <tr><td>개선 전 발생량</td><td><input type="number" id="occQty-before" data-field="occQty-before" step="0.01" placeholder="(예시) 15k → 15000" /></td></tr>
                                     <tr><td>개선 후 발생량</td><td><input type="number" id="occQty-after" data-field="occQty-after" step="0.01" placeholder="(예시) 523개 혹은 cc → 523" /></td></tr>
                                     <tr><td>처리단가</td><td><input type="number" id="occQty-unit" data-field="occQty-unit" step="0.01" placeholder="(예시) 8300원 → 8300" /></td></tr>
@@ -1237,6 +1488,7 @@
                                     <tr><td>기여도(0~1)</td><td><input type="number" id="waferLossRate-contrib" data-field="waferLossRate-contrib" step="0.01" value="1" placeholder="(예시) 100% → 1" /></td></tr>
                                   </table>
                                   <button class="calc-btn" onclick="calcWaferLossRate(this)">계산하기</button>
+
                                   <div class="result" id="result-waferLossRate">
                                     <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
                                     <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
@@ -1550,7 +1802,7 @@
                                   <div class="result" id="result-timeSave">
                                     <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
                                     <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
-                                    <div><span class="result-label">결과:</span> <span class="value"></span></div>
+                                    <div><span class="result-label">결 과:</span> <span class="value"></span></div>
                                   </div>
                                 </div>
                               </div>
@@ -1741,7 +1993,7 @@
                                     런다운감소 = ((개선 전런다운시간 / 총작업시간) - (개선 후런다운시간 / 총작업시간)) × 설비대수 × (대당가격 / 5) × 기여도
                                   </div>
                                   <table class="input-table">
-                                    <tr><th>항목</th><th>입력값</th></tr>
+                                      <tr><th>항목</th><th>입력값</th></tr>
                                     <tr><td>개선 전 런다운시간</td><td><input type="number" id="rundown-before" data-field="rundown-before" step="0.01" placeholder="(예시)  → "/></td></tr>
                                     <tr><td>개선 후 런다운시간</td><td><input type="number" id="rundown-after" data-field="rundown-after" step="0.01" placeholder="(예시)  → "/></td></tr>
                                     <tr><td>총작업시간(분)</td><td><input type="number" id="rundown-total" data-field="rundown-total" step="1" value="1440" placeholder="(예시)  → "/></td></tr>
@@ -1766,28 +2018,27 @@
                                 <div class="case">
                                   <div class="formula-desc">
                                     면적당생산 = 활용완료면적(개선 전 면적 - 개선 후 면적) × 평당건설비용
-                                  </div>
+                                  </div>                                    
                                   <table class="input-table">
-                                    <tr><th>항목</th><th>입력값</th></tr>
-                                    <tr><td>개선 전 면적</td><td><input type="number" id="areaProd-beforearea" data-field="areaProd-beforearea" step="0.01" placeholder="(예시)  → "/></td></tr>
-                                    <tr><td>개선 후 면적</td><td><input type="number" id="areaProd-afterarea" data-field="areaProd-afterarea" step="0.01" placeholder="(예시)  → "/></td></tr>
-                                    <tr><td>평당 건설비용</td><td><input type="number" id="areaProd-cost" data-field="areaProd-cost" step="1" placeholder="(예시)  → "/></td></tr>
+                                      <tr><th>항목</th><th>입력값</th></tr>
+                                      <tr><td>개선 전 면적</td><td><input type="number" id="areaProd-beforearea" data-field="areaProd-beforearea" step="0.01" placeholder="(예시)  → "/></td></tr>
+                                      <tr><td>개선 후 면적</td><td><input type="number" id="areaProd-afterarea" data-field="areaProd-afterarea" step="0.01" placeholder="(예시)  → "/></td></tr>
+                                      <tr><td>평당 건설비용</td><td><input type="number" id="areaProd-cost" data-field="areaProd-cost" step="1" placeholder="(예시)  → "/></td></tr>
                                   </table>
                                   <button class="calc-btn" onclick="calcAreaProd(this)">계산하기</button>
                                   <div class="result" id="result-areaProd">
-                                    <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
-                                    <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
-                                    <div><span class="result-label">결과:</span> <span class="value"></span></div>
+                                      <div><span class="result-label">기본 수식:</span> <span class="base"></span></div>
+                                      <div><span class="result-label">대입 수식:</span> <span class="substitute"></span></div>
+                                      <div><span class="result-label">결과:</span> <span class="value"></span></div>
                                   </div>
                                 </div>
                               </div>
                             </section>
-
                           </div>
                         </div>
                       </div>
                     </div>
-                        </main>
+        </main>
 
 <script>
   // 체크박스 → 패널 show/hide + 수량 동기화
@@ -1909,7 +2160,7 @@
   // 숫자 포맷
   function fmt(num) {
     if (!isFinite(num)) return '-';
-    return num.toLocaleString('ko-KR', { maximumFractionDigits: 2 });
+    return num.toLocaleString('ko-KR', { maximumFractionDigits: 0 }) + ' 원';
   }
 
   // 케이스 내부에서 숫자 값 가져오기
@@ -1945,7 +2196,7 @@
       improveRow.className = 'improve-row';
       var label = document.createElement('span');
       label.className = 'result-label';
-      label.textContent = '개선전후 개선율:';
+      label.textContent = '개선율:';
       var impSpan = document.createElement('span');
       impSpan.className = 'improve';
       impSpan.style.marginLeft = '4px';
@@ -2805,6 +3056,173 @@ document.querySelectorAll('.money-input').forEach(input => {
   });
 });
 
+            /* ===== DATA 1/2/3 저장 기능 (global-summary 배지 기준 + 세부 항목 전체 저장) ===== */
+(function () {
+  // localStorage 키
+  const STORAGE_PREFIX = 'mi-finance-slot-';   // mi-finance-slot-1,2,3 ...
+  const ACTIVE_SLOT_KEY = 'mi-finance-active-slot';
+
+  // 6개 합계: 화면에서 값 읽어올 span id
+  const TOTAL_FIELDS = [
+    { key: 'invTotal',      elId: 'invTotal-value' },
+    { key: 'scrapTotal',    elId: 'scrapTotal-value' },
+    { key: 'materialTotal', elId: 'materialTotal-value' },
+    { key: 'laborTotal',    elId: 'laborTotal-value' },
+    { key: 'devTotal',      elId: 'devTotal-value' },
+    { key: 'prodTotal',     elId: 'prodTotal-value' }
+  ];
+
+  // 그룹별로 어떤 panel들이 묶이는지
+  const GROUP_PANELS = {
+    invTotal:    ['invDays', 'invAmt', 'tat'],
+    scrapTotal:  ['occRate', 'occQty', 'scrapRate', 'scrapQty',
+                  'waferLossRate', 'waferLossQty',
+                  'yieldStab', 'yieldRamp', 'reworkRate'],
+    materialTotal: ['stdUp', 'stdDown', 'usageEqp', 'usageTotal',
+                    'unitEqp', 'unitDown', 'costSave'],
+    laborTotal:    ['timeSave', 'headSave'],
+    devTotal:      ['planSave', 'devCost', 'devTime'],
+    prodTotal:     ['stdTime', 'eqpProd', 'downLoss', 'rundown', 'areaProd']
+  };
+
+  // 1) totals   : invTotal~prodTotal (global-summary 합계)
+  // 2) detail   : 그룹/패널별 합계
+  // 3) cases    : 패널 안에 있는 모든 case 값 (같은 패널 여러개도 전부)
+  function collectSlotData() {
+    const data = {
+      totals: {},  // { invTotal:123..., scrapTotal:... }
+      detail: {},  // { invTotal:{invDays:..., invAmt:...}, ... }
+      cases:  {}   // { invTotal:{invDays:[{panelIndex,caseIndex,value}, ...]}, ... }
+    };
+
+    /* --- 1) global-summary의 6개 합계 --- */
+    TOTAL_FIELDS.forEach(field => {
+      const el = document.getElementById(field.elId);
+      if (!el) {
+        data.totals[field.key] = 0;
+        return;
+      }
+
+      let raw = (el.textContent || '').trim();
+      raw = raw.replace(/[^\d.-]/g, ''); // 숫자/부호 외 제거 (123,456 원 → 123456)
+      const num = Number(raw);
+      data.totals[field.key] = isFinite(num) ? num : 0;
+    });
+
+    /* --- 2) 그룹/패널별 합계 + 3) 패널 안 case별 값 --- */
+    Object.entries(GROUP_PANELS).forEach(([groupKey, panelNames]) => {
+      const groupDetail = {};
+      const groupCases  = {};
+
+      panelNames.forEach(panelName => {
+        // 같은 data-panel을 가진 블록이 여러 개라도 전부 가져옴
+        const panelNodes = document.querySelectorAll(
+          '[data-panel="' + panelName + '"]'
+        );
+
+        let panelSum = 0;
+        const caseList = [];
+
+        panelNodes.forEach((panelNode, pIdx) => {
+          // 이 패널 안의 모든 result를 case로 취급 (여러 개도 다)
+          const resultBoxes = panelNode.querySelectorAll('.result');
+          resultBoxes.forEach((box, cIdx) => {
+            const v = parseFloat(
+              box.getAttribute('data-result') || box.dataset.result || ''
+            );
+            if (!isFinite(v)) return;
+
+            panelSum += v;
+            caseList.push({
+              panel: panelName,
+              panelIndex: pIdx,   // 같은 panel이 여러 개일 때 구분용
+              caseIndex: cIdx,    // 해당 panel 안에서 몇 번째 result인지
+              value: v
+            });
+          });
+        });
+
+        groupDetail[panelName] = panelSum;   // 이 panel 전체 합계
+        groupCases[panelName]  = caseList;   // 개별 case 목록
+      });
+
+      data.detail[groupKey] = groupDetail;
+      data.cases[groupKey]  = groupCases;
+    });
+
+    return data;
+  }
+
+  // 슬롯에 저장 (slot = 1,2,3)
+  function saveSlot(slot) {
+    const data = collectSlotData();
+
+    // 전부 0/빈값이면 저장 안 함
+    const hasTotals = Object.values(data.totals).some(v => v !== 0);
+    const hasDetail = Object.values(data.detail)
+      .some(groupObj => Object.values(groupObj).some(v => v !== 0));
+    const hasCases = Object.values(data.cases)
+      .some(groupObj => Object.values(groupObj)
+        .some(arr => Array.isArray(arr) && arr.length > 0));
+
+    if (!hasTotals && !hasDetail && !hasCases) {
+      alert('저장할 금액이 없습니다.\n먼저 각 항목의 계산을 실행해 주세요.');
+      return;
+    }
+
+    localStorage.setItem(STORAGE_PREFIX + slot, JSON.stringify(data));
+    localStorage.setItem(ACTIVE_SLOT_KEY, String(slot)); // 마지막 저장 슬롯 기록
+    updateDataBadges();
+  }
+
+  // DATA 1~3 전체 삭제
+  function clearAllSlots() {
+    if (!confirm('DATA 1~3에 저장된 내용을 모두 삭제할까요?')) return;
+
+    for (let i = 1; i <= 3; i++) {
+      localStorage.removeItem(STORAGE_PREFIX + i);
+    }
+    localStorage.removeItem(ACTIVE_SLOT_KEY);
+    updateDataBadges();
+  }
+
+  // 저장 여부에 따라 badge 색상 업데이트
+  function updateDataBadges() {
+    const badges = document.querySelectorAll('.global-summary .badge-Data');
+    badges.forEach((badge, idx) => {
+      const slot = idx + 1; // 첫 번째 = 1, 두 번째 = 2, 세 번째 = 3
+      const saved = !!localStorage.getItem(STORAGE_PREFIX + slot);
+      badge.classList.toggle('saved', saved);  // .badge-Data.saved 사용
+    });
+  }
+
+  // 다음 페이지로 이동 (임시 URL)
+  function goNextPage() {
+    // 나중에 실제 URL로 바꿔 쓰면 됨
+    window.location.href = 'finance-detail.html';
+  }
+
+  // 이벤트 연결
+  document.addEventListener('DOMContentLoaded', function () {
+    // DATA 1/2/3 클릭 → 각 슬롯에 저장
+    const dataBadges = document.querySelectorAll('.global-summary .badge-Data');
+    dataBadges.forEach((badge, idx) => {
+      const slot = idx + 1;
+      badge.addEventListener('click', () => saveSlot(slot));
+    });
+
+    // "저장리셋" 배지
+    const clearBadge = document.querySelector('.global-summary .badge-Clear');
+    if (clearBadge) clearBadge.addEventListener('click', clearAllSlots);
+
+    // "다음" 배지
+    const nextBadge = document.querySelector('.global-summary .badge-Next');
+    if (nextBadge) nextBadge.addEventListener('click', goNextPage);
+
+    // 페이지 열릴 때 이미 저장된 슬롯 있으면 색 반영
+    updateDataBadges();
+  });
+})();
         </script>
 
 </body>
