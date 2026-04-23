@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MI-Nexus Portal - Vision Equipment Selection Judge v5</title>
+<style>
+  :root {
+    --mi-deep-blue:#003B70; --mi-teal:#00A6C2; --mi-navy:#0A1E3F;
+    --mi-bg:#070b12; --mi-surface:#0f172a; --mi-text-main:#f9fafb; --mi-text-sub:#9ca3af;
+    --mi-accent:#22c55e; --mi-border:rgba(148,163,184,0.45); --mi-card:rgba(15,23,42,0.96);
+    --mi-danger:#fb7185; --mi-warn:#fbbf24; --mi-ok:#4ade80; --mi-info:#38bdf8;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    background:radial-gradient(circle at top left,#0f172a 0,#020617 45%,#000 100%);
+    color:var(--mi-text-main);
+    background-image:linear-gradient(to bottom,rgba(15,23,42,.72),rgba(15,23,42,.94)),url("https://images.pexels.com/photos/34088/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=1600");
+    background-size:cover;background-position:center;min-height:100vh;overflow:hidden;
+  }
+  body::-webkit-scrollbar,.sidebar::-webkit-scrollbar,.content-inner::-webkit-scrollbar{display:none}
+  .navbar-wrapper{position:sticky;top:0;z-index:20;backdrop-filter:blur(16px);background:linear-gradient(to bottom,rgba(15,23,42,.92),rgba(15,23,42,0));border-bottom:1px solid rgba(15,23,42,.9)}
+  .navbar{max-width:1450px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .navbar-left{display:flex;align-items:center;gap:10px;font-size:13px}
+  .mi-logo{width:26px;height:26px;border-radius:999px;background:radial-gradient(circle at 20% 0%,#38bdf8,#0f172a 60%,#000 80%);display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .navbar-title-main{font-weight:600;font-size:13px}.navbar-title-sub{font-size:12px;color:var(--mi-text-sub)}
+  .top-status-bar{font-size:11px;border-radius:999px;background:linear-gradient(135deg,var(--mi-teal),#22c55e);color:#020617;font-weight:600;box-shadow:0 0 18px rgba(34,197,94,.4);padding:4px 10px;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .notice-bar{max-width:1400px;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;border-radius:999px;background:rgba(56,189,248,.12);color:#e0f2fe;font-weight:500;border:1px solid rgba(56,189,248,.4);font-size:12px;padding:4px 16px}
+  .container{display:flex;height:calc(100vh - 78px);max-width:1450px;margin:0 auto;padding:10px 12px 18px;gap:16px}
+  .sidebar{width:370px;background:rgba(17,24,39,.72);border:1px solid var(--mi-border);border-radius:16px;padding:14px 12px 18px;overflow-y:auto;backdrop-filter:blur(10px);box-shadow:0 18px 35px rgba(15,23,42,.9)}
+  .content{flex:1;min-width:0;overflow:hidden}.content-inner{width:100%;height:100%;overflow-y:auto;padding-right:2px}
+  .sidebar h2{font-size:16px;margin-bottom:6px}.sidebar .desc{color:var(--mi-text-sub);font-size:12px;line-height:1.55;margin-bottom:10px}
+  .menu-group-title{margin-top:14px;margin-bottom:6px;font-size:12px;color:#cbd5e1;border-top:1px solid rgba(55,65,81,.9);padding-top:10px;font-weight:700}
+  .tool-row{display:grid;gap:4px;margin-bottom:8px}.tool-row label{color:var(--mi-text-sub);font-size:12px}
+  .tool-row input,.tool-row select,.tool-row textarea,.tool-row button{width:100%;border-radius:10px;border:1px solid rgba(55,65,81,.9);background:#020617;color:#e5e7eb;padding:8px 10px;font-size:12px}
+  .tool-row textarea{min-height:64px;resize:vertical}
+  .inline-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.inline-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.button-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:8px}.button-row.triple{grid-template-columns:repeat(3,minmax(0,1fr))}
+  button.primary{border:none;background:linear-gradient(135deg,var(--mi-teal),#22c55e);color:#04111f;font-weight:700;cursor:pointer}
+  button.ghost{background:rgba(15,23,42,.8);cursor:pointer}
+  .button-row button{height:30px;padding:5px 8px;font-size:11px;line-height:1;border-radius:10px}
+  .btn-save{background:linear-gradient(135deg,#0ea5b7,#34d399)!important;color:#04111f!important;border:none!important;font-weight:700}
+  .btn-load{background:#0b1730!important;color:#dbeafe!important;border:1px solid rgba(59,130,246,.35)!important}
+  .btn-reset{background:rgba(14,165,183,.10)!important;color:#99f6e4!important;border:1px solid rgba(45,212,191,.30)!important}
+  .btn-clear{background:rgba(148,163,184,.10)!important;color:#d1d5db!important;border:1px solid rgba(148,163,184,.28)!important}
+  .hero,.layout-grid,.guide-grid{display:grid;gap:14px;margin-bottom:14px}.hero{grid-template-columns:minmax(0,1.35fr) minmax(0,.9fr)}.layout-grid{grid-template-columns:minmax(0,1.2fr) minmax(0,.9fr)}.guide-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .hero-card,.panel,.kpi-card,.guide-card{background:var(--mi-card);border:1px solid var(--mi-border);border-radius:16px;box-shadow:0 18px 30px rgba(15,23,42,.9)}
+  .hero-card{padding:18px 18px 16px;background:radial-gradient(circle at 0% 0%,rgba(56,189,248,.18),transparent 45%),radial-gradient(circle at 100% 100%,rgba(34,197,94,.18),transparent 38%),rgba(15,23,42,.96)}
+  .hero-title{font-size:24px;font-weight:700;line-height:1.2;margin-bottom:8px}.hero-title span{background:linear-gradient(90deg,#38bdf8,#22c55e);-webkit-background-clip:text;color:transparent}
+  .hero-sub{color:var(--mi-text-sub);font-size:13px;line-height:1.65;margin-bottom:14px}
+  .tag-row{display:flex;gap:8px;flex-wrap:wrap}.tag-pill{font-size:11px;padding:5px 10px;border-radius:999px;border:1px solid rgba(148,163,184,.45);background:rgba(2,6,23,.7)}
+  .hero-side{padding:16px;display:grid;gap:10px;align-content:start}.mini-label{color:var(--mi-text-sub);font-size:11px;margin-bottom:3px}.mini-value{font-size:15px;font-weight:700;font-variant-numeric:tabular-nums}
+  .kpi-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:12px;margin-bottom:14px}.kpi-card{padding:12px}.kpi-label{color:var(--mi-text-sub);font-size:11px;margin-bottom:6px}.kpi-value{font-size:17px;font-weight:700;font-variant-numeric:tabular-nums}.kpi-sub{font-size:10px;color:var(--mi-text-sub);margin-top:5px}
+  .panel{padding:14px}.panel-header{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}.panel-title{font-size:14px;font-weight:700}.panel-sub{color:var(--mi-text-sub);font-size:11px}
+  .calc-table{width:100%;border-collapse:collapse;font-size:12px}.calc-table th,.calc-table td{padding:8px 10px;border-bottom:1px solid rgba(31,41,55,.95);text-align:left;vertical-align:middle}.calc-table th{width:42%;color:var(--mi-text-sub);font-weight:500;background:rgba(2,6,23,.7)}.calc-table td{font-variant-numeric:tabular-nums}
+  .value-strong{font-weight:700;color:#e5f9ff}.muted{color:var(--mi-text-sub)}
+  .judge-list{display:grid;gap:8px}.judge-item{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:12px;background:rgba(2,6,23,.6);border:1px solid rgba(30,64,175,.55)}.judge-item .name{font-size:12px;font-weight:700}.judge-item .text{font-size:11px;color:var(--mi-text-sub);line-height:1.55;margin-top:3px}.judge-item .result{font-size:12px;font-weight:700;white-space:nowrap}
+  .ok{color:var(--mi-ok)}.warn{color:var(--mi-warn)}.bad{color:var(--mi-danger)}.info{color:var(--mi-info)}
+  .formula-box{margin-top:10px;padding:10px 12px;border-radius:12px;background:rgba(2,6,23,.7);border:1px solid rgba(148,163,184,.18);font-size:11px;color:#dbeafe;line-height:1.7;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Courier New",monospace;white-space:pre-line}
+  .scorebar{height:12px;border-radius:999px;background:#020617;overflow:hidden;border:1px solid rgba(55,65,81,.9);margin-top:6px}.scorefill{height:100%;background:linear-gradient(90deg,#38bdf8,#22c55e);width:0%}.small-note{color:var(--mi-text-sub);font-size:11px;line-height:1.5;margin-top:8px}
+  .guide-card{padding:14px}.guide-card h3{font-size:13px;margin-bottom:8px}.guide-card p{font-size:12px;color:var(--mi-text-sub);line-height:1.6}
+  @media (max-width:1180px){.container{height:auto;min-height:calc(100vh - 78px);flex-direction:column;overflow:auto}body{overflow:auto}.sidebar{width:100%;overflow:visible}.content,.content-inner{overflow:visible}.hero,.layout-grid,.guide-grid{grid-template-columns:1fr}.kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  @media (max-width:720px){.kpi-grid,.inline-2,.inline-3,.button-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="navbar-wrapper">
+  <div class="navbar">
+    <div class="navbar-left">
+      <div class="mi-logo"><img src="/mnt/data/logo_32.png" alt="" width="26" height="26"></div>
+      <div>
+        <div class="navbar-title-main">S.PKG MI-Nexus Portal</div>
+        <div class="navbar-title-sub">Vision Equipment Selection Judge v5</div>
+      </div>
+    </div>
+    <div class="top-status-bar"><span id="clock"></span></div>
+  </div>
+  <div class="notice-bar">검출사이즈 요구/계산/유효/판정을 한 번에 본다. MB/s 와 Mbps는 따로 적는다. bps / Bps 구분 주의.</div>
+</header>
+
+<main class="container">
+  <aside class="sidebar">
+    <h2>장비선정 입력</h2>
+    <div class="desc">실시간 계산이다. 값 바꾸면 바로 반영된다. 저장은 넣지 않았다. 이번 파일은 메모 문구와 검출 구조를 우선 바로잡은 버전이다.</div>
+
+    <div class="menu-group-title">Camera / Sensor</div>
+    <div class="inline-2">
+      <div class="tool-row"><label for="sensorWidth">Sensor Width (mm)</label><input id="sensorWidth" type="number" step="0.001" value="11.264"></div>
+      <div class="tool-row"><label for="sensorHeight">Sensor Height (mm)</label><input id="sensorHeight" type="number" step="0.001" value="6.342"></div>
+    </div>
+    <div class="inline-2">
+      <div class="tool-row"><label for="resX">Resolution X (px)</label><input id="resX" type="number" step="1" value="4096"></div>
+      <div class="tool-row"><label for="resY">Resolution Y (px)</label><input id="resY" type="number" step="1" value="3000"></div>
+    </div>
+    <div class="inline-2">
+      <div class="tool-row"><label for="pixelSizeX">Pixel Size X (μm)</label><input id="pixelSizeX" type="number" step="0.001" value="2.74"></div>
+      <div class="tool-row"><label for="pixelSizeY">Pixel Size Y (μm)</label><input id="pixelSizeY" type="number" step="0.001" value="2.74"></div>
+    </div>
+    <div class="inline-3">
+      <div class="tool-row"><label for="bitDepth">Bit Depth</label><input id="bitDepth" type="number" step="1" value="8"></div>
+      <div class="tool-row"><label for="cameraType">Camera Type</label>
+        <select id="cameraType"><option value="area" selected>Area Scan</option><option value="line">Line Scan</option></select>
+      </div>
+      <div class="tool-row"><label for="fps" id="fpsLabel">Frame Rate (FPS)</label><input id="fps" type="number" step="0.1" value="23"></div>
+    </div>
+    <div class="inline-2">
+      <div class="tool-row"><label for="colorType">Color Type</label>
+        <select id="colorType"><option value="mono">Mono</option><option value="bayer">Bayer</option><option value="rgb">RGB</option></select>
+      </div>
+      <div class="tool-row"><label for="cameraModel">Camera Model</label><input id="cameraModel" type="text" value="똑딱이"></div>
+    </div>
+
+    <div class="menu-group-title">Lens / Optics</div>
+    <div class="inline-2">
+      <div class="tool-row"><label for="focalLength">Focal Length (mm)</label><input id="focalLength" type="number" step="0.01" value="16"></div>
+      <div class="tool-row"><label for="fNumber">F#</label><input id="fNumber" type="number" step="0.1" value="4"></div>
+    </div>
+    <div class="inline-2">
+      <div class="tool-row"><label for="lensNa">Lens NA</label><input id="lensNa" type="number" step="0.001" value="0.125"></div>
+      <div class="tool-row"><label for="imageCircle">Image Circle (mm)</label><input id="imageCircle" type="number" step="0.01" value="16"></div>
+    </div>
+    <div class="inline-2">
+      <div class="tool-row"><label for="distortion">Distortion (%)</label><input id="distortion" type="number" step="0.01" value="0.15"></div>
+      <div class="tool-row"><label for="mtfUm">Lens Resolution Limit (μm)</label><input id="mtfUm" type="number" step="0.1" value="5"></div>
+    </div>
+    <div class="inline-2">
+      <div class="tool-row"><label for="lensModel">Lens Model</label><input id="lensModel" type="text" value="오이만두"></div>
+      <div class="tool-row"><label for="procMemo">Processing Memo</label><input id="procMemo" type="text" value="샘플값"></div>
+    </div>
+
+    <div class="menu-group-title">Inspection</div>
+    <div class="inline-2">
+      <div class="tool-row"><label for="wd">WD (mm)</label><input id="wd" type="number" step="0.1" value="200"></div>
+      <div class="tool-row"><label for="heightVariation">Height Variation (mm)</label><input id="heightVariation" type="number" step="0.01" value="1.5"></div>
+    </div>
+    <div class="inline-2">
+      <div class="tool-row"><label for="targetFovX">Target FOV X (mm)</label><input id="targetFovX" type="number" step="0.1" value="120"></div>
+      <div class="tool-row"><label for="targetFovY">Target FOV Y (mm)</label><input id="targetFovY" type="number" step="0.1" value="90"></div>
+    </div>
+    <div class="inline-3">
+      <div class="tool-row"><label for="minFeature">Min Feature (μm)</label><input id="minFeature" type="number" step="1" value="80"></div>
+      <div class="tool-row"><label for="requiredPixels">Required Pixels</label><input id="requiredPixels" type="number" step="0.1" value="3"></div>
+      <div class="tool-row"><label for="measurePixels">Measure Pixels</label><input id="measurePixels" type="number" step="0.1" value="5"></div>
+    </div>
+    <div id="pixelGuide" style="margin:-2px 0 8px 0;color:var(--mi-text-sub);font-size:11px;line-height:1.45;">권장 기준: Detect 3 px / Measure 5 px · Min Feature만으로 자동 확정하지 않음 · 알고리즘/검사 목적 기준</div>
+    <div class="inline-3">
+      <div class="tool-row"><label for="objectSpeed">Object Speed (mm/s)</label><input id="objectSpeed" type="number" step="0.1" value="120"></div>
+      <div class="tool-row"><label for="exposureUs">Exposure (μs)</label><input id="exposureUs" type="number" step="1" value="300"></div>
+      <div class="tool-row"><label for="waveNm">Wavelength (nm)</label><input id="waveNm" type="number" step="1" value="550"></div>
+    </div>
+    <div class="inline-2">
+      <div class="tool-row"><label for="telecentricUse">Telecentric Applied</label>
+        <select id="telecentricUse"><option value="no" selected>No</option><option value="yes">Yes</option></select>
+      </div>
+      <div class="tool-row"><label for="telecentricMemo">Telecentric Note</label><input id="telecentricMemo" type="text" value="미적용"></div>
+    </div>
+
+
+    <div class="menu-group-title">Processing / System</div>
+    <div class="inline-2">
+      <div class="tool-row"><label for="processorType">Processor Type</label>
+        <select id="processorType"><option value="cpu">CPU</option><option value="gpu">GPU</option><option value="fpga">FPGA</option></select>
+      </div>
+      <div class="tool-row"><label for="algoLevel">Algorithm Level</label>
+        <select id="algoLevel"><option value="light">Light</option><option value="mid">Medium</option><option value="heavy">Heavy</option><option value="ai">AI / Very Heavy</option></select>
+      </div>
+    </div>
+    <div class="inline-2">
+      <div class="tool-row"><label for="memMult">Memory Traffic Multiplier</label><input id="memMult" type="number" step="0.1" value="4"></div>
+      <div class="tool-row"><label for="procBw" id="procBwLabel">CPU Reference BW (MB/s)</label><input id="procBw" type="number" step="1" value="1800"></div>
+    </div>
+    <div class="inline-3">
+      <div class="tool-row"><label for="ifBw">Interface BW (MB/s)</label><input id="ifBw" type="number" step="1" value="350"></div>
+      <div class="tool-row"><label for="storageBw">Storage Write (MB/s)</label><input id="storageBw" type="number" step="1" value="500"></div>
+      <div class="tool-row"><label for="networkBw">Network BW (MB/s)</label><input id="networkBw" type="number" step="1" value="110"></div>
+    </div>
+    <div class="tool-row"><label for="accel">Extra Accel Factor</label><input id="accel" type="number" step="0.1" value="1"></div>
+    <div class="menu-group-title">Crop / ROI Throughput</div>
+    <div class="inline-2">
+      <div class="tool-row"><label for="cropX">Crop Width X (px)</label><input id="cropX" type="number" step="1" value="4096"></div>
+      <div class="tool-row"><label for="cropY">Crop Height Y (px)</label><input id="cropY" type="number" step="1" value="3000"></div>
+    </div>
+    <div class="desc">Crop X/Y를 넣으면 전체 센서 기준 데이터량과 Crop 적용 기준 데이터량을 같이 본다. Area Scan은 Crop X×Y가 전송/처리량에 바로 반영되고, Line Scan은 Crop X가 line payload를, Crop Y는 구성 이미지 높이(버퍼 크기)를 의미한다.</div>
+    <div class="desc">기준 예시: Memory Traffic Multiplier = Mono 단순 3~4 / 필터 포함 4~6 / RGB·Bayer 6~10 / AI 10 이상. Throughput 예측은 XY 해상도, bit depth, FPS/line rate, color type, algorithm level, memory traffic multiplier, CPU 기준 처리대역을 함께 사용한다. bps / Bps 구분 주의.</div>
+
+    <div class="menu-group-title">TDI</div>
+    <div class="inline-3">
+      <div class="tool-row"><label for="useTdi">Use TDI</label><select id="useTdi"><option value="no">No</option><option value="yes">Yes</option></select></div>
+      <div class="tool-row"><label for="tdiLine">Line Rate (Hz)</label><input id="tdiLine" type="number" step="1" value="80000"></div>
+      <div class="tool-row"><label for="tdiStage">Stage</label><input id="tdiStage" type="number" step="1" value="64"></div>
+    </div>
+    <div class="tool-row"><label for="tdiLimit">Pixel Move Limit (px/line)</label><input id="tdiLimit" type="number" step="0.1" value="1"></div>
+
+    <div class="menu-group-title">메모</div>
+    <div class="tool-row"><label for="noteMemo">메모</label><textarea id="noteMemo" placeholder="검토 특이사항 / 후보 비교 / 샘플 메모"></textarea></div>
+
+    <div class="button-row triple">
+      <button class="btn-save" id="btnSave1" type="button">저장 1</button>
+      <button class="btn-save" id="btnSave2" type="button">저장 2</button>
+      <button class="btn-save" id="btnSave3" type="button">저장 3</button>
+    </div>
+    <div class="button-row">
+      <button class="btn-reset" id="btnReset" type="button">기본값</button>
+      <button class="btn-clear" id="btnClearSaves" type="button">저장삭제</button>
+    </div>
+    <div class="button-row triple">
+      <button class="btn-load" id="btnLoad1" type="button">불러오기 1</button>
+      <button class="btn-load" id="btnLoad2" type="button">불러오기 2</button>
+      <button class="btn-load" id="btnLoad3" type="button">불러오기 3</button>
+    </div>
+    <div class="desc">현재 입력값만 저장한다. 계산 결과와 판정 문구는 다시 계산해서 갱신한다.</div>
+  </aside>
+
+  <section class="content"><div class="content-inner">
+    <section class="hero">
+      <div class="hero-card">
+        <div class="hero-title">Vision Equipment <span>Selection Judge <span>fix5</span></div>
+        <div class="hero-sub">XY 해상도 분리, pixel size X/Y, telecentric 적용 여부, Area / Line Scan 분기, 검출사이즈 요구·계산·유효·판정, 처리 병목, TDI 조건을 한 화면에 모은 버전이다. 여기에 sensor-speed-tdi-calculator 기준의 이미지 사이즈 기반 처리량 예측도 통합했다. 계산은 실시간 반영되고, 결과 문구는 원인·수치·조치 순서로 다시 풀어쓴다. 현재 입력값은 슬롯 저장/불러오기도 지원한다.</div>
+        <div class="tag-row">
+          <div class="tag-pill">Requirement</div><div class="tag-pill">Calculated</div><div class="tag-pill">Detectability</div><div class="tag-pill">Judge</div><div class="tag-pill">MB/s + Mbps</div>
+        </div>
+      </div>
+      <div class="hero-side">
+        <div><div class="mini-label">최종 판정</div><div class="mini-value" id="heroJudge">-</div></div>
+        <div><div class="mini-label">Primary Bottleneck</div><div class="mini-value" id="heroBottleneck">-</div></div>
+        <div><div class="mini-label">추천 Interface Class</div><div class="mini-value" id="heroIfClass">-</div></div>
+        <div><div class="mini-label">Selection Score</div><div class="mini-value" id="heroScore">-</div></div>
+      </div>
+    </section>
+
+    <section class="kpi-grid">
+      <div class="kpi-card"><div class="kpi-label">Feature px (X / Y)</div><div class="kpi-value" id="kFeature">-</div><div class="kpi-sub">Calculated</div></div>
+      <div class="kpi-card"><div class="kpi-label">Detectability Score</div><div class="kpi-value" id="kEffective">-</div><div class="kpi-sub">물리 px가 아닌 검출성 점수</div></div>
+      <div class="kpi-card"><div class="kpi-label">Motion Blur (px X / Y)</div><div class="kpi-value" id="kBlur">-</div><div class="kpi-sub">현재 조건</div></div>
+      <div class="kpi-card"><div class="kpi-label">Full Sensor Rate</div><div class="kpi-value" id="kFullRate">-</div><div class="kpi-sub">전체 센서 기준</div></div>
+      <div class="kpi-card"><div class="kpi-label">Crop Active Rate</div><div class="kpi-value" id="kRate">-</div><div class="kpi-sub" id="kRateSub">Crop 기준 MB/s & Mbps</div></div>
+      <div class="kpi-card"><div class="kpi-label">TDI Pixel Move / Line</div><div class="kpi-value" id="kTdi">-</div><div class="kpi-sub">Use TDI = Yes일 때</div></div>
+      <div class="kpi-card"><div class="kpi-label">Line Max Speed</div><div class="kpi-value" id="kLineMax">-</div><div class="kpi-sub">광량 충분 가정</div></div>
+    </section>
+
+    <section class="layout-grid">
+      <div class="panel">
+        <div class="panel-header"><div><div class="panel-title">Optics / Detection Result</div><div class="panel-sub">μm 기준 검출 해석</div></div></div>
+        <table class="calc-table"><tbody>
+          <tr><th>Sensor Diagonal</th><td id="oDiag">-</td></tr>
+          <tr><th>Actual FOV X / Y</th><td id="oFov">-</td></tr>
+          <tr><th>Magnification</th><td id="oMag">-</td></tr>
+          <tr><th>Image Circle Margin</th><td id="oCircle">-</td></tr>
+          <tr><th>μm / px X / Y</th><td id="oUpp">-</td></tr>
+          <tr><th>Requirement</th><td id="dReq">-</td></tr>
+          <tr><th>Calculated</th><td id="dCalc">-</td></tr>
+          <tr><th>Detectability</th><td id="dEff">-</td></tr>
+          <tr><th>Judge</th><td id="dJudge">-</td></tr>
+          <tr><th>Airy Disk</th><td id="oAiry">-</td></tr>
+          <tr><th>Pixel Focus Margin</th><td id="oDof">-</td></tr>
+          <tr><th>Optical DOF</th><td id="oDofReal">-</td></tr>
+          <tr><th>DOF Comment</th><td id="oDofNote">-</td></tr>
+          <tr><th>Telecentric</th><td id="oTele">-</td></tr>
+          <tr><th>Height-induced Size Error</th><td id="oTeleErr">-</td></tr>
+          <tr><th>Lens Distortion Edge Error</th><td id="oDist">-</td></tr>
+        </tbody></table>
+        <div class="formula-box" id="formulaBox">-</div>
+      </div>
+      <div class="panel">
+        <div class="panel-header"><div><div class="panel-title">판정 결과</div><div class="panel-sub">OK / REVIEW / FAIL</div></div></div>
+        <div class="judge-list" id="judgeList"></div>
+        <div class="small-note" id="judgeComment">-</div>
+        <div class="scorebar"><div class="scorefill" id="scoreFill"></div></div>
+        <div class="small-note" id="scoreText">-</div>
+      </div>
+    </section>
+
+    <section class="layout-grid">
+      <div class="panel">
+        <div class="panel-header"><div><div class="panel-title">Throughput / System Result</div><div class="panel-sub">처리시간, Interface, Storage, Network 병목</div></div></div>
+        <table class="calc-table"><tbody>
+          <tr><th>Bytes / Pixel</th><td id="sBpp">-</td></tr>
+          <tr><th>Full Sensor Payload</th><td id="sFullFrame">-</td></tr>
+          <tr><th id="sPayloadLabel">Crop Active Payload</th><td id="sFrame">-</td></tr>
+          <tr><th>Composed Crop Image</th><td id="sCropImage">-</td></tr>
+          <tr><th>Full Sensor Raw Data Rate</th><td id="sFullRate">-</td></tr>
+          <tr><th>Crop Active Raw Data Rate</th><td id="sRate">-</td></tr>
+          <tr><th>Rate Note</th><td id="sRateNote">-</td></tr>
+          <tr><th>Effective Memory Traffic</th><td id="sTraffic">-</td></tr>
+          <tr><th>Color Penalty / Algo Factor</th><td id="sAlgo">-</td></tr>
+          <tr><th id="sIntervalLabel">Frame Interval</th><td id="sInterval">-</td></tr>
+          <tr><th>Estimated Processing Time</th><td id="sProc">-</td></tr>
+          <tr><th>Crop Processing Time</th><td id="sCropProc">-</td></tr>
+          <tr><th>Processor</th><td id="sProcessor">-</td></tr>
+          <tr><th>Process Load</th><td id="sProcLoad">-</td></tr>
+          <tr><th>Interface Utilization</th><td id="sIf">-</td></tr>
+          <tr><th>Storage Utilization</th><td id="sStorage">-</td></tr>
+          <tr><th>Network Utilization</th><td id="sNetwork">-</td></tr>
+          <tr><th>Primary Bottleneck</th><td id="sBottleneck">-</td></tr>
+          <tr><th>System Max Line Rate</th><td id="sMaxLineRate">-</td></tr>
+          <tr><th>Max Scan Speed (system)</th><td id="sMaxSpeedSystem">-</td></tr>
+          <tr><th>Max Scan Speed (current rate)</th><td id="sMaxSpeedCurrent">-</td></tr>
+          <tr><th>Safe Max Scan Speed</th><td id="sMaxSpeedSafe">-</td></tr>
+          <tr><th>System Judge</th><td id="sJudge">-</td></tr>
+        </tbody></table>
+        <div class="formula-box" id="throughputFormulaBox">-</div>
+      </div>
+      <div class="panel">
+        <div class="panel-header"><div><div class="panel-title">추천 조건</div><div class="panel-sub">최소 검토선</div></div></div>
+        <table class="calc-table"><tbody>
+          <tr><th>Recommended Min Interface</th><td id="recIf">-</td></tr>
+          <tr><th>Recommended Min Storage</th><td id="recStorage">-</td></tr>
+          <tr><th>Recommended Min Network</th><td id="recNetwork">-</td></tr>
+          <tr><th>Recommended Crop</th><td id="recCrop">-</td></tr>
+          <tr><th>Scan Recommendation</th><td id="recTdi">-</td></tr>
+        </tbody></table>
+        <div class="small-note">샘플 모델명은 의도적으로 실제 장비명과 다르게 넣을 수 있다. 최종 검토 시 실제 모델명으로 교체해 확인한다.</div>
+      </div>
+    </section>
+
+    <section class="guide-grid">
+      <div class="guide-card"><h3>검출 판정 기준</h3><p>Requirement는 사용자가 원하는 기준이고, Calculated는 현재 광학계 기준 표현 픽셀이다. Detectability Score는 Blur, diffraction, 높이오차, 알고리즘 retention을 반영한 검토용 점수다. 실제 물리 px와 동일값으로 해석하면 안 된다.</p></div>
+      <div class="guide-card"><h3>단위 원칙</h3><p>검출과 해상도는 μm 중심으로 보고, 렌즈 크기·Focal Length·WD·FOV만 mm로 둔다. 데이터량은 MB/s와 Mbps를 같이 적고 bps / Bps를 분리한다.</p></div>
+      <div class="guide-card"><h3>시스템 판정 기준</h3><p>Interface, Storage, Network, Processing 중 가장 먼저 한계에 닿는 곳을 Primary Bottleneck으로 표기한다. Line Scan은 line rate 기준, Area Scan은 FPS 기준으로 해석하며 저장장치가 부족하면 초반 정상 후 누적 드롭이 나올 수 있다.</p></div>
+    </section>
+  </div></section>
+</main>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const ids = ['sensorWidth','sensorHeight','resX','resY','pixelSizeX','pixelSizeY','bitDepth','cameraType','fps','colorType','cameraModel','focalLength','fNumber','lensNa','imageCircle','distortion','mtfUm','lensModel','wd','targetFovX','targetFovY','telecentricUse','telecentricMemo','minFeature','requiredPixels','measurePixels','heightVariation','objectSpeed','exposureUs','waveNm','processorType','algoLevel','memMult','procBw','ifBw','storageBw','networkBw','accel','procMemo','cropX','cropY','useTdi','tdiLine','tdiStage','tdiLimit','noteMemo'];
+function num(id){ return Number($(id).value); }
+function fmt(v,d=2){ return Number.isFinite(v) ? Number(v).toFixed(d) : '-'; }
+function humanBytes(bytes){ if(!Number.isFinite(bytes)) return '-'; const mb=bytes/(1024*1024); return `${fmt(mb,2)} MB`; }
+function humanRate(v){ return `${fmt(v,2)} MB/s`; }
+function clsOf(j){ return j==='OK'?'ok':j==='REVIEW'?'warn':j==='FAIL'?'bad':'info'; }
+function colorFactor(type){ return type==='rgb' ? 3 : 1; }
+function colorPenalty(type){ return type==='rgb' ? 1.45 : type==='bayer' ? 1.20 : 1.00; }
+function algoFactor(level){ return level==='light' ? 1 : level==='mid' ? 5 : level==='heavy' ? 15 : 100; }
+function algoRetention(level){ return level==='light' ? 0.90 : level==='mid' ? 1.00 : level==='heavy' ? 1.08 : 1.15; }
+function pixelThresholdGuide(level){ return level==='light' ? [2,4] : level==='mid' ? [3,5] : level==='heavy' ? [3,6] : [4,8]; }
+function processorLabel(type,bw,accel){ return `${type.toUpperCase()} / ${fmt(bw,0)} MB/s / accel x${fmt(accel,1)}`; }
+function recommendInterface(rate){ if(rate<=125) return '1GigE class'; if(rate<=350) return 'USB3 / 2.5GigE class'; if(rate<=700) return '5GigE class'; if(rate<=1000) return '10GigE class'; if(rate<=2500) return 'CXP-6 / CLHS class'; return '10GigE 초과 / 멀티링크 필요'; }
+
+const SAVE_PREFIX = 'camera-select-fix5-slot-';
+
+function collectFormData(){
+  const data = {};
+  ids.forEach(id => {
+    data[id] = $(id).value;
+  });
+  return data;
+}
+
+function applyFormData(data){
+  if(!data || typeof data !== 'object') return false;
+  ids.forEach(id => {
+    if(Object.prototype.hasOwnProperty.call(data, id) && $(id)) {
+      $(id).value = data[id];
+    }
+  });
+  return true;
+}
+
+function slotKey(slot){
+  return `${SAVE_PREFIX}${slot}`;
+}
+
+function saveSlot(slot){
+  try {
+    const payload = {
+      savedAt: new Date().toISOString(),
+      values: collectFormData()
+    };
+    localStorage.setItem(slotKey(slot), JSON.stringify(payload));
+    updateSaveUi(`슬롯 ${slot} 저장완료`);
+    calc();
+  } catch (err) {
+    console.error(err);
+    updateSaveUi('저장실패');
+  }
+}
+
+function loadSlot(slot){
+  try {
+    const raw = localStorage.getItem(slotKey(slot));
+    if(!raw) {
+      updateSaveUi(`슬롯 ${slot} 비어있음`);
+      return;
+    }
+    const payload = JSON.parse(raw);
+    if(applyFormData(payload.values)) {
+      updateSaveUi(`슬롯 ${slot} 불러옴`);
+      calc();
+    } else {
+      updateSaveUi(`슬롯 ${slot} 형식오류`);
+    }
+  } catch (err) {
+    console.error(err);
+    updateSaveUi('불러오기실패');
+  }
+}
+
+function clearSlots(){
+  [1,2,3].forEach(slot => localStorage.removeItem(slotKey(slot)));
+  updateSaveUi('저장슬롯 삭제');
+}
+
+function buttonLabel(prefix, slot){
+  const raw = localStorage.getItem(slotKey(slot));
+  if(!raw) return `${prefix} ${slot}`;
+  try {
+    const payload = JSON.parse(raw);
+    const d = new Date(payload.savedAt);
+    const hh = String(d.getHours()).padStart(2,'0');
+    const mm = String(d.getMinutes()).padStart(2,'0');
+    return `${prefix} ${slot} ✓ ${hh}:${mm}`;
+  } catch {
+    return `${prefix} ${slot} ✓`;
+  }
+}
+
+function updateSaveButtons(){
+  if($('btnSave1')) $('btnSave1').textContent = buttonLabel('저장',1);
+  if($('btnSave2')) $('btnSave2').textContent = buttonLabel('저장',2);
+  if($('btnSave3')) $('btnSave3').textContent = buttonLabel('저장',3);
+  if($('btnLoad1')) $('btnLoad1').textContent = buttonLabel('불러오기',1);
+  if($('btnLoad2')) $('btnLoad2').textContent = buttonLabel('불러오기',2);
+  if($('btnLoad3')) $('btnLoad3').textContent = buttonLabel('불러오기',3);
+}
+
+function updateSaveUi(message='준비'){
+  updateSaveButtons();
+  if($('saveStatus')) $('saveStatus').textContent = message;
+}
+
+function updateClock(){ const n=new Date(); const p=s=>String(s).padStart(2,'0'); $('clock').textContent=`${n.getFullYear()}-${p(n.getMonth()+1)}-${p(n.getDate())} ${p(n.getHours())}:${p(n.getMinutes())}:${p(n.getSeconds())}`; }
+
+function calc(){
+  const sensorW=num('sensorWidth'), sensorH=num('sensorHeight'), resX=num('resX'), resY=num('resY'), pixelUmX=num('pixelSizeX'), pixelUmY=num('pixelSizeY');
+  const bitDepth=num('bitDepth'), fps=num('fps'), cameraType=$('cameraType').value, colorType=$('colorType').value;
+  const focal=num('focalLength'), fNum=num('fNumber'), lensNa=num('lensNa'), imageCircle=num('imageCircle'), distortion=num('distortion'), mtfUm=num('mtfUm');
+  const wd=num('wd'), targetFovX=num('targetFovX'), targetFovY=num('targetFovY'), telecentricUse=$('telecentricUse').value==='yes', minFeatureUm=num('minFeature'), requiredPixels=num('requiredPixels'), measurePixels=num('measurePixels');
+  const heightVariation=num('heightVariation'), objectSpeed=num('objectSpeed'), exposureUs=num('exposureUs'), waveNm=num('waveNm');
+  const processorType=$('processorType').value, algo=$('algoLevel').value, memMult=num('memMult'), procBw=num('procBw'), ifBw=num('ifBw'), storageBw=num('storageBw'), networkBw=num('networkBw'), accel=num('accel');
+  const cropXRaw=num('cropX'), cropYRaw=num('cropY');
+  const useTdi=$('useTdi').value==='yes', tdiLine=num('tdiLine'), tdiStage=num('tdiStage'), tdiLimit=num('tdiLimit');
+
+  if([sensorW,sensorH,resX,resY,pixelUmX,pixelUmY,bitDepth,fps,focal,fNum,lensNa,imageCircle,wd,targetFovX,targetFovY,minFeatureUm,requiredPixels,measurePixels,heightVariation,objectSpeed,exposureUs,waveNm,memMult,procBw,ifBw,storageBw,networkBw,accel,cropXRaw,cropYRaw,tdiLine,tdiStage,tdiLimit].some(v => !Number.isFinite(v) || v<=0)) return;
+
+  const cropX=Math.min(resX, Math.max(1, Math.floor(cropXRaw)));
+  const cropY=Math.min(resY, Math.max(1, Math.floor(cropYRaw)));
+  $('cropX').value=cropX; $('cropY').value=cropY;
+  const [recDetectPx, recMeasurePx] = pixelThresholdGuide(algo);
+  if($('pixelGuide')) $('pixelGuide').textContent = `권장 기준: Detect ${fmt(recDetectPx,1)} px / Measure ${fmt(recMeasurePx,1)} px · 현재 입력 ${fmt(requiredPixels,1)} / ${fmt(measurePixels,1)} px · Min Feature만으로 자동 확정하지 않음`;
+
+  $('fpsLabel').textContent = cameraType==='line' ? 'Line Rate (Hz)' : 'Frame Rate (FPS)';
+  $('procBwLabel').textContent = processorType==='cpu' ? 'CPU Reference BW (MB/s)' : (processorType==='gpu' ? 'GPU Reference BW (MB/s)' : 'FPGA Reference BW (MB/s)');
+  $('sPayloadLabel').textContent = cameraType==='line' ? 'Line Payload' : 'Frame Size';
+  $('sIntervalLabel').textContent = cameraType==='line' ? 'Line Interval' : 'Frame Interval';
+  $('kRateSub').textContent = cameraType==='line' ? 'Crop X payload × line rate' : 'Crop X×Y payload × FPS';
+
+  const diag=Math.sqrt(sensorW**2 + sensorH**2);
+  const fovX=wd*sensorW/focal, fovY=wd*sensorH/focal;
+  const mag=sensorW/fovX;
+  const uppX=(fovX/resX)*1000, uppY=(fovY/resY)*1000;
+  const pixelFromSensorX=(sensorW*1000)/resX, pixelFromSensorY=(sensorH*1000)/resY;
+  const pixelMismatchX=Math.abs(pixelUmX-pixelFromSensorX), pixelMismatchY=Math.abs(pixelUmY-pixelFromSensorY);
+  const circleMargin=imageCircle-diag;
+  const featurePxX=minFeatureUm/uppX, featurePxY=minFeatureUm/uppY;
+  const featurePxMin=Math.min(featurePxX,featurePxY);
+  const featureReq=`Detect ≥ ${fmt(requiredPixels,1)} px / Measure ≥ ${fmt(measurePixels,1)} px / Min Feature ${fmt(minFeatureUm,1)} μm`;
+
+  const exposureSec=exposureUs/1e6;
+  const motionUm=objectSpeed*exposureSec*1000;
+  const blurPxX=motionUm/uppX, blurPxY=motionUm/uppY;
+  const blurEval = cameraType==='line' ? blurPxY : Math.max(blurPxX,blurPxY);
+  const waveUm=waveNm/1000;
+  const airyUm=2.44*waveUm*Math.max(fNum,1e-6);
+  const airyPxX=airyUm/uppX, airyPxY=airyUm/uppY;
+  const edgeRadiusXUm=(targetFovX*1000)/2, edgeRadiusYUm=(targetFovY*1000)/2;
+  const distortionErrXUm=edgeRadiusXUm*(distortion/100), distortionErrYUm=edgeRadiusYUm*(distortion/100);
+  const cocMm=Math.max(pixelUmX,pixelUmY)/1000;
+  const dofPixel=(2*fNum*cocMm*(1+mag)/(mag*mag));
+  const cocInspectMm=cocMm*0.2;
+  const lambdaMm=waveNm/1000000;
+  const dofGeom=(2*fNum*cocInspectMm*(1+mag)/(mag*mag));
+  const dofDiff=(2*lambdaMm*fNum*((1+mag)*(1+mag)));
+  const dofReal=dofGeom+dofDiff;
+  const telecentricErrorPct = telecentricUse ? 0 : (heightVariation/Math.max(wd,1e-6))*100;
+  const telecentricErrorUmX = minFeatureUm*(telecentricErrorPct/100);
+  const telecentricErrorUmY = minFeatureUm*(telecentricErrorPct/100);
+  const diffractionPenaltyPx=Math.max(0, (Math.min(airyPxX,airyPxY)-1)*0.35);
+  const telePenaltyPx = telecentricUse ? 0 : Math.max(telecentricErrorUmX/uppX, telecentricErrorUmY/uppY);
+  const detectabilityScore=Math.max(0, featurePxMin - blurEval - diffractionPenaltyPx - telePenaltyPx) * algoRetention(algo);
+  const calcText=`Raw ${fmt(featurePxX,2)} px (X) / ${fmt(featurePxY,2)} px (Y) / Worst ${fmt(featurePxMin,2)} px`;
+  const effText=`Detectability Score ${fmt(detectabilityScore,2)} = Worst ${fmt(featurePxMin,2)} - Blur ${fmt(blurEval,2)} - Diffraction ${fmt(diffractionPenaltyPx,2)} - Perspective ${fmt(telePenaltyPx,2)} × Algo ${fmt(algoRetention(algo),2)}`;
+  let detectJudge='FAIL';
+  if(detectabilityScore>=measurePixels) detectJudge='OK';
+  else if(detectabilityScore>=requiredPixels) detectJudge='REVIEW';
+
+  const bytesPerPixel=(bitDepth/8)*colorFactor(colorType);
+  const fullPayloadBytes = cameraType==='line' ? (resX*bytesPerPixel) : (resX*resY*bytesPerPixel);
+  const cropPayloadBytes = cameraType==='line' ? (cropX*bytesPerPixel) : (cropX*cropY*bytesPerPixel);
+  const cropImageBytes = cropX*cropY*bytesPerPixel;
+  const scanRate = fps;
+  const fullRawRate=(fullPayloadBytes/(1024*1024))*scanRate;
+  const rawRate=(cropPayloadBytes/(1024*1024))*scanRate;
+  const effectiveTraffic=rawRate*memMult;
+  const framePeriodMs=1000/scanRate;
+  const processingMs=(effectiveTraffic/procBw)*algoFactor(algo)*colorPenalty(colorType)*(1000/scanRate);
+  const adjProcMs=processingMs/accel;
+  const adjProcessLoad=(adjProcMs/framePeriodMs)*100;
+  const ifUtil=(rawRate/ifBw)*100, storageUtil=(rawRate/storageBw)*100, networkUtil=(rawRate/networkBw)*100;
+  const maxUtil=Math.max(adjProcessLoad,ifUtil,storageUtil,networkUtil);
+  let bottleneck='PROCESS';
+  if(maxUtil===ifUtil) bottleneck='INTERFACE';
+  else if(maxUtil===storageUtil) bottleneck='STORAGE';
+  else if(maxUtil===networkUtil) bottleneck='NETWORK';
+  let systemJudge='OK';
+  if(maxUtil>100) systemJudge='FAIL'; else if(maxUtil>80) systemJudge='REVIEW';
+  let opticalJudge='OK';
+  if(circleMargin<0 || dofReal<heightVariation || detectabilityScore<requiredPixels || (!telecentricUse && telecentricErrorPct>1.0 && measurePixels>requiredPixels)) opticalJudge='FAIL';
+  else if(circleMargin<1 || dofReal<heightVariation*1.2 || detectabilityScore<measurePixels || (!telecentricUse && telecentricErrorPct>0.3)) opticalJudge='REVIEW';
+
+  const lineExposureSec=1/tdiLine;
+  const objectTravelPerLineMm=objectSpeed/tdiLine;
+  const projectedPixelSizeMm=(Math.max(pixelUmX,pixelUmY)/1000)/mag;
+  const pixelMovePerLine=objectTravelPerLineMm/projectedPixelSizeMm;
+  let tdiJudge='INFO';
+  const tdiRelevant = cameraType==='line' || useTdi;
+  if(tdiRelevant) tdiJudge = pixelMovePerLine<=tdiLimit ? 'OK' : pixelMovePerLine<=tdiLimit*1.2 ? 'REVIEW' : 'FAIL';
+
+  const cropPayloadMB = cropPayloadBytes/(1024*1024);
+  const adjProcMsPerPayload = (cropPayloadMB*memMult/procBw)*algoFactor(algo)*colorPenalty(colorType)*(1000/accel);
+  const procLimitRate = adjProcMsPerPayload>0 ? 1000/adjProcMsPerPayload : Infinity;
+  const ifLimitRate = cropPayloadMB>0 ? ifBw/cropPayloadMB : Infinity;
+  const storageLimitRate = cropPayloadMB>0 ? storageBw/cropPayloadMB : Infinity;
+  const networkLimitRate = cropPayloadMB>0 ? networkBw/cropPayloadMB : Infinity;
+  const systemMaxLineRate = Math.min(procLimitRate, ifLimitRate, storageLimitRate, networkLimitRate);
+  const speedFromCurrentRate = scanRate * projectedPixelSizeMm * tdiLimit;
+  const speedFromSystemRate = systemMaxLineRate * projectedPixelSizeMm * tdiLimit;
+  const safeMaxScanSpeed = Math.min(scanRate, systemMaxLineRate) * projectedPixelSizeMm * tdiLimit;
+
+  const failCount=[detectJudge,systemJudge,opticalJudge,(tdiRelevant?tdiJudge:'OK')].filter(v=>v==='FAIL').length;
+  const reviewCount=[detectJudge,systemJudge,opticalJudge,(tdiRelevant?tdiJudge:'OK')].filter(v=>v==='REVIEW').length;
+  const overallJudge=failCount>0?'FAIL':reviewCount>0?'REVIEW':'OK';
+  let score=100 - failCount*25 - reviewCount*10; if(score<0) score=0;
+
+  $('heroJudge').textContent=overallJudge; $('heroJudge').className=`mini-value ${clsOf(overallJudge)}`;
+  $('heroBottleneck').textContent=bottleneck; $('heroIfClass').textContent=recommendInterface(rawRate); $('heroScore').textContent=`${score} / 100`;
+  $('kFeature').textContent=`${fmt(featurePxX,2)} / ${fmt(featurePxY,2)}`;
+  $('kEffective').textContent=`${fmt(detectabilityScore,2)} score`; $('kBlur').textContent=`${fmt(blurPxX,2)} / ${fmt(blurPxY,2)}`;
+  $('kFullRate').textContent=`${fmt(fullRawRate,2)} MB/s`; $('kRate').textContent=`${fmt(rawRate,2)} MB/s`; $('kTdi').textContent=tdiRelevant?fmt(pixelMovePerLine,2):'N/A'; $('kLineMax').textContent=cameraType==='line'?`${fmt(speedFromSystemRate,1)} mm/s`:'N/A';
+
+  $('oDiag').textContent=`${fmt(diag,3)} mm`; $('oFov').textContent=`${fmt(fovX,2)} / ${fmt(fovY,2)} mm`; $('oMag').textContent=`${fmt(mag,4)}×`;
+  $('oCircle').textContent=`${fmt(circleMargin,2)} mm`; $('oCircle').className=circleMargin<0?'bad':'value-strong';
+  $('oUpp').textContent=`${fmt(uppX,3)} / ${fmt(uppY,3)} μm/px  · sensor pixel ${fmt(pixelUmX,3)} / ${fmt(pixelUmY,3)} μm  · mismatch ${fmt(pixelMismatchX,3)} / ${fmt(pixelMismatchY,3)} μm`;
+  $('dReq').textContent=featureReq; $('dCalc').textContent=calcText; $('dEff').textContent=effText;
+  $('dJudge').textContent=detectJudge; $('dJudge').className=clsOf(detectJudge);
+  $('oAiry').textContent=`${fmt(airyUm,3)} μm (${fmt(airyPxX,2)} / ${fmt(airyPxY,2)} px) · 2.44λF#`;
+  $('oDof').textContent=`${fmt(dofPixel,3)} mm (need ${fmt(heightVariation,3)} mm) · pixel basis`; $('oDof').className=dofPixel<heightVariation?'warn':'value-strong';
+  $('oDofReal').textContent=`${fmt(dofReal,3)} mm (need ${fmt(heightVariation,3)} mm)`; $('oDofReal').className=dofReal<heightVariation?'bad':'value-strong';
+  $('oDofNote').textContent =
+  $('oDofNote').textContent=(dofReal>=heightVariation?`광학 DOF ${fmt(dofReal,3)} mm로 요구 ${fmt(heightVariation,3)} mm 대비 충분`:`광학 DOF ${fmt(dofReal,3)} mm로 요구 ${fmt(heightVariation,3)} mm 대비 부족`)+'<br>※ Optical DOF는 이론값이며 실제 검사 가능 DOF는 이보다 작을 수 있음';
+  $('oTele').textContent=`${telecentricUse ? 'Applied' : 'Not Applied'}${$('telecentricMemo').value ? ' · ' + $('telecentricMemo').value : ''}`; $('oTele').className=telecentricUse?'ok':'warn';
+  $('oTeleErr').textContent=telecentricUse ? '0.000 % · perspective size error suppressed' : `${fmt(telecentricErrorPct,3)} % · approx ${fmt(telecentricErrorUmX,3)} / ${fmt(telecentricErrorUmY,3)} μm on feature`;
+  $('oTeleErr').className=telecentricUse?'value-strong':(telecentricErrorPct>1?'bad':'warn');
+  $('oDist').textContent=`${fmt(distortionErrXUm,1)} / ${fmt(edgeRadiusXUm,1)} μm @ edge X · ${fmt(distortionErrYUm,1)} / ${fmt(edgeRadiusYUm,1)} μm @ edge Y (lens distortion only)`;
+
+  $('formulaBox').textContent =
+`Camera Type = ${cameraType==='line' ? 'Line Scan' : 'Area Scan'}
+Feature px X = Min Feature / (μm/px X) = ${fmt(minFeatureUm,1)} / ${fmt(uppX,3)} = ${fmt(featurePxX,2)} px
+Feature px Y = Min Feature / (μm/px Y) = ${fmt(minFeatureUm,1)} / ${fmt(uppY,3)} = ${fmt(featurePxY,2)} px
+Worst Feature px = min(X, Y) = ${fmt(featurePxMin,2)} px
+Motion Blur = Speed × Exposure = ${fmt(objectSpeed,2)} × ${fmt(exposureSec,6)} = ${fmt(motionUm,3)} μm
+Blur eval = ${cameraType==='line' ? 'scan direction Y' : 'worst axis'} = ${fmt(blurEval,2)} px
+Airy Disk ≈ 2.44 × λ × F# = ${fmt(airyUm,3)} μm
+Pixel Focus Margin = 2 × F# × pixel CoC × (1+M) / M² = ${fmt(dofPixel,3)} mm
+Optical DOF = Geometric + Diffraction = ${fmt(dofGeom,3)} + ${fmt(dofDiff,3)} = ${fmt(dofReal,3)} mm
+Perspective size error = ${telecentricUse ? '0.000 % (telecentric applied)' : `${fmt(heightVariation,3)} / ${fmt(wd,3)} × 100 = ${fmt(telecentricErrorPct,3)} %`}
+Detectability Score ≈ (Worst - Blur - Diffraction penalty - Perspective penalty) × Algo retention = ${fmt(detectabilityScore,2)}
+${cameraType==='line' ? 'Crop Rate = CropX Payload × Line Rate' : 'Crop Rate = CropX×CropY Payload × FPS'} = ${humanBytes(cropPayloadBytes)} × ${fmt(scanRate,2)} = ${fmt(rawRate,2)} MB/s
+Processing Time = (RawRate × MemMult / ProcBW) × Algo × ColorPenalty × (1000/Rate) = ${fmt(processingMs,2)} ms
+Adjusted Process = ${fmt(processingMs,2)} / ${fmt(accel,2)} = ${fmt(adjProcMs,2)} ms
+Rate note: ${fmt(rawRate,2)} MB/s = ${fmt(rawRate*8,2)} Mbps  (1 Byte = 8 bit, bps / Bps 구분)`;
+
+  $('sBpp').textContent=`${fmt(bytesPerPixel,2)} byte/px`; $('sFullFrame').textContent=humanBytes(fullPayloadBytes); $('sFrame').textContent=humanBytes(cropPayloadBytes); $('sCropImage').textContent=humanBytes(cropImageBytes); $('sFullRate').textContent=humanRate(fullRawRate); $('sRate').textContent=humanRate(rawRate);
+  $('sRateNote').textContent=`Crop ${fmt(rawRate,2)} MB/s = ${fmt(rawRate*8,2)} Mbps / Full ${fmt(fullRawRate,2)} MB/s = ${fmt(fullRawRate*8,2)} Mbps`;
+  $('sTraffic').textContent=humanRate(effectiveTraffic); $('sAlgo').textContent=`Color penalty ${fmt(colorPenalty(colorType),2)} × Algo factor ${fmt(algoFactor(algo),2)} × Accel ${fmt(accel,2)}`; $('sInterval').textContent=`${fmt(framePeriodMs,4)} ms`; $('sProc').textContent=`${fmt(adjProcMs,2)} ms (base ${fmt(processingMs,2)} ms)`; $('sCropProc').textContent=`${fmt(adjProcMsPerPayload,2)} ms / payload`;
+  $('sProcessor').textContent=processorLabel(processorType,procBw,accel); $('sProcLoad').textContent=`${fmt(adjProcessLoad,1)} %`; $('sIf').textContent=`${fmt(ifUtil,1)} % @ ${ifBw} MB/s`;
+  $('sStorage').textContent=`${fmt(storageUtil,1)} % @ ${storageBw} MB/s`; $('sNetwork').textContent=`${fmt(networkUtil,1)} % @ ${networkBw} MB/s`; $('sBottleneck').textContent=bottleneck; $('sMaxLineRate').textContent=cameraType==='line'?`${fmt(systemMaxLineRate,1)} Hz`:'N/A'; $('sMaxSpeedSystem').textContent=cameraType==='line'?`${fmt(speedFromSystemRate,1)} mm/s`:'N/A'; $('sMaxSpeedCurrent').textContent=cameraType==='line'?`${fmt(speedFromCurrentRate,1)} mm/s`:'N/A'; $('sMaxSpeedSafe').textContent=cameraType==='line'?`${fmt(safeMaxScanSpeed,1)} mm/s`:'N/A';
+  $('sJudge').textContent=systemJudge==='FAIL'?'한계 초과 가능성 높음':systemJudge==='REVIEW'?'여유 부족, 검증 필요':'현재 조건 사용 가능'; $('sJudge').className=clsOf(systemJudge);
+
+  $('throughputFormulaBox').textContent =
+`Full Payload = ${cameraType==='line' ? 'ResX × Bpp' : 'ResX×ResY × Bpp'} = ${humanBytes(fullPayloadBytes)}
+Crop Active Payload = ${cameraType==='line' ? 'CropX × Bpp' : 'CropX×CropY × Bpp'} = ${humanBytes(cropPayloadBytes)}
+Composed Crop Image = CropX×CropY × Bpp = ${humanBytes(cropImageBytes)}
+Bytes/Pixel = (BitDepth / 8) × ColorFactor = (${fmt(bitDepth,0)} / 8) × ${fmt(colorFactor(colorType),2)} = ${fmt(bytesPerPixel,2)} B/px
+Crop Raw Data Rate = ${humanBytes(cropPayloadBytes)} × ${fmt(scanRate,2)} = ${fmt(rawRate,2)} MB/s
+Full Raw Data Rate = ${humanBytes(fullPayloadBytes)} × ${fmt(scanRate,2)} = ${fmt(fullRawRate,2)} MB/s
+Effective Memory Traffic = CropRate × Memory Traffic Multiplier = ${fmt(rawRate,2)} × ${fmt(memMult,2)} = ${fmt(effectiveTraffic,2)} MB/s
+Base Processing Time = (EffectiveTraffic / ProcBW) × AlgoFactor × ColorPenalty × (1000 / Rate)
+= (${fmt(effectiveTraffic,2)} / ${fmt(procBw,2)}) × ${fmt(algoFactor(algo),2)} × ${fmt(colorPenalty(colorType),2)} × (${fmt(1000,0)} / ${fmt(scanRate,2)})
+= ${fmt(processingMs,2)} ms
+Adjusted Processing Time = Base / Accel = ${fmt(processingMs,2)} / ${fmt(accel,2)} = ${fmt(adjProcMs,2)} ms
+Processing Load Ratio = Adjusted / Interval = ${fmt(adjProcMs,2)} / ${fmt(framePeriodMs,2)} = ${fmt(adjProcessLoad,1)} %
+${cameraType==='line' ? `Max Line Rate by System = min(PROC ${fmt(procLimitRate,1)}, IF ${fmt(ifLimitRate,1)}, STORAGE ${fmt(storageLimitRate,1)}, NET ${fmt(networkLimitRate,1)}) = ${fmt(systemMaxLineRate,1)} Hz
+Max Scan Speed (light enough assumed) = MaxLineRate × object-space pixel × limit = ${fmt(systemMaxLineRate,1)} × ${fmt(projectedPixelSizeMm,6)} × ${fmt(tdiLimit,2)} = ${fmt(speedFromSystemRate,1)} mm/s` : 'Area Scan은 crop 기준 MB/s와 처리시간 위주로 해석한다.'}
+Rate note: Crop ${fmt(rawRate,2)} MB/s = ${fmt(rawRate*8,2)} Mbps / Full ${fmt(fullRawRate,2)} MB/s = ${fmt(fullRawRate*8,2)} Mbps`;
+
+  $('recIf').textContent=recommendInterface(rawRate); $('recStorage').textContent=`${Math.ceil(rawRate*1.2)} MB/s 이상`; $('recNetwork').textContent=`${Math.ceil(rawRate*1.2)} MB/s 이상 (${Math.ceil(rawRate*9.6)} Mbps 급)`; $('recCrop').textContent=(cropX===resX && cropY===resY)?'현재는 full frame 기준과 동일':'Crop 적용 중 · 전송/처리량은 crop 기준으로 계산';
+  $('recTdi').textContent=cameraType==='line' ? (tdiJudge==='OK' ? `현재 조건 가능 · 이론 safe speed ${fmt(safeMaxScanSpeed,1)} mm/s 이하 권장 (광량 충분 가정)` : `라인스캔 기준 speed, magnification, line rate 재조정 필요 · 이론 max ${fmt(speedFromSystemRate,1)} mm/s`) : (!useTdi ? '에어리어스캔은 기본적으로 FPS 기준 검토' : (tdiJudge==='OK' ? '특수 TDI 조건 사용 가능' : 'TDI line/stage 재조정 필요'));
+
+  const detectText = detectJudge==='OK'
+    ? `요구 측정선 ${fmt(measurePixels,1)} px를 넘는다. 현재 Detectability Score ${fmt(detectabilityScore,2)}로 측정까지 노려볼 수 있다.`
+    : detectJudge==='REVIEW'
+      ? `존재 검출선은 넘지만 측정선은 못 넘는다. 현재 Detectability Score ${fmt(detectabilityScore,2)}로 검출 전용 조건에 가깝다.`
+      : `Detectability Score ${fmt(detectabilityScore,2)}가 검출 요구선 ${fmt(requiredPixels,1)} px 아래다. 배율, 해상도, FOV 중 하나를 먼저 조정해야 한다.`;
+  const opticsText = opticalJudge==='OK'
+    ? `Image circle 여유 ${fmt(circleMargin,2)} mm, Optical DOF ${fmt(dofReal,3)} mm, telecentric ${telecentricUse ? '적용' : '미적용이지만 허용범위'}로 광학 한계 초과 항목이 없다.`
+    : opticalJudge==='REVIEW'
+      ? `광학은 조건부다. ${circleMargin<1 ? 'image circle 여유가 작고 ' : ''}${dofReal<heightVariation*1.2 ? 'Optical DOF가 높이편차와 근접하며 ' : ''}${(!telecentricUse && telecentricErrorPct>0.3) ? '비텔레센트릭 perspective 오차가 무시하기 어렵다. ' : ''}${cameraType==='line' ? '라인스캔은 encoder / line pitch 실검증이 추가로 필요하다. ' : ''}실샘플 보정 검증이 필요하다.`
+      : `광학이 먼저 막힌다. ${circleMargin<0 ? 'image circle 부족 ' : ''}${dofReal<heightVariation ? 'Optical DOF 부족 ' : ''}${(!telecentricUse && telecentricErrorPct>1.0) ? '비텔레센트릭 perspective 오차 과다 ' : ''}${detectabilityScore<requiredPixels ? 'detectability 부족' : ''}${cameraType==='line' ? ' line pitch 검증 필요' : ''}`.trim();
+  const systemText = systemJudge==='OK'
+    ? `시스템 여유가 있다. 최고 사용률은 ${fmt(maxUtil,1)}%이고 병목은 ${bottleneck}이지만 아직 안전권이다.`
+    : systemJudge==='REVIEW'
+      ? `시스템 여유가 얕다. 최고 사용률 ${fmt(maxUtil,1)}%로 ${bottleneck} 쪽 검증이 필요하다.`
+      : `시스템이 먼저 막힌다. 최고 사용률 ${fmt(maxUtil,1)}%로 ${bottleneck} 초과 가능성이 높다.`;
+  const tdiText = cameraType==='line'
+    ? (tdiJudge==='OK' ? `라인스캔 기준 pixel move / line ${fmt(pixelMovePerLine,2)} px로 허용선 ${fmt(tdiLimit,2)} px 이내다. 광량이 충분하다고 가정하면 현재 line rate 기준 최고 ${fmt(speedFromCurrentRate,1)} mm/s, 시스템 한계 기준 최고 ${fmt(speedFromSystemRate,1)} mm/s 수준까지 해석할 수 있다. 다만 encoder, line pitch, 동기 오차는 별도 검증이 필요하다.` : `라인스캔 기준 pixel move / line ${fmt(pixelMovePerLine,2)} px가 허용선 ${fmt(tdiLimit,2)} px를 넘는다. speed, line rate, 배율 조정이 필요하다. 시스템 한계 기준 최고 속도는 ${fmt(speedFromSystemRate,1)} mm/s다.`)
+    : (useTdi ? `에어리어스캔이지만 특수 TDI 조건을 켰다. pixel move / line ${fmt(pixelMovePerLine,2)} px 기준으로 별도 검토 중이다.` : '에어리어스캔은 FPS 기반으로 해석한다. TDI는 주판정 축이 아니다.');
+
+  const judgeItems = [
+    {name:'Detection', text:detectText, judge:detectJudge},
+    {name:'Optics', text:opticsText, judge:opticalJudge},
+    {name:'System', text:systemText, judge:systemJudge},
+    {name:'Scan / TDI', text:tdiText, judge:(cameraType==='line'||useTdi)?tdiJudge:'INFO'}
+  ];
+  $('judgeList').innerHTML = judgeItems.map(v => `<div class=\"judge-item\"><div><div class=\"name\">${v.name}</div><div class=\"text\">${v.text}</div></div><div class=\"result ${clsOf(v.judge)}\">${v.judge}</div></div>`).join('');
+
+  const priority=[];
+  if(detectJudge==='FAIL') priority.push(`1) 검출부터 부족하다. 현재 Detectability Score ${fmt(detectabilityScore,2)} → 최소 ${fmt(requiredPixels,1)} 이상으로 올려야 한다.`);
+  if(opticalJudge==='FAIL') priority.push(`2) 광학 조건 재설정이 필요하다. ${dofReal<heightVariation ? 'Optical DOF' : 'telecentric / image circle / detectability'} 항목이 한계를 넘는다.`);
+  if(systemJudge==='FAIL') priority.push(`3) ${bottleneck} 병목을 해소해야 한다. 현재 최대 사용률 ${fmt(maxUtil,1)}%다.`);
+  if(cameraType==='line' && tdiJudge!=='OK') priority.push(`4) 라인스캔은 pixel move / line ${fmt(pixelMovePerLine,2)} px를 ${fmt(tdiLimit,2)} px 이하로 내려야 한다. 광량이 충분하다는 가정에서도 이론 safe speed는 ${fmt(speedFromSystemRate,1)} mm/s 수준이다.`);
+  if(priority.length===0) priority.push('1) 수치상 큰 초과 항목은 없다. 이제 샘플, 조명, 실제 알고리즘 벤치로 넘어가면 된다.');
+  const noteText = (($('noteMemo') && $('noteMemo').value) || '').trim();
+  $('judgeComment').textContent = `${cameraType==='line' ? '라인스캔' : '에어리어스캔'} 기준 최종판정 ${overallJudge}. ` + priority.join(' ') + (noteText ? ' 메모: ' + noteText : '');
+  $('scoreFill').style.width=`${score}%`; $('scoreText').textContent=`Selection Score ${score} / 100 · FAIL ${failCount}개 · REVIEW ${reviewCount}개 · ${cameraType==='line' ? 'Line Scan Logic (encoder/line pitch verify)' : 'Area Scan Logic'}`;
+}
+
+function resetDefaults(){
+  const defaults={sensorWidth:11.264,sensorHeight:6.342,resX:4096,resY:3000,pixelSizeX:2.74,pixelSizeY:2.74,bitDepth:8,cameraType:'area',fps:23,colorType:'mono',cameraModel:'똑딱이',focalLength:16,fNumber:4,lensNa:0.125,imageCircle:16,distortion:0.15,mtfUm:5,lensModel:'오이만두',wd:200,targetFovX:120,targetFovY:90,telecentricUse:'no',telecentricMemo:'미적용',minFeature:80,requiredPixels:3,measurePixels:5,heightVariation:1.5,objectSpeed:120,exposureUs:300,waveNm:550,processorType:'cpu',algoLevel:'mid',memMult:4,procBw:1800,ifBw:350,storageBw:500,networkBw:110,accel:1,procMemo:'샘플값',cropX:4096,cropY:3000,useTdi:'no',tdiLine:80000,tdiStage:64,tdiLimit:1,noteMemo:''};
+  Object.entries(defaults).forEach(([k,v])=>$(k).value=v);
+  calc();
+}
+
+if($('btnCalc')) $('btnCalc').addEventListener('click', calc); $('btnReset').addEventListener('click', resetDefaults);
+$('btnSave1').addEventListener('click', () => saveSlot(1));
+$('btnSave2').addEventListener('click', () => saveSlot(2));
+$('btnSave3').addEventListener('click', () => saveSlot(3));
+$('btnLoad1').addEventListener('click', () => loadSlot(1));
+$('btnLoad2').addEventListener('click', () => loadSlot(2));
+$('btnLoad3').addEventListener('click', () => loadSlot(3));
+$('btnClearSaves').addEventListener('click', clearSlots);
+ids.forEach(id => $(id).addEventListener('input', calc)); ids.forEach(id => $(id).addEventListener('change', calc));
+updateClock(); setInterval(updateClock, 1000); updateSaveUi('저장준비'); calc();
+</script>
+</body>
+</html>
